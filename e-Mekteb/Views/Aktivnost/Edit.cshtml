@@ -1,0 +1,49 @@
+﻿@model e_Mekteb.Models.Aktivnost
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Aktivnost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AktivnostId" />
+            <div class="form-group">
+                <label asp-for="SkolskaGodinaId" class="control-label"></label>
+                <select asp-for="SkolskaGodinaId" class="form-control" asp-items="ViewBag.SkolskaGodinaId"></select>
+                <span asp-validation-for="SkolskaGodinaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VjerouciteljViewModelId" class="control-label"></label>
+                <select asp-for="VjerouciteljViewModelId" class="form-control" asp-items="ViewBag.VjerouciteljViewModelId"></select>
+                <span asp-validation-for="VjerouciteljViewModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Naziv" class="control-label"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipAktivnosti" class="control-label"></label>
+                <select asp-for="TipAktivnosti" class="form-control"></select>
+                <span asp-validation-for="TipAktivnosti" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

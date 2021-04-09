@@ -1,0 +1,42 @@
+﻿@model e_Mekteb.Models.ClanMualimskogVijeca
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ClanMualimskogVijeca</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medzlis)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medzlis.EmailGlavnogImama)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImeIPrezimeClanaVijeca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImeIPrezimeClanaVijeca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmailClanaVijeca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmailClanaVijeca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.KontaktClanaVijeca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.KontaktClanaVijeca)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ClanMualimskogVijecaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

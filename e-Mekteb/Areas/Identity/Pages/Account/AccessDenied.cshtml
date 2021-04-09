@@ -1,0 +1,19 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Neovlašten pristup";
+}
+
+@*<header>
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">You do not have access to this resource.</p>
+</header>*@
+<div class="text-center">
+    <h1 class="text-danger">
+        Zabranjen pristup neovlaštenim korisnicima!
+    </h1>
+    <h6 class="text-danger">
+        Nemate ovlaštenja za pregled ovog sadržaja!
+    </h6>
+    <img src="~/images/accessdenied.jpg" style="height:300px; width:300px" />
+</div>

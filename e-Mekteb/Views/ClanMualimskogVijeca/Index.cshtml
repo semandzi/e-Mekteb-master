@@ -1,0 +1,53 @@
+﻿@model IEnumerable<e_Mekteb.Models.ClanMualimskogVijeca>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Medzlis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImeIPrezimeClanaVijeca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailClanaVijeca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KontaktClanaVijeca)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medzlis.EmailGlavnogImama)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImeIPrezimeClanaVijeca)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailClanaVijeca)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KontaktClanaVijeca)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClanMualimskogVijecaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ClanMualimskogVijecaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ClanMualimskogVijecaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

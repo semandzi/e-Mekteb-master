@@ -1,0 +1,47 @@
+﻿@model IEnumerable<e_Mekteb.Models.Adresa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NazivMjesta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ulica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostanskiBroj)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NazivMjesta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ulica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostanskiBroj)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AdresaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AdresaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdresaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
