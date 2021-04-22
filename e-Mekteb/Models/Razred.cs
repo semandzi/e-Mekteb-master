@@ -12,22 +12,30 @@ namespace e_Mekteb.Models
     {
         public int RazredId { get; set; }
 
+        [Display(Name = "Školska Godina")]
         public virtual SkolskaGodina SkolskaGodina { get; set; }
-
-        [Display(Name = "Odaberi godinu")]
+        [Display(Name = "Školska Godina")]
         public int SkolskaGodinaId { get; set; }
 
 
-        public virtual Medzlis Medzlis { get; set; }
 
-        [Display(Name ="Odaberi medžlis")]
+
+
+
+        [Display(Name ="Medžlis")]
+        public virtual Medzlis Medzlis { get; set; }
+        [Display(Name = "Medžlis")]
         public int MedzlisId { get; set; }
 
 
-        public virtual AplicationUser AplicationUser { get; set; }
 
-        [Display(Name = "Odaberi vjeroučitelja")]
-        public int AplicationUserId { get; set; }
+        [Display(Name = "Vjeroučitelj")]
+        public virtual AplicationUser AplicationUser { get; set; }
+        [Display(Name = "Vjeroučitelj")]
+        [ForeignKey("AplicationUser")]
+        public string AplicationUserId { get; set; }
+
+
 
 
 

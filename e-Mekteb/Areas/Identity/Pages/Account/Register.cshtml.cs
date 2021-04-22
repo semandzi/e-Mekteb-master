@@ -58,10 +58,8 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [Display(Name = "Medžlis")]
-            [ForeignKey("Medzlis")]
-            public Medzlis Medzlis { get; set; }
-            public int MedzlisId { get; set; }
+            public string Mjesto { get; set; }
+           
 
 
             [Required]
@@ -89,7 +87,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AplicationUser { UserName = Input.Email, Email = Input.Email,MedzlisId=Input.MedzlisId};
+                var user = new AplicationUser { UserName = Input.Email, Email = Input.Email,NazivMjesta=Input.Mjesto};
                 user.AplicationUserId = user.Id;
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

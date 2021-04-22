@@ -19,15 +19,19 @@ namespace e_Mekteb.Models
         public virtual List<Biljeska> Biljeske { get; set; }
         public virtual List<Prisutnost> Prisutnosti { get; set; }
 
+        [Display(Name = "Školska Godina")]
         public virtual SkolskaGodina SkolskaGodina { get; set; }
-        [Display(Name = "Odaberi godinu")]
+        [Display(Name = "Školska Godina")]
         public int SkolskaGodinaId { get; set; }
+
 
        
        
         [Required(ErrorMessage = "Naziv je obavezno polje")]
         [StringLength(50)]
         public string Naziv { get; set; }
+
+        [Display(Name = "Segmenti Nastave")]
 
         public TipAktivnosti TipAktivnosti { get; set; }
 

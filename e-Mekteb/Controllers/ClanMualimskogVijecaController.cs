@@ -48,7 +48,7 @@ namespace e_Mekteb.Controllers
         // GET: ClanMualimskogVijeca/Create
         public IActionResult Create()
         {
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama");
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace e_Mekteb.Controllers
             {
                 return NotFound();
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", clanMualimskogVijeca.MedzlisId);
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", clanMualimskogVijeca.MedzlisId);
             return View(clanMualimskogVijeca);
         }
 
@@ -118,7 +118,7 @@ namespace e_Mekteb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", clanMualimskogVijeca.MedzlisId);
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", clanMualimskogVijeca.MedzlisId);
             return View(clanMualimskogVijeca);
         }
 

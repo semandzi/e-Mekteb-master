@@ -49,7 +49,7 @@ namespace e_Mekteb.Controllers
         public IActionResult Create()
         {
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email");
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "ImeIPrezime");
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
             ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
 
@@ -70,7 +70,7 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email", prisutnost.AplicationUserId);
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "ImeIPrezime", prisutnost.AplicationUserId);
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
             ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
             return View(prisutnost);

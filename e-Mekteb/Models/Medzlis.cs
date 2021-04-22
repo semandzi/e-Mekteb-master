@@ -24,6 +24,7 @@ namespace e_Mekteb.Models
 
         [Required(ErrorMessage ="Naziv je obavezno polje")]
         [StringLength(100)]
+        [Display(Name = "Medžlis")]
         public string Naziv { get; set; }
 
 

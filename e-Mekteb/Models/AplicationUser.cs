@@ -32,11 +32,7 @@ namespace e_Mekteb.Models
         [StringLength(50)]
         public string ImeiPrezime { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Medžlis")]
-        [ForeignKey("Medzlis")]
-        public Medzlis Medzlis { get; set; }
-        public int MedzlisId { get; set; }
+       
 
         public Spol Spol { get; set; }
 

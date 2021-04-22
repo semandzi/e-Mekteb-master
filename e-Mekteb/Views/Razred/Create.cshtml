@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Kreiraj Novi</h1>
 
 <h4>Razred</h4>
 <hr />
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AplicationUserId" class="control-label"></label>
-                <input asp-for="AplicationUserId" class="form-control" />
+                <select asp-for="AplicationUserId" class="form-control" asp-items="@ViewBag.VjerouciteljId" ></select>
                 <span asp-validation-for="AplicationUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,15 +31,14 @@
                 <span asp-validation-for="Naziv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-primary"><<</a>
+                <input type="submit" value="Spremi" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

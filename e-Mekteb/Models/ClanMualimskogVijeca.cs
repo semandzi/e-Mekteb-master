@@ -13,10 +13,11 @@ namespace e_Mekteb.Models
 
 
 
+        [Display(Name = "Medžlis")]
         public virtual Medzlis Medzlis { get; set; }
-
-        [Display(Name = "Odaberi Medžlis")]
+        [Display(Name = "Medžlis")]
         public int MedzlisId { get; set; }
+
 
 
         

@@ -50,7 +50,7 @@ namespace e_Mekteb.Controllers
         {
            var enumTipAktivnosti= Enum.GetValues(typeof(TipAktivnosti)).Cast<TipAktivnosti>().Select(v => v.ToString()).ToList();
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina");
-            ViewData["Aktivnost"] = new SelectList(enumTipAktivnosti);
+            ViewData["AktivnostId"] = new SelectList(enumTipAktivnosti);
             return View();
         }
 
@@ -69,6 +69,9 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", aktivnost.SkolskaGodinaId);
+            var enumTipAktivnosti = Enum.GetValues(typeof(TipAktivnosti)).Cast<TipAktivnosti>().Select(v => v.ToString()).ToList();
+            ViewData["AktivnostId"] = new SelectList(enumTipAktivnosti);
+
             return View(aktivnost);
         }
 
@@ -86,6 +89,8 @@ namespace e_Mekteb.Controllers
                 return NotFound();
             }
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", aktivnost.SkolskaGodinaId);
+            var enumTipAktivnosti = Enum.GetValues(typeof(TipAktivnosti)).Cast<TipAktivnosti>().Select(v => v.ToString()).ToList();
+            ViewData["AktivnostId"] = new SelectList(enumTipAktivnosti);
             return View(aktivnost);
         }
 

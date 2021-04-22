@@ -10,8 +10,8 @@ using e_Mekteb.ApDbContext;
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    [Migration("20210422102804_addingnewcolumntoaplicationuser")]
-    partial class addingnewcolumntoaplicationuser
+    [Migration("20210422145132_changetypeinttostringtablerazredi")]
+    partial class changetypeinttostringtablerazredi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -247,7 +247,7 @@ namespace e_Mekteb.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("MedzlisId")
+                    b.Property<int?>("MedzlisId")
                         .HasColumnType("int");
 
                     b.Property<string>("NazivMjesta")
@@ -445,10 +445,7 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AplicationUserId1")
+                    b.Property<string>("AplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("MedzlisId")
@@ -464,7 +461,7 @@ namespace e_Mekteb.Migrations
 
                     b.HasKey("RazredId");
 
-                    b.HasIndex("AplicationUserId1");
+                    b.HasIndex("AplicationUserId");
 
                     b.HasIndex("MedzlisId");
 
@@ -648,8 +645,7 @@ namespace e_Mekteb.Migrations
                     b.HasOne("e_Mekteb.Models.Medzlis", null)
                         .WithMany("Vjeroucitelji")
                         .HasForeignKey("MedzlisId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.Biljeska", b =>
@@ -702,7 +698,7 @@ namespace e_Mekteb.Migrations
                 {
                     b.HasOne("e_Mekteb.Models.AplicationUser", "AplicationUser")
                         .WithMany()
-                        .HasForeignKey("AplicationUserId1")
+                        .HasForeignKey("AplicationUserId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("e_Mekteb.Models.Medzlis", "Medzlis")

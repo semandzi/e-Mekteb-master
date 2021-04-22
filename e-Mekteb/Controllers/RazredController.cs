@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace e_Mekteb.Controllers
 {
     public class RazredController : Controller
     {
         private readonly e_MektebDbContext _context;
+        private readonly UserManager<AplicationUser> userManager;
 
-        public RazredController(e_MektebDbContext context)
+        public RazredController(e_MektebDbContext context, UserManager<AplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Razred
@@ -47,10 +50,23 @@ namespace e_Mekteb.Controllers
         }
 
         // GET: Razred/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama");
+            var temp = new List<AplicationUser>();
+            foreach (var user in userManager.Users)
+            {
+
+                if (await userManager.IsInRoleAsync(user, "Vjeroucitelj"))
+                {
+
+                    temp.Add(user);
+
+                }
+
+            }
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv");
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina");
+            ViewData["VjerouciteljId"] = new SelectList(temp,"AplicationUserId","Email");
             return View();
         }
 
@@ -67,7 +83,7 @@ namespace e_Mekteb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", razred.MedzlisId);
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
             return View(razred);
         }
@@ -85,7 +101,7 @@ namespace e_Mekteb.Controllers
             {
                 return NotFound();
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
+            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", razred.MedzlisId);
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
             return View(razred);
         }

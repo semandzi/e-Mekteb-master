@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210419184747_vjerouciteljucenik.cs" />
     <Compile Remove="Migrations\20210419184747_vjerouciteljucenik.Designer.cs" />
+    <Compile Remove="Migrations\20210422102804_addingnewcolumntoaplicationuser.cs" />
+    <Compile Remove="Migrations\20210422102804_addingnewcolumntoaplicationuser.Designer.cs" />
   </ItemGroup>
 
 

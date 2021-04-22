@@ -17,13 +17,15 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+                    <input asp-for="Input.Email" placeholder="ime.prezime@gmail.com" class="form-control" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.MedzlisId"></label>
-                    <select asp-for="Input.MedzlisId" class="form-control" asp-items="ViewBag.MedzlisId"></select>
+                    <label asp-for="Input.Mjesto"></label>
+                    <input asp-for="Input.Mjesto" class="form-control" placeholder="npr.Zagreb"/>
+                    <span asp-validation-for="Input.Mjesto" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Input.Password"></label>
                     <input asp-for="Input.Password" class="form-control" />

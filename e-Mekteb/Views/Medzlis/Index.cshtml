@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Medžlisi</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Dodaj Novi</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +49,7 @@
                 @Html.DisplayFor(modelItem => item.EmailGlavnogImama)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MedzlisId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MedzlisId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MedzlisId">Delete</a>
+                @await Html.PartialAsync("TableButtonPartial", item.MedzlisId)
             </td>
         </tr>
 }
