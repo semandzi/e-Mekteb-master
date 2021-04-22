@@ -11,9 +11,6 @@ namespace e_Mekteb.Models
 
     {
         public int AdresaId { get; set; }
-        public virtual List<VjerouciteljViewModel> Vjeroucitelji { get; set; }
-        public virtual List<UcenikViewModel> UceniciViewModel { get; set; }
-        public virtual List<AplicationUser> AplicationUsers { get; set; }
 
 
         [Required(ErrorMessage = "Grad je obavezno polje")]

@@ -10,28 +10,43 @@ namespace e_Mekteb.ViewModel
 {
     public class VjerouciteljViewModel
     {
+       
 
         public int VjerouciteljViewModelId { get; set; }
-        public virtual List<VjerouciteljAktivnost> VjerouciteljskeAktivnosti { get; set; }
         public virtual List<Aktivnost> Aktivnosti { get; set; }
         public virtual List<Razred> Razredi { get; set; }
         public virtual List<Skola> Skole { get; set; }
 
-        public virtual Medzlis Medzlis { get; set; }
+
+
+        public Medzlis Medzlis { get; set; }
         [Display(Name = "Medžlis")]
+        [ForeignKey("Medzlis")]
         public int MedzlisId { get; set; }
-
-
-        public virtual Adresa Adresa { get; set; }
-        public int AdresaId { get; set; }
-
 
 
         [Required(ErrorMessage = "Ime i Prezime je obavezno polje")]
         [StringLength(50)]
         public string ImeiPrezime { get; set; }
 
+
         public Spol Spol { get; set; }
+
+        [Required(ErrorMessage = "Grad je obavezno polje")]
+        [StringLength(50)]
+        [Display(Name = "Grad")]
+        public string NazivMjesta { get; set; }
+
+        [Required(ErrorMessage = "Ulica je obavezno polje")]
+        [StringLength(100)]
+        public string Ulica { get; set; }
+
+        [Required(ErrorMessage = "Poštanski broj je obavezno polje")]
+        [MaxLength(5)]
+        [MinLength(5)]
+        [Display(Name = "Poštanski broj")]
+
+        public string PostanskiBroj { get; set; }
 
 
         [Required(ErrorMessage = "Datum Rođenja je obavezno polje")]
@@ -47,19 +62,16 @@ namespace e_Mekteb.ViewModel
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-       
+        [Required(ErrorMessage = "Ime oca je obavezno polje")]
+        [StringLength(50)]
+        public string ImeOca { get; set; }
 
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+
+
+
+
     }
 
 }

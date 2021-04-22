@@ -36,7 +36,7 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Izbornik
+                                    Meni
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @if (User.IsInRole("Admin"))
@@ -51,8 +51,9 @@
                                                 <span class="sr-only">Toggle Dropright</span>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj</a>
-                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj Rolu</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi Rolu</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListUsers">Lista Korisnika</a>
                                             </div>
 
                                         </div>
@@ -67,27 +68,36 @@
 
 
                                     }
-
                                     @if (User.IsInRole("Vjeroucitelj"))
+
                                     {
-                                        @if (User.IsInRole("Ucenik"))
-                                        {
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Biljeska" asp-action="Index">Bilješke</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Prisutnost" asp-action="Index">Prisutnost</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Vjeroucitelj" asp-action="ListUsers">Lista Učenika</a>
 
-                                        }
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="DodajUcenika">Učenici</a>
 
+
+                                    }
+
+                                    @if (User.IsInRole("Ucenik"))
+                                    {
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="Index">Moj Račun</a>
                                     }
 
 
 
-
                                 </div>   
+                                   
 
-
-
-                              
-                                        
                             </li>
+
+
+
+
+
+
+
+
 
 
 

@@ -24,10 +24,10 @@ namespace e_Mekteb.Models
         public int MedzlisId { get; set; }
 
 
-        public virtual VjerouciteljViewModel VjerouciteljViewModel { get; set; }
+        public virtual AplicationUser AplicationUser { get; set; }
 
         [Display(Name = "Odaberi vjeroučitelja")]
-        public int VjerouciteljViewModelId { get; set; }
+        public int AplicationUserId { get; set; }
 
 
 

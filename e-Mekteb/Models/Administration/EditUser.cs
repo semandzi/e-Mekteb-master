@@ -1,4 +1,5 @@
-﻿using System;
+﻿using e_Mekteb.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace e_Mekteb.Models.Administration
         {
             Roles = new List<string>();
             Claims=new List<string>();
-
+            Predmeti=new List<string>();
         }
 
         public string Id { get; set; }
@@ -25,5 +26,6 @@ namespace e_Mekteb.Models.Administration
         public string Email { get; set; }
         public List<string> Roles { get; set; }
         public List<string> Claims { get; set; }
+        public List<string> Predmeti { get; set; }
     }
 }

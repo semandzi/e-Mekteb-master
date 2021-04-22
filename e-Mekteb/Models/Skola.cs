@@ -13,9 +13,9 @@ namespace e_Mekteb.Models
 
         public int SkolaId { get; set; }
 
-        public virtual VjerouciteljViewModel VjerouciteljViewModel { get; set; }
+        public virtual AplicationUser AplicationUser { get; set; }
         [Display(Name ="Odaberi vjeroucitelja")]
-        public int VjerouciteljViewModelId { get; set; }
+        public int AplicationUserId { get; set; }
 
         public string NazivSkole { get; set; }
 

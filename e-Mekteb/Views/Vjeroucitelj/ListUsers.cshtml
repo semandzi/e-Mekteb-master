@@ -1,0 +1,65 @@
+﻿@model List<e_Mekteb.Models.AplicationUser>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h1>Moji Učenici</h1>
+@{
+    if (Model != null && Model.Any())
+    {
+
+
+       
+        
+            <h5 class="card-title">
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Učenika</a>
+            </h5>
+            @foreach (var user in Model)
+            {
+                <div class="card mt-1 mb-5">
+                    <div class="card-header">
+                        @user.Id
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @user.Email
+
+                        </h5>
+                        <form asp-controller="Vjeroucitelj" asp-action="DeleteUser" asp-route-id="@user.Id" method="get">
+                            <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@user.Id">Uredi</a>
+                            <button type="submit" class="btn btn-danger">Obriši</button>
+                        </form>
+
+                    </div>
+                </div>
+            }
+        
+
+
+    }
+
+
+
+
+
+    else
+    {
+        <div class="card">
+            <div class="card-header">
+                No user created yet
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    Use button below to create new user
+                </h5>
+                <h5 class="card-title">
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Add new user</a>
+                </h5>
+
+            </div>
+        </div>
+    }
+
+}
+
+

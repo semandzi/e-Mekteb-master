@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace e_Mekteb.Migrations
 {
-    public partial class start : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,43 +50,6 @@ namespace e_Mekteb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    AplicationUserId = table.Column<int>(nullable: false),
-                    ImeIPrezime = table.Column<string>(nullable: true),
-                    DatumRodenja = table.Column<DateTime>(nullable: false),
-                    Spol = table.Column<int>(nullable: false),
-                    Starost = table.Column<int>(nullable: false),
-                    ImeOca = table.Column<string>(maxLength: 50, nullable: true),
-                    AdresaId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Adrese_AdresaId",
-                        column: x => x.AdresaId,
-                        principalTable: "Adrese",
-                        principalColumn: "AdresaId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Medzlisi",
                 columns: table => new
                 {
@@ -126,6 +89,87 @@ namespace e_Mekteb.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Aktivnosti",
+                columns: table => new
+                {
+                    AktivnostId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SkolskaGodinaId = table.Column<int>(nullable: false),
+                    Naziv = table.Column<string>(maxLength: 50, nullable: false),
+                    TipAktivnosti = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Aktivnosti", x => x.AktivnostId);
+                    table.ForeignKey(
+                        name: "FK_Aktivnosti_SkolskeGodine_SkolskaGodinaId",
+                        column: x => x.SkolskaGodinaId,
+                        principalTable: "SkolskeGodine",
+                        principalColumn: "SkolskaGodinaId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    AplicationUserId = table.Column<string>(nullable: true),
+                    ImeiPrezime = table.Column<string>(maxLength: 50, nullable: true),
+                    Spol = table.Column<int>(nullable: false),
+                    NazivMjesta = table.Column<string>(maxLength: 50, nullable: true),
+                    Ulica = table.Column<string>(maxLength: 100, nullable: true),
+                    PostanskiBroj = table.Column<string>(maxLength: 5, nullable: true),
+                    DatumRodenja = table.Column<DateTime>(nullable: false),
+                    Starost = table.Column<int>(nullable: false),
+                    ImeOca = table.Column<string>(maxLength: 50, nullable: true),
+                    MedzlisId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Medzlisi_MedzlisId",
+                        column: x => x.MedzlisId,
+                        principalTable: "Medzlisi",
+                        principalColumn: "MedzlisId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClanoviMualimskogVijeca",
+                columns: table => new
+                {
+                    ClanMualimskogVijecaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedzlisId = table.Column<int>(nullable: false),
+                    ImeIPrezimeClanaVijeca = table.Column<string>(maxLength: 50, nullable: false),
+                    EmailClanaVijeca = table.Column<string>(nullable: false),
+                    KontaktClanaVijeca = table.Column<string>(maxLength: 12, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClanoviMualimskogVijeca", x => x.ClanMualimskogVijecaId);
+                    table.ForeignKey(
+                        name: "FK_ClanoviMualimskogVijeca_Medzlisi_MedzlisId",
+                        column: x => x.MedzlisId,
+                        principalTable: "Medzlisi",
+                        principalColumn: "MedzlisId");
                 });
 
             migrationBuilder.CreateTable(
@@ -209,172 +253,13 @@ namespace e_Mekteb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClanoviMualimskogVijeca",
-                columns: table => new
-                {
-                    ClanMualimskogVijecaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MedzlisId = table.Column<int>(nullable: false),
-                    ImeIPrezimeClanaVijeca = table.Column<string>(maxLength: 50, nullable: false),
-                    EmailClanaVijeca = table.Column<string>(nullable: false),
-                    KontaktClanaVijeca = table.Column<string>(maxLength: 12, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClanoviMualimskogVijeca", x => x.ClanMualimskogVijecaId);
-                    table.ForeignKey(
-                        name: "FK_ClanoviMualimskogVijeca_Medzlisi_MedzlisId",
-                        column: x => x.MedzlisId,
-                        principalTable: "Medzlisi",
-                        principalColumn: "MedzlisId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UcenikViewModel",
-                columns: table => new
-                {
-                    UcenikViewModelId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MedzlisId = table.Column<int>(nullable: false),
-                    AdresaId = table.Column<int>(nullable: false),
-                    ImeiPrezime = table.Column<string>(maxLength: 50, nullable: false),
-                    Spol = table.Column<int>(nullable: false),
-                    DatumRodenja = table.Column<DateTime>(nullable: false),
-                    Starost = table.Column<int>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(maxLength: 100, nullable: false),
-                    ConfirmPassword = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UcenikViewModel", x => x.UcenikViewModelId);
-                    table.ForeignKey(
-                        name: "FK_UcenikViewModel_Adrese_AdresaId",
-                        column: x => x.AdresaId,
-                        principalTable: "Adrese",
-                        principalColumn: "AdresaId");
-                    table.ForeignKey(
-                        name: "FK_UcenikViewModel_Medzlisi_MedzlisId",
-                        column: x => x.MedzlisId,
-                        principalTable: "Medzlisi",
-                        principalColumn: "MedzlisId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "VjerouciteljViewModel",
-                columns: table => new
-                {
-                    VjerouciteljViewModelId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MedzlisId = table.Column<int>(nullable: false),
-                    AdresaId = table.Column<int>(nullable: false),
-                    ImeiPrezime = table.Column<string>(maxLength: 50, nullable: false),
-                    Spol = table.Column<int>(nullable: false),
-                    DatumRodenja = table.Column<DateTime>(nullable: false),
-                    Starost = table.Column<int>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(maxLength: 100, nullable: false),
-                    ConfirmPassword = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VjerouciteljViewModel", x => x.VjerouciteljViewModelId);
-                    table.ForeignKey(
-                        name: "FK_VjerouciteljViewModel_Adrese_AdresaId",
-                        column: x => x.AdresaId,
-                        principalTable: "Adrese",
-                        principalColumn: "AdresaId");
-                    table.ForeignKey(
-                        name: "FK_VjerouciteljViewModel_Medzlisi_MedzlisId",
-                        column: x => x.MedzlisId,
-                        principalTable: "Medzlisi",
-                        principalColumn: "MedzlisId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Aktivnosti",
-                columns: table => new
-                {
-                    AktivnostId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SkolskaGodinaId = table.Column<int>(nullable: false),
-                    VjerouciteljViewModelId = table.Column<int>(nullable: false),
-                    Naziv = table.Column<string>(maxLength: 50, nullable: false),
-                    TipAktivnosti = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Aktivnosti", x => x.AktivnostId);
-                    table.ForeignKey(
-                        name: "FK_Aktivnosti_SkolskeGodine_SkolskaGodinaId",
-                        column: x => x.SkolskaGodinaId,
-                        principalTable: "SkolskeGodine",
-                        principalColumn: "SkolskaGodinaId");
-                    table.ForeignKey(
-                        name: "FK_Aktivnosti_VjerouciteljViewModel_VjerouciteljViewModelId",
-                        column: x => x.VjerouciteljViewModelId,
-                        principalTable: "VjerouciteljViewModel",
-                        principalColumn: "VjerouciteljViewModelId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Razredi",
-                columns: table => new
-                {
-                    RazredId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SkolskaGodinaId = table.Column<int>(nullable: false),
-                    MedzlisId = table.Column<int>(nullable: false),
-                    VjerouciteljViewModelId = table.Column<int>(nullable: false),
-                    Naziv = table.Column<string>(maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Razredi", x => x.RazredId);
-                    table.ForeignKey(
-                        name: "FK_Razredi_Medzlisi_MedzlisId",
-                        column: x => x.MedzlisId,
-                        principalTable: "Medzlisi",
-                        principalColumn: "MedzlisId");
-                    table.ForeignKey(
-                        name: "FK_Razredi_SkolskeGodine_SkolskaGodinaId",
-                        column: x => x.SkolskaGodinaId,
-                        principalTable: "SkolskeGodine",
-                        principalColumn: "SkolskaGodinaId");
-                    table.ForeignKey(
-                        name: "FK_Razredi_VjerouciteljViewModel_VjerouciteljViewModelId",
-                        column: x => x.VjerouciteljViewModelId,
-                        principalTable: "VjerouciteljViewModel",
-                        principalColumn: "VjerouciteljViewModelId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Skole",
-                columns: table => new
-                {
-                    SkolaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    VjerouciteljViewModelId = table.Column<int>(nullable: false),
-                    NazivSkole = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skole", x => x.SkolaId);
-                    table.ForeignKey(
-                        name: "FK_Skole_VjerouciteljViewModel_VjerouciteljViewModelId",
-                        column: x => x.VjerouciteljViewModelId,
-                        principalTable: "VjerouciteljViewModel",
-                        principalColumn: "VjerouciteljViewModelId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Biljeske",
                 columns: table => new
                 {
                     BiljeskaId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Datum = table.Column<DateTime>(nullable: false),
-                    UcenikViewModelId = table.Column<int>(nullable: false),
+                    AplicationUserId = table.Column<string>(nullable: true),
                     AktivnostId = table.Column<int>(nullable: false),
                     Biljeske = table.Column<string>(maxLength: 200, nullable: false)
                 },
@@ -387,20 +272,19 @@ namespace e_Mekteb.Migrations
                         principalTable: "Aktivnosti",
                         principalColumn: "AktivnostId");
                     table.ForeignKey(
-                        name: "FK_Biljeske_UcenikViewModel_UcenikViewModelId",
-                        column: x => x.UcenikViewModelId,
-                        principalTable: "UcenikViewModel",
-                        principalColumn: "UcenikViewModelId");
+                        name: "FK_Biljeske_AspNetUsers_AplicationUserId",
+                        column: x => x.AplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Pohada",
                 columns: table => new
                 {
-                    AplicationUserId = table.Column<int>(nullable: false),
+                    AplicationUserId = table.Column<string>(nullable: false),
                     AktivnostId = table.Column<int>(nullable: false),
-                    UcenikAktivnostId = table.Column<int>(nullable: false),
-                    AplicationUserId1 = table.Column<string>(nullable: true)
+                    UcenikAktivnostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -411,8 +295,8 @@ namespace e_Mekteb.Migrations
                         principalTable: "Aktivnosti",
                         principalColumn: "AktivnostId");
                     table.ForeignKey(
-                        name: "FK_Pohada_AspNetUsers_AplicationUserId1",
-                        column: x => x.AplicationUserId1,
+                        name: "FK_Pohada_AspNetUsers_AplicationUserId",
+                        column: x => x.AplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
@@ -421,30 +305,24 @@ namespace e_Mekteb.Migrations
                 name: "Predaje",
                 columns: table => new
                 {
-                    AplicationUserId = table.Column<int>(nullable: false),
-                    AktivnostId = table.Column<int>(nullable: false),
-                    VjerouciteljAktivnostId = table.Column<int>(nullable: false),
-                    AplicationUserId1 = table.Column<string>(nullable: true),
-                    VjerouciteljViewModelId = table.Column<int>(nullable: true)
+                    VjerouciteljAktivnostId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AplicationUserId = table.Column<string>(nullable: true),
+                    AktivnostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Predaje", x => new { x.AplicationUserId, x.AktivnostId });
+                    table.PrimaryKey("PK_Predaje", x => x.VjerouciteljAktivnostId);
                     table.ForeignKey(
                         name: "FK_Predaje_Aktivnosti_AktivnostId",
                         column: x => x.AktivnostId,
                         principalTable: "Aktivnosti",
                         principalColumn: "AktivnostId");
                     table.ForeignKey(
-                        name: "FK_Predaje_AspNetUsers_AplicationUserId1",
-                        column: x => x.AplicationUserId1,
+                        name: "FK_Predaje_AspNetUsers_AplicationUserId",
+                        column: x => x.AplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Predaje_VjerouciteljViewModel_VjerouciteljViewModelId",
-                        column: x => x.VjerouciteljViewModelId,
-                        principalTable: "VjerouciteljViewModel",
-                        principalColumn: "VjerouciteljViewModelId");
                 });
 
             migrationBuilder.CreateTable(
@@ -454,7 +332,8 @@ namespace e_Mekteb.Migrations
                     PrisutnostId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Datum = table.Column<DateTime>(nullable: false),
-                    UcenikViewModelId = table.Column<int>(nullable: false),
+                    AplicationUserId1 = table.Column<string>(nullable: true),
+                    AplicationUserId = table.Column<int>(nullable: false),
                     AktivnostId = table.Column<int>(nullable: false),
                     IsPrisutan = table.Column<int>(nullable: false)
                 },
@@ -467,21 +346,68 @@ namespace e_Mekteb.Migrations
                         principalTable: "Aktivnosti",
                         principalColumn: "AktivnostId");
                     table.ForeignKey(
-                        name: "FK_Prisutnosti_UcenikViewModel_UcenikViewModelId",
-                        column: x => x.UcenikViewModelId,
-                        principalTable: "UcenikViewModel",
-                        principalColumn: "UcenikViewModelId");
+                        name: "FK_Prisutnosti_AspNetUsers_AplicationUserId1",
+                        column: x => x.AplicationUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Razredi",
+                columns: table => new
+                {
+                    RazredId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SkolskaGodinaId = table.Column<int>(nullable: false),
+                    MedzlisId = table.Column<int>(nullable: false),
+                    AplicationUserId1 = table.Column<string>(nullable: true),
+                    AplicationUserId = table.Column<int>(nullable: false),
+                    Naziv = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Razredi", x => x.RazredId);
+                    table.ForeignKey(
+                        name: "FK_Razredi_AspNetUsers_AplicationUserId1",
+                        column: x => x.AplicationUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Razredi_Medzlisi_MedzlisId",
+                        column: x => x.MedzlisId,
+                        principalTable: "Medzlisi",
+                        principalColumn: "MedzlisId");
+                    table.ForeignKey(
+                        name: "FK_Razredi_SkolskeGodine_SkolskaGodinaId",
+                        column: x => x.SkolskaGodinaId,
+                        principalTable: "SkolskeGodine",
+                        principalColumn: "SkolskaGodinaId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Skole",
+                columns: table => new
+                {
+                    SkolaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AplicationUserId1 = table.Column<string>(nullable: true),
+                    AplicationUserId = table.Column<int>(nullable: false),
+                    NazivSkole = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skole", x => x.SkolaId);
+                    table.ForeignKey(
+                        name: "FK_Skole_AspNetUsers_AplicationUserId1",
+                        column: x => x.AplicationUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Aktivnosti_SkolskaGodinaId",
                 table: "Aktivnosti",
                 column: "SkolskaGodinaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Aktivnosti_VjerouciteljViewModelId",
-                table: "Aktivnosti",
-                column: "VjerouciteljViewModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -511,9 +437,9 @@ namespace e_Mekteb.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_AdresaId",
+                name: "IX_AspNetUsers_MedzlisId",
                 table: "AspNetUsers",
-                column: "AdresaId");
+                column: "MedzlisId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -533,9 +459,9 @@ namespace e_Mekteb.Migrations
                 column: "AktivnostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Biljeske_UcenikViewModelId",
+                name: "IX_Biljeske_AplicationUserId",
                 table: "Biljeske",
-                column: "UcenikViewModelId");
+                column: "AplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClanoviMualimskogVijeca_MedzlisId",
@@ -553,24 +479,14 @@ namespace e_Mekteb.Migrations
                 column: "AktivnostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pohada_AplicationUserId1",
-                table: "Pohada",
-                column: "AplicationUserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Predaje_AktivnostId",
                 table: "Predaje",
                 column: "AktivnostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Predaje_AplicationUserId1",
+                name: "IX_Predaje_AplicationUserId",
                 table: "Predaje",
-                column: "AplicationUserId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Predaje_VjerouciteljViewModelId",
-                table: "Predaje",
-                column: "VjerouciteljViewModelId");
+                column: "AplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prisutnosti_AktivnostId",
@@ -578,9 +494,14 @@ namespace e_Mekteb.Migrations
                 column: "AktivnostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prisutnosti_UcenikViewModelId",
+                name: "IX_Prisutnosti_AplicationUserId1",
                 table: "Prisutnosti",
-                column: "UcenikViewModelId");
+                column: "AplicationUserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Razredi_AplicationUserId1",
+                table: "Razredi",
+                column: "AplicationUserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Razredi_MedzlisId",
@@ -593,34 +514,9 @@ namespace e_Mekteb.Migrations
                 column: "SkolskaGodinaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Razredi_VjerouciteljViewModelId",
-                table: "Razredi",
-                column: "VjerouciteljViewModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Skole_VjerouciteljViewModelId",
+                name: "IX_Skole_AplicationUserId1",
                 table: "Skole",
-                column: "VjerouciteljViewModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UcenikViewModel_AdresaId",
-                table: "UcenikViewModel",
-                column: "AdresaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UcenikViewModel_MedzlisId",
-                table: "UcenikViewModel",
-                column: "MedzlisId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VjerouciteljViewModel_AdresaId",
-                table: "VjerouciteljViewModel",
-                column: "AdresaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VjerouciteljViewModel_MedzlisId",
-                table: "VjerouciteljViewModel",
-                column: "MedzlisId");
+                column: "AplicationUserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -665,19 +561,13 @@ namespace e_Mekteb.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Aktivnosti");
 
             migrationBuilder.DropTable(
-                name: "UcenikViewModel");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "SkolskeGodine");
-
-            migrationBuilder.DropTable(
-                name: "VjerouciteljViewModel");
 
             migrationBuilder.DropTable(
                 name: "Medzlisi");

@@ -22,7 +22,7 @@ namespace e_Mekteb.Controllers
         // GET: Prisutnost
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Prisutnosti.Include(p => p.Aktivnost).Include(p => p.UcenikViewModel);
+            var e_MektebDbContext = _context.Prisutnosti.Include(p => p.Aktivnost).Include(p=>p.AplicationUser);
             return View(await e_MektebDbContext.ToListAsync());
         }
 
@@ -35,8 +35,7 @@ namespace e_Mekteb.Controllers
             }
 
             var prisutnost = await _context.Prisutnosti
-                .Include(p => p.Aktivnost)
-                .Include(p => p.UcenikViewModel)
+                .Include(p => p.Aktivnost).Include(p=>p.AplicationUser)
                 .FirstOrDefaultAsync(m => m.PrisutnostId == id);
             if (prisutnost == null)
             {
@@ -50,7 +49,10 @@ namespace e_Mekteb.Controllers
         public IActionResult Create()
         {
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email");
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email");
+            var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
+            ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
+
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrisutnostId,Datum,UcenikViewModelId,AktivnostId,IsPrisutan")] Prisutnost prisutnost)
+        public async Task<IActionResult> Create([Bind("PrisutnostId,Datum,AplicationUserId,AktivnostId,IsPrisutan")] Prisutnost prisutnost)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +70,9 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", prisutnost.UcenikViewModelId);
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email", prisutnost.AplicationUserId);
+            var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
+            ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
             return View(prisutnost);
         }
 
@@ -86,7 +90,9 @@ namespace e_Mekteb.Controllers
                 return NotFound();
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", prisutnost.UcenikViewModelId);
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email",prisutnost.AplicationUserId);
+            var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
+            ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
             return View(prisutnost);
         }
 
@@ -95,7 +101,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrisutnostId,Datum,UcenikViewModelId,AktivnostId,IsPrisutan")] Prisutnost prisutnost)
+        public async Task<IActionResult> Edit(int id, [Bind("PrisutnostId,Datum,AplicationUserId,AktivnostId,IsPrisutan")] Prisutnost prisutnost)
         {
             if (id != prisutnost.PrisutnostId)
             {
@@ -123,7 +129,6 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", prisutnost.UcenikViewModelId);
             return View(prisutnost);
         }
 
@@ -137,7 +142,6 @@ namespace e_Mekteb.Controllers
 
             var prisutnost = await _context.Prisutnosti
                 .Include(p => p.Aktivnost)
-                .Include(p => p.UcenikViewModel)
                 .FirstOrDefaultAsync(m => m.PrisutnostId == id);
             if (prisutnost == null)
             {

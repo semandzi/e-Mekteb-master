@@ -1,11 +1,14 @@
-﻿using e_Mekteb.Models;
+﻿using e_Mekteb.ApDbContext;
+using e_Mekteb.Models;
 using e_Mekteb.Models.Administration;
+using e_Mekteb.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace e_Mekteb.Controllers
@@ -16,10 +19,75 @@ namespace e_Mekteb.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<AplicationUser> userManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AplicationUser> userManager)
+        private readonly e_MektebDbContext _context;
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AplicationUser> userManager, e_MektebDbContext context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            _context = context;
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.Error = $"There is no user with this {userId}";
+                return NotFound();
+
+            }
+            else
+            {
+                var existingUserClaims = await userManager.GetClaimsAsync(user);
+                var model = new UserClaims
+                {
+                    UserId = userId
+
+                };
+                foreach (Claim claim in ClaimsStore.AllClaims)
+                {
+                    UserClaim userClaim = new UserClaim
+                    {
+                        ClaimType = claim.Type
+                    };
+                    if (existingUserClaims.Any(c => c.Type == claim.Type))
+                    {
+                        userClaim.IsSlected = true;
+                    }
+                    model.Claims.Add(userClaim);
+                }
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaims model)
+        {
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                ViewBag.Error = $"There is no user with this {model.UserId}";
+                return NotFound();
+
+            }
+            else
+            {
+                var claims = await userManager.GetClaimsAsync(user);
+                var result = await userManager.RemoveClaimsAsync(user, claims);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Can not remove user existing claims");
+                    return View(model);
+                }
+
+                result = await userManager.AddClaimsAsync(user, model.Claims.Where(c => c.IsSlected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Can not add selected claims to the user");
+                    return View(model);
+                }
+
+                return RedirectToAction("EditUser", new { Id = model.UserId });
+            }
         }
         [HttpPost]
         public async Task<IActionResult> ManageUserRoles(List<UserRoles> model, string userId)
@@ -34,19 +102,19 @@ namespace e_Mekteb.Controllers
             else
             {
                 var roles = await userManager.GetRolesAsync(user);
-                var result=await userManager.RemoveFromRolesAsync(user,roles);
+                var result = await userManager.RemoveFromRolesAsync(user, roles);
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", "Can not remove user exiting roles");
                     return View(model);
                 }
-                result =await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
+                result = await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
                 if (!result.Succeeded)
                 {
                     ViewBag.Error = $"Can not add selected roles to user";
                 }
             }
-            return RedirectToAction("EditUser",new { Id = userId });
+            return RedirectToAction("EditUser", new { Id = userId });
         }
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles(string userId)
@@ -61,14 +129,14 @@ namespace e_Mekteb.Controllers
             else
             {
                 var model = new List<UserRoles>();
-                foreach(var role in roleManager.Roles)
+                foreach (var role in roleManager.Roles)
                 {
                     var userRoles = new UserRoles
                     {
-                        RoleId=role.Id,
-                        RoleName=role.Name
+                        RoleId = role.Id,
+                        RoleName = role.Name
                     };
-                    if(await userManager.IsInRoleAsync(user, role.Name))
+                    if (await userManager.IsInRoleAsync(user, role.Name))
                     {
                         userRoles.IsSelected = true;
 
@@ -82,7 +150,7 @@ namespace e_Mekteb.Controllers
                 }
                 return View(model);
             }
-            
+
         }
         [HttpPost, ActionName("DeleteUserConfirmed")]
         [ValidateAntiForgeryToken]
@@ -91,7 +159,7 @@ namespace e_Mekteb.Controllers
             var user = await userManager.FindByIdAsync(id);
 
             var result = await userManager.DeleteAsync(user);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 return RedirectToAction("ListUsers");
             }
@@ -102,11 +170,11 @@ namespace e_Mekteb.Controllers
             return View("ListUsers");
 
         }
-       [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
-            var User=new List<AplicationUser>();
+            var User = new List<AplicationUser>();
             User.Add(user);
             if (user == null)
             {
@@ -119,30 +187,47 @@ namespace e_Mekteb.Controllers
 
         }
         [HttpGet]
-        public IActionResult ListUsers()
+        public async Task<IActionResult> ListUsers()
         {
-           var users= userManager.Users;
-            return View(users);
+            var temp= new List<AplicationUser>();
+            foreach (var user in userManager.Users)
+            {
+                
+                if (await userManager.IsInRoleAsync(user, "Vjeroucitelj"))
+                {
+                    
+                    temp.Add(user);
+                    
+                }
+
+            }
+            
+            return View(temp);
+
+            //var users = userManager.Users.Select();
         }
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
-            if (user== null)
+            if (user == null)
             {
                 ViewBag.ErrorMessage = $"User with this {id} can not be found";
                 return NotFound();
             }
-            var userRoles =await userManager.GetRolesAsync(user);
+            var userRoles = await userManager.GetRolesAsync(user);
             var userClaims = await userManager.GetClaimsAsync(user);
+            var predmetiVjeroucitelja = _context.Predaje.Where(v => v.AplicationUserId == id).Select(v => v.NazivPredmeta).ToList();
+
 
             var model = new EditUser
             {
                 Id = user.Id,
                 UserName = user.UserName,
-                Email=user.Email,
+                Email = user.Email,
                 Claims = userClaims.Select(c => c.Value).ToList(),
-                Roles = (List<string>)userRoles
+                Roles = (List<string>)userRoles,
+                Predmeti=predmetiVjeroucitelja
 
             };
             return View(model);
@@ -162,12 +247,14 @@ namespace e_Mekteb.Controllers
                 user.Id = model.Id;
                 user.UserName = model.UserName;
                 user.Email = model.UserName;
+                user.AplicationUserId = model.Id;
                 var result = await userManager.UpdateAsync(user);
+
                 if (result.Succeeded)
                 {
                     return RedirectToAction("ListUsers");
                 }
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
@@ -194,9 +281,9 @@ namespace e_Mekteb.Controllers
                 IdentityResult result = await roleManager.CreateAsync(identityRole);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListRoles", "Administration");
+                    return RedirectToAction("ListRole", "Administration");
                 }
-                foreach(IdentityError error in result.Errors)
+                foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
@@ -207,7 +294,7 @@ namespace e_Mekteb.Controllers
         [HttpGet]
         public IActionResult ListRole()
         {
-            var roles=roleManager.Roles;
+            var roles = roleManager.Roles;
             return View(roles);
         }
 
@@ -216,7 +303,7 @@ namespace e_Mekteb.Controllers
         {
 
             var role = await roleManager.FindByIdAsync(id);
-            if(role==null)
+            if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with id{id} can not be found";
                 return NotFound();
@@ -224,11 +311,11 @@ namespace e_Mekteb.Controllers
             var model = new EditRole()
             {
                 Id = role.Id,
-               RoleName = role.Name
+                RoleName = role.Name
             };
-            foreach(var user in userManager.Users )
+            foreach (var user in userManager.Users)
             {
-                if(await userManager.IsInRoleAsync(user,role.Name))
+                if (await userManager.IsInRoleAsync(user, role.Name))
                 {
                     model.Users.Add(user.UserName);
                 }
@@ -250,21 +337,61 @@ namespace e_Mekteb.Controllers
             {
                 role.Id = model.Id;
                 role.Name = model.RoleName;
-               var result=await roleManager.UpdateAsync(role);
+                var result = await roleManager.UpdateAsync(role);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("ListRole");
                 }
 
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
                 return View(model);
             }
 
-            
+
         }
+        [HttpGet]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                ViewBag.Error = $"There is no role with that {id}";
+                return NotFound();
+
+            }
+            else
+            {
+                var Role = new List<IdentityRole>();
+                Role.Add(role);
+                return View(Role);
+            }
+
+        }
+
+        [Authorize(Policy = "DeleteRolePolicy")]
+        [HttpPost, ActionName("DeleteRoleConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRoleConfirmed(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            var result = await roleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                return RedirectToAction("ListRole");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return RedirectToAction("ListRole");
+
+        }
+
+        [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
@@ -277,7 +404,7 @@ namespace e_Mekteb.Controllers
             else
             {
                 var model = new List<UserRole>();
-                foreach(var user in userManager.Users)
+                foreach (var user in userManager.Users)
                 {
                     var userRole = new UserRole
                     {
@@ -286,7 +413,7 @@ namespace e_Mekteb.Controllers
 
                     };
 
-                    if(await userManager.IsInRoleAsync(user,role.Name))
+                    if (await userManager.IsInRoleAsync(user, role.Name))
                     {
                         userRole.IsSelected = true;
 
@@ -300,29 +427,29 @@ namespace e_Mekteb.Controllers
                 return View(model);
 
             }
-           
+
         }
 
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRole> model, string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
-            if(role==null)
+            if (role == null)
             {
                 ViewBag.ErrorDescription = $"Role with id {roleId} can not be found.";
                 return NotFound();
             }
             else
             {
-                for (int i= 0;i< model.Count(); i++)
+                for (int i = 0; i < model.Count(); i++)
                 {
-                    var user=await userManager.FindByIdAsync(model[i].UserId);
+                    var user = await userManager.FindByIdAsync(model[i].UserId);
                     IdentityResult result = null;
                     if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
                     {
                         result = await userManager.AddToRoleAsync(user, role.Name);
                     }
-                    else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name)) 
+                    else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
                     {
                         result = await userManager.RemoveFromRoleAsync(user, role.Name);
 
@@ -333,7 +460,7 @@ namespace e_Mekteb.Controllers
                         continue;
                     }
 
-                    if(result.Succeeded)
+                    if (result.Succeeded)
                     {
                         if (i < (model.Count - 1))
                         {
@@ -345,13 +472,125 @@ namespace e_Mekteb.Controllers
                             return RedirectToAction("EditRole", new { Id = roleId });
                         }
                     }
-                    
+
                 }
                 return RedirectToAction("EditRole", new { Id = roleId });
 
             }
         }
 
-       
+        [HttpGet]
+        public async Task<IActionResult> PredmetiVjeroucitelja(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.Error = $"There is no user with this {userId}";
+                return NotFound();
+            }
+            else
+            {
+                var aktivnost = _context.Aktivnosti.ToList();
+                var model = new List<AktivnostiVjeroucitelja>();
+                ViewBag.userId = user.Id;
+                foreach (var predmet in aktivnost)
+                {
+
+                    var vjerouciteljAktivnost = new VjerouciteljAktivnost();
+
+                    var vjeroucitelj = new AktivnostiVjeroucitelja
+                    {
+                        VjerouciteljId = user.Id,
+                        AktivnostId = predmet.AktivnostId,
+                        NazivPredmeta = predmet.Naziv
+
+                    };
+                    if (vjeroucitelj.VjerouciteljId == vjerouciteljAktivnost.AplicationUserId && vjeroucitelj.AktivnostId == vjerouciteljAktivnost.AktivnostId)
+                    {
+                        vjeroucitelj.IsSelected = true;
+                        
+                    }
+
+                    else
+                    {
+                        vjeroucitelj.IsSelected = false;
+                    }
+                    model.Add(vjeroucitelj);
+
+                }
+                return View(model);
+
+            }
+                        
+        }
+                        
+        [HttpPost]
+        public async Task<IActionResult> PredmetiVjeroucitelja(List<AktivnostiVjeroucitelja> list,string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (userId == null)
+            {
+                ViewBag.Error = $"Ne postoji korisnik sa ovim Id {userId}";
+                return NotFound();
+            }
+            else
+            {
+                string vjerouciteljId = userId;
+                IEnumerable<VjerouciteljAktivnost> listofPredaje = _context.Predaje.Where(m => m.AplicationUserId == vjerouciteljId);
+                _context.RemoveRange(listofPredaje);
+                _context.SaveChanges();
+                foreach (var model in list)
+                {
+
+
+
+
+                    if (model.IsSelected == true)
+                    {
+                        var aktivnost = _context.Aktivnosti.ToList();
+
+                        var vjeroucitelj = new AktivnostiVjeroucitelja
+                        {
+                            AktivnostId = model.AktivnostId,
+                            VjerouciteljId = model.VjerouciteljId,
+                            IsSelected = model.IsSelected,
+                            NazivPredmeta = aktivnost.Where(a => a.AktivnostId == model.AktivnostId).Select(a => a.Naziv).FirstOrDefault()
+                        };
+                        var vjerouciteljAktivnost = new VjerouciteljAktivnost
+                        {
+                            AktivnostId = vjeroucitelj.AktivnostId,
+                            AplicationUserId = vjeroucitelj.VjerouciteljId,
+                            NazivPredmeta = vjeroucitelj.NazivPredmeta
+
+                        };
+                        
+                        _context.Add(vjerouciteljAktivnost);
+                        await _context.SaveChangesAsync();
+
+                    }
+                }
+                
+                return RedirectToAction("EditUser",new { Id=userId});
+
+            }
+
+
+        }
+
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

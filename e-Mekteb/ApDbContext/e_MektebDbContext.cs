@@ -19,7 +19,6 @@ namespace e_Mekteb.ApDbContext
 
         public DbSet<Aktivnost> Aktivnosti { get; set; }
         public DbSet<Medzlis> Medzlisi { get; set; }
-        public DbSet<VjerouciteljViewModel> Vjeroucitelji { get; set; }
         public DbSet<Adresa> Adrese { get; set; }
         public DbSet<SkolskaGodina> SkolskeGodine { get; set; }
         public DbSet<Razred> Razredi { get; set; }
@@ -28,18 +27,18 @@ namespace e_Mekteb.ApDbContext
         public DbSet<Prisutnost> Prisutnosti { get; set; }
 
         public DbSet<Skola> Skole { get; set; }
-        public DbSet<VjerouciteljViewModel> VjerouciteljViewModel { get; set; }
-        public DbSet<UcenikViewModel> UcenikViewModel { get; set; }
 
         public DbSet<UcenikAktivnost> Pohada { get; set; }
         public DbSet<VjerouciteljAktivnost> Predaje { get; set; }
+        public DbSet<VjerouciteljUcenik> VjerouciteljUcenik { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UcenikAktivnost>().HasKey(t => new { t.AplicationUserId, t.AktivnostId });
-            modelBuilder.Entity<VjerouciteljAktivnost>().HasKey(t => new { t.AplicationUserId, t.AktivnostId });
+            //modelBuilder.Entity<VjerouciteljAktivnost>().HasKey(t => new { t.AplicationUserId, t.AktivnostId });
             foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.NoAction;

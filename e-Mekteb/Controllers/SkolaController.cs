@@ -22,8 +22,7 @@ namespace e_Mekteb.Controllers
         // GET: Skola
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Skole.Include(s => s.VjerouciteljViewModel);
-            return View(await e_MektebDbContext.ToListAsync());
+            return View(await _context.Skole.ToListAsync());
         }
 
         // GET: Skola/Details/5
@@ -35,7 +34,6 @@ namespace e_Mekteb.Controllers
             }
 
             var skola = await _context.Skole
-                .Include(s => s.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.SkolaId == id);
             if (skola == null)
             {
@@ -48,7 +46,6 @@ namespace e_Mekteb.Controllers
         // GET: Skola/Create
         public IActionResult Create()
         {
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SkolaId,VjerouciteljViewModelId,NazivSkole")] Skola skola)
+        public async Task<IActionResult> Create([Bind("SkolaId,AplicationUserId,NazivSkole")] Skola skola)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace e_Mekteb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", skola.VjerouciteljViewModelId);
             return View(skola);
         }
 
@@ -82,7 +78,6 @@ namespace e_Mekteb.Controllers
             {
                 return NotFound();
             }
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", skola.VjerouciteljViewModelId);
             return View(skola);
         }
 
@@ -91,7 +86,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,VjerouciteljViewModelId,NazivSkole")] Skola skola)
+        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,AplicationUserId,NazivSkole")] Skola skola)
         {
             if (id != skola.SkolaId)
             {
@@ -118,7 +113,6 @@ namespace e_Mekteb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", skola.VjerouciteljViewModelId);
             return View(skola);
         }
 
@@ -131,7 +125,6 @@ namespace e_Mekteb.Controllers
             }
 
             var skola = await _context.Skole
-                .Include(s => s.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.SkolaId == id);
             if (skola == null)
             {

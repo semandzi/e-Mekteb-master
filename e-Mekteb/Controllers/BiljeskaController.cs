@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace e_Mekteb.Controllers
 {
     public class BiljeskaController : Controller
     {
         private readonly e_MektebDbContext _context;
+        private readonly UserManager<AplicationUser> userManager;
 
-        public BiljeskaController(e_MektebDbContext context)
+        public BiljeskaController(e_MektebDbContext context, UserManager<AplicationUser> userManager)
         {
             _context = context;
+            this.userManager=userManager;
         }
 
         // GET: Biljeska
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Biljeske.Include(b => b.Aktivnost).Include(b => b.UcenikViewModel);
+            var e_MektebDbContext = _context.Biljeske.Include(b => b.Aktivnost).Include(b=>b.AplicationUser);
             return View(await e_MektebDbContext.ToListAsync());
         }
 
@@ -36,7 +37,6 @@ namespace e_Mekteb.Controllers
 
             var biljeska = await _context.Biljeske
                 .Include(b => b.Aktivnost)
-                .Include(b => b.UcenikViewModel)
                 .FirstOrDefaultAsync(m => m.BiljeskaId == id);
             if (biljeska == null)
             {
@@ -50,7 +50,8 @@ namespace e_Mekteb.Controllers
         public IActionResult Create()
         {
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email");
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId","Email" );
+            
             return View();
         }
 
@@ -59,16 +60,19 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BiljeskaId,Datum,UcenikViewModelId,AktivnostId,Biljeske")] Biljeska biljeska)
+        public async Task<IActionResult> Create([Bind("BiljeskaId,Datum,AplicationUserId,AktivnostId,Biljeske")] Biljeska biljeska)
         {
+            
+            
             if (ModelState.IsValid)
             {
                 _context.Add(biljeska);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", biljeska.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", biljeska.UcenikViewModelId);
+            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email",biljeska.AplicationUserId);
             return View(biljeska);
         }
 
@@ -86,7 +90,7 @@ namespace e_Mekteb.Controllers
                 return NotFound();
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", biljeska.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", biljeska.UcenikViewModelId);
+
             return View(biljeska);
         }
 
@@ -95,7 +99,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BiljeskaId,Datum,UcenikViewModelId,AktivnostId,Biljeske")] Biljeska biljeska)
+        public async Task<IActionResult> Edit(int id, [Bind("BiljeskaId,Datum,AplicationUserId,AktivnostId,Biljeske")] Biljeska biljeska)
         {
             if (id != biljeska.BiljeskaId)
             {
@@ -123,7 +127,6 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", biljeska.AktivnostId);
-            ViewData["UcenikViewModelId"] = new SelectList(_context.UcenikViewModel, "UcenikViewModelId", "Email", biljeska.UcenikViewModelId);
             return View(biljeska);
         }
 
@@ -137,7 +140,6 @@ namespace e_Mekteb.Controllers
 
             var biljeska = await _context.Biljeske
                 .Include(b => b.Aktivnost)
-                .Include(b => b.UcenikViewModel)
                 .FirstOrDefaultAsync(m => m.BiljeskaId == id);
             if (biljeska == null)
             {

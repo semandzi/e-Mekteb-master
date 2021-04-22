@@ -18,10 +18,10 @@ namespace e_Mekteb.Models
         public DateTime Datum { get; set; }
 
 
-        public virtual UcenikViewModel UcenikViewModel { get; set; }
+        public  AplicationUser AplicationUser { get; set; }
 
-        [Display(Name = "Odaberi učenika")]
-        public int UcenikViewModelId { get; set; }
+        [Display(Name = "Učenik")]
+        public string AplicationUserId { get; set; }
 
 
 

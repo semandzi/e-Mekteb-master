@@ -10,6 +10,8 @@ namespace e_Mekteb.Models
 {
     public class Aktivnost
     {
+        
+
         public int AktivnostId { get; set; }
 
         public virtual List<UcenikAktivnost> UcenickeAktivnosti { get; set; }
@@ -21,10 +23,7 @@ namespace e_Mekteb.Models
         [Display(Name = "Odaberi godinu")]
         public int SkolskaGodinaId { get; set; }
 
-        public VjerouciteljViewModel VjerouciteljViewModel { get; set; }
-        [Display(Name = "Odaberi vjeroučitelja")]
-        public int VjerouciteljViewModelId { get; set; }
-
+       
        
         [Required(ErrorMessage = "Naziv je obavezno polje")]
         [StringLength(50)]
@@ -40,5 +39,5 @@ namespace e_Mekteb.Models
         Teorija,
         Praktično,
         Sve
-    }
+    };
 }

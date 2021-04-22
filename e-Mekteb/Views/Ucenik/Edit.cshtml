@@ -1,0 +1,81 @@
+﻿
+@model e_Mekteb.ViewModel.UcenikViewModel
+
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<AplicationUser> signInManager
+
+@{
+    ViewData["Title"] = "Create";
+    var user = ViewBag.User;
+}
+
+<h1>Edit</h1>
+<h4>Ucenik</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" class="mt-1 mb-5">
+            <div class="form-group">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <label asp-for="ImeiPrezime" class="control-label"></label>
+                <input asp-for="ImeiPrezime" class="form-control" />
+                <span asp-validation-for="ImeiPrezime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Spol" class="control-label"></label>
+                <select asp-for="Spol" class="form-control" asp-items="ViewBag.Spol"></select>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="NazivMjesta" class="control-label"></label>
+                <input asp-for="NazivMjesta" class="form-control" />
+                <span asp-validation-for="NazivMjesta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ulica" class="control-label"></label>
+                <input asp-for="Ulica" class="form-control" />
+                <span asp-validation-for="Ulica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostanskiBroj" class="control-label"></label>
+                <input asp-for="PostanskiBroj" class="form-control" />
+                <span asp-validation-for="PostanskiBroj" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DatumRodenja" class="control-label"></label>
+                <input asp-for="DatumRodenja" class="form-control" />
+                <span asp-validation-for="DatumRodenja" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Starost" class="control-label"></label>
+                <input asp-for="Starost" class="form-control" />
+                <span asp-validation-for="Starost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email"  disabled class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImeOca" class="control-label"></label>
+                <input asp-for="ImeOca" class="form-control" />
+                <span asp-validation-for="ImeOca" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-primary"><<</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

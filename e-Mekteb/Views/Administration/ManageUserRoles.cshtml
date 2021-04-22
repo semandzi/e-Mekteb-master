@@ -22,12 +22,12 @@
                 </div>
 
             }
-
+        <div asp-validation-summary="All" class="text-danger"></div>
 
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a asp-controller="Administration" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Cancel</a>
+            <a asp-controller="Administration" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary"><<</a>
+            <button type="submit" class="btn btn-primary">Ažuriraj</button>
 
         </div>
     </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Uredi</h1>
 
 <h4>Biljeska</h4>
 <hr />
@@ -19,9 +19,9 @@
                 <span asp-validation-for="Datum" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UcenikViewModelId" class="control-label"></label>
-                <select asp-for="UcenikViewModelId" class="form-control" asp-items="ViewBag.UcenikViewModelId"></select>
-                <span asp-validation-for="UcenikViewModelId" class="text-danger"></span>
+                <label asp-for="AplicationUserId" class="control-label"></label>
+                <input asp-for="AplicationUserId"  class="form-control" />
+                <span asp-validation-for="AplicationUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AktivnostId" class="control-label"></label>
@@ -34,15 +34,14 @@
                 <span asp-validation-for="Biljeske" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-primary"><<</a>
+
+                <input type="submit" value="Spremi" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

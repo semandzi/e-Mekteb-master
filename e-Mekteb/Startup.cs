@@ -37,6 +37,11 @@ namespace e_Mekteb
                     .AddEntityFrameworkStores<e_MektebDbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role"));
+            });
 
    //         services.AddSingleton<Microsoft.Extensions.Logging.ILogger>(provider =>
    //provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<AplicationUser>>());

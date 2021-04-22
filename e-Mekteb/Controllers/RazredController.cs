@@ -22,7 +22,7 @@ namespace e_Mekteb.Controllers
         // GET: Razred
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Razredi.Include(r => r.Medzlis).Include(r => r.SkolskaGodina).Include(r => r.VjerouciteljViewModel);
+            var e_MektebDbContext = _context.Razredi.Include(r => r.Medzlis).Include(r => r.SkolskaGodina);
             return View(await e_MektebDbContext.ToListAsync());
         }
 
@@ -37,7 +37,6 @@ namespace e_Mekteb.Controllers
             var razred = await _context.Razredi
                 .Include(r => r.Medzlis)
                 .Include(r => r.SkolskaGodina)
-                .Include(r => r.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.RazredId == id);
             if (razred == null)
             {
@@ -52,7 +51,6 @@ namespace e_Mekteb.Controllers
         {
             ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama");
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina");
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email");
             return View();
         }
 
@@ -61,7 +59,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RazredId,SkolskaGodinaId,MedzlisId,VjerouciteljViewModelId,Naziv")] Razred razred)
+        public async Task<IActionResult> Create([Bind("RazredId,SkolskaGodinaId,MedzlisId,AplicationUserId,Naziv")] Razred razred)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +69,6 @@ namespace e_Mekteb.Controllers
             }
             ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", razred.VjerouciteljViewModelId);
             return View(razred);
         }
 
@@ -90,7 +87,6 @@ namespace e_Mekteb.Controllers
             }
             ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", razred.VjerouciteljViewModelId);
             return View(razred);
         }
 
@@ -99,7 +95,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RazredId,SkolskaGodinaId,MedzlisId,VjerouciteljViewModelId,Naziv")] Razred razred)
+        public async Task<IActionResult> Edit(int id, [Bind("RazredId,SkolskaGodinaId,MedzlisId,AplicationUserId,Naziv")] Razred razred)
         {
             if (id != razred.RazredId)
             {
@@ -128,7 +124,6 @@ namespace e_Mekteb.Controllers
             }
             ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", razred.VjerouciteljViewModelId);
             return View(razred);
         }
 
@@ -143,7 +138,6 @@ namespace e_Mekteb.Controllers
             var razred = await _context.Razredi
                 .Include(r => r.Medzlis)
                 .Include(r => r.SkolskaGodina)
-                .Include(r => r.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.RazredId == id);
             if (razred == null)
             {

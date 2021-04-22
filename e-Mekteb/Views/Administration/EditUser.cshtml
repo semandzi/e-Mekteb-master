@@ -2,9 +2,9 @@
 @{ 
     ViewBag.Title = "Edit User";
 }
-<h1>Edit User</h1>
+<h1>Uredi Korisnika</h1>
 
-<form method="post" class="mt-3">
+<form method="post" class="mt-1 mb-5">
     <div class="form-group row">
         <label asp-for="Id" class="col-sm-2">User Id</label>
 
@@ -34,15 +34,15 @@
     <div class="form-group row">
         <div class="col-sm-10">
 
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a asp-controller="Administration" asp-action="ListUsers" class="btn btn-primary">Cancel</a>
+            <a asp-controller="Administration" asp-action="ListUsers" class="btn btn-primary"><<</a>
+            <button type="submit" class="btn btn-primary">Ažuriraj</button>
 
         </div>
 
     </div>
     <div class="card">
         <div class="card-header">
-            User Role
+            Role Korisnika
         </div>
         <div class="card-body">
             @if (Model.Roles.Any())
@@ -57,14 +57,14 @@
             else
             {
                 <h5 class="card-title">
-                    No at the moment
+                    Trenutačno ih nema.
                 </h5>
             }
 
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Administration" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Manage Roles</a>
+            <a asp-controller="Administration" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Uredi Role</a>
 
 
         </div>
@@ -72,7 +72,7 @@
 
     <div class="card">
         <div class="card-header">
-            User Claims
+            Korisnička Odobrenja
         </div>
         <div class="card-body">
             @if (Model.Claims.Any())
@@ -87,14 +87,43 @@
             else
             {
                 <h5 class="card-title">
-                    No at the moment
+                    Trenutačno ih nema.
                 </h5>
             }
 
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Administration" asp-action="Edit" asp-route-roleId="@Model.Id" class="btn btn-primary">Manage Claims</a>
+            <a asp-controller="Administration" asp-action="ManageUserClaims" asp-route-userId="@Model.Id" class="btn btn-primary">Uredi Odobrenja</a>
+
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Predmeti Vjeroučitelja
+        </div>
+        <div class="card-body">
+            @if (Model.Predmeti.Any())
+            {
+                foreach (var predmet in Model.Predmeti)
+                {
+                    <h5 class="card-title">
+                        @predmet
+                    </h5>
+                }
+            }
+            else
+            {
+                <h5 class="card-title">
+                    Trenutačno ih nema.
+                </h5>
+            }
+
+
+        </div>
+        <div class="card-footer">
+            <a asp-controller="Administration" asp-action="PredmetiVjeroucitelja" asp-route-userId="@Model.Id" class="btn btn-primary">Uredi Predmete</a>
 
 
         </div>

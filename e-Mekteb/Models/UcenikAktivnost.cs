@@ -9,9 +9,9 @@ namespace e_Mekteb.Models
     public class UcenikAktivnost
     {
         public int UcenikAktivnostId { get; set; }
-        public int AplicationUserId { get; set; }
+        public string AplicationUserId { get; set; }
         public int AktivnostId { get; set; }
-        public virtual AplicationUser AplicationUser { get; set; }
+        public virtual AplicationUser Ucenik{ get; set; }
         public virtual Aktivnost Aktivnost { get; set; }
 
 

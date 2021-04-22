@@ -22,7 +22,7 @@ namespace e_Mekteb.Controllers
         // GET: Aktivnost
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Aktivnosti.Include(a => a.SkolskaGodina).Include(a => a.VjerouciteljViewModel);
+            var e_MektebDbContext = _context.Aktivnosti.Include(a => a.SkolskaGodina);
             return View(await e_MektebDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace e_Mekteb.Controllers
 
             var aktivnost = await _context.Aktivnosti
                 .Include(a => a.SkolskaGodina)
-                .Include(a => a.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.AktivnostId == id);
             if (aktivnost == null)
             {
@@ -49,8 +48,9 @@ namespace e_Mekteb.Controllers
         // GET: Aktivnost/Create
         public IActionResult Create()
         {
+           var enumTipAktivnosti= Enum.GetValues(typeof(TipAktivnosti)).Cast<TipAktivnosti>().Select(v => v.ToString()).ToList();
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina");
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email");
+            ViewData["Aktivnost"] = new SelectList(enumTipAktivnosti);
             return View();
         }
 
@@ -59,16 +59,16 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AktivnostId,SkolskaGodinaId,VjerouciteljViewModelId,Naziv,TipAktivnosti")] Aktivnost aktivnost)
+        public async Task<IActionResult> Create([Bind("AktivnostId,SkolskaGodinaId,Naziv,TipAktivnosti")] Aktivnost aktivnost)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(aktivnost);
+               
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", aktivnost.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", aktivnost.VjerouciteljViewModelId);
             return View(aktivnost);
         }
 
@@ -86,7 +86,6 @@ namespace e_Mekteb.Controllers
                 return NotFound();
             }
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", aktivnost.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", aktivnost.VjerouciteljViewModelId);
             return View(aktivnost);
         }
 
@@ -95,7 +94,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AktivnostId,SkolskaGodinaId,VjerouciteljViewModelId,Naziv,TipAktivnosti")] Aktivnost aktivnost)
+        public async Task<IActionResult> Edit(int id, [Bind("AktivnostId,SkolskaGodinaId,Naziv,TipAktivnosti")] Aktivnost aktivnost)
         {
             if (id != aktivnost.AktivnostId)
             {
@@ -123,7 +122,6 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", aktivnost.SkolskaGodinaId);
-            ViewData["VjerouciteljViewModelId"] = new SelectList(_context.Vjeroucitelji, "VjerouciteljViewModelId", "Email", aktivnost.VjerouciteljViewModelId);
             return View(aktivnost);
         }
 
@@ -137,7 +135,6 @@ namespace e_Mekteb.Controllers
 
             var aktivnost = await _context.Aktivnosti
                 .Include(a => a.SkolskaGodina)
-                .Include(a => a.VjerouciteljViewModel)
                 .FirstOrDefaultAsync(m => m.AktivnostId == id);
             if (aktivnost == null)
             {

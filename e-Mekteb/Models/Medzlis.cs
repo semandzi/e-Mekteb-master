@@ -13,7 +13,7 @@ namespace e_Mekteb.Models
         public int MedzlisId { get; set; }
         public virtual List<ClanMualimskogVijeca> ClanoviMualimskogVijeca { get; set; }
         public virtual List<Razred> Razredi { get; set; }
-        public virtual List<VjerouciteljViewModel> Vjeroucitelji { get; set; }
+        public virtual List<AplicationUser> Vjeroucitelji { get; set; }
 
 
         public virtual Adresa Adresa { get; set; }
