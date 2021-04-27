@@ -12,6 +12,7 @@ namespace e_Mekteb.Models
         public virtual string UcenikId { get; set; }
         public virtual AplicationUser Vjeroucitelj { get; set; }
         public string VjerouciteljId { get; set; }
+        public string UserName { get; set; }
 
     }
 }

@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using e_Mekteb.ViewModel;
+using System;
 
 namespace e_Mekteb.Controllers
 {
@@ -23,9 +26,65 @@ namespace e_Mekteb.Controllers
         // GET: Biljeska
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Biljeske.Include(b => b.Aktivnost).Include(b=>b.AplicationUser);
-            return View(await e_MektebDbContext.ToListAsync());
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            var tempBiljeske = new List<Biljeska>();
+            foreach (var id in users)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
+                var biljeske = _context.Biljeske.Where(a=>a.AplicationUserId==id);
+                foreach(var biljeska in biljeske)
+                {
+                    tempBiljeske.Add(biljeska);
+                }
+
+            }
+
+            var temp = new List<AplicationUser>();
+            foreach ( var user in ucenici.Ucenici)
+            {
+               foreach(var b in tempBiljeske)
+                {
+                    if (b.AplicationUserId == user.Id)
+                    {
+                        if (temp.Contains(user))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            temp.Add(user);
+                        }
+                        
+                    }
+               }
+            }
+                       
+            var model = new BiljeskeUcenik
+            {
+                Biljeske = tempBiljeske,
+                Ucenici = temp
+
+            };
+                        
+            return View( model);
+                        
+
         }
+
+
+            
+           
+
+
+            
+            
 
         // GET: Biljeska/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -47,10 +106,23 @@ namespace e_Mekteb.Controllers
         }
 
         // GET: Biljeska/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            foreach (var id in users)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
+
+            }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId","Email" );
+            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId","Email" );
             
             return View();
         }
@@ -63,16 +135,29 @@ namespace e_Mekteb.Controllers
         public async Task<IActionResult> Create([Bind("BiljeskaId,Datum,AplicationUserId,AktivnostId,Biljeske")] Biljeska biljeska)
         {
             
-            
+
+
             if (ModelState.IsValid)
-            {
+            {   
                 _context.Add(biljeska);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            foreach (var id in users)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
 
+            }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", biljeska.AktivnostId);
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "Email",biljeska.AplicationUserId);
+            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "Email",biljeska.AplicationUserId);
             return View(biljeska);
         }
 

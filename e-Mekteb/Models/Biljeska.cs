@@ -10,8 +10,11 @@ namespace e_Mekteb.Models
 {
     public class Biljeska
     {
+        
 
         public int BiljeskaId { get; set; }
+
+       
 
         [Required(ErrorMessage = "Datum je obavezno polje")]
         [DataType(DataType.Date)]

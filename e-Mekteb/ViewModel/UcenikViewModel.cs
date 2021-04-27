@@ -30,6 +30,8 @@ namespace e_Mekteb.ViewModel
 
         [Required(ErrorMessage = "Ime i Prezime je obavezno polje")]
         [StringLength(50)]
+        [Display(Name = "Ime i Prezime")]
+
         public string ImeiPrezime { get; set; }
 
 
@@ -69,6 +71,8 @@ namespace e_Mekteb.ViewModel
 
         [Required(ErrorMessage = "Ime oca je obavezno polje")]
         [StringLength(50)]
+        [Display(Name = "Ime Oca")]
+
         public string ImeOca { get; set; }
     }
 

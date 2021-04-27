@@ -80,7 +80,9 @@
 
                                     @if (User.IsInRole("Ucenik"))
                                     {
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="Index">Moj Račun</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="Details">Moj Račun</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojeBiljeske">Bilješke</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojePrisutnosti">Prisutnosti</a>
                                     }
 
 

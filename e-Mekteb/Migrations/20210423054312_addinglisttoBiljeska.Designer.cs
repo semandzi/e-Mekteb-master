@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210423054312_addinglisttoBiljeska")]
+    partial class addinglisttoBiljeska
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -566,9 +568,6 @@ namespace e_Mekteb.Migrations
                     b.Property<string>("UcenikId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("VjerouciteljId")
                         .HasColumnType("nvarchar(450)");
 
@@ -649,7 +648,7 @@ namespace e_Mekteb.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("e_Mekteb.Models.Biljeska", null)
-                        .WithMany("Ucenici")
+                        .WithMany("MojiUcenici")
                         .HasForeignKey("BiljeskaId")
                         .OnDelete(DeleteBehavior.NoAction);
 

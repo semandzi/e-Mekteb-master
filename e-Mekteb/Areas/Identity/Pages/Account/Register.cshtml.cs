@@ -98,7 +98,9 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                     var vjerouciteljUcenik = new VjerouciteljUcenik
                     {
                         VjerouciteljId = vjeroucitelj.Id,
-                        UcenikId=ucenik.Id
+                        UcenikId=ucenik.Id,
+                        UserName=ucenik.Email,
+
                     };
 
                     _context.Add(vjerouciteljUcenik);

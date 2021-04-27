@@ -7,49 +7,98 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
+using Microsoft.AspNetCore.Identity;
+using e_Mekteb.ViewModel;
 
 namespace e_Mekteb.Controllers
 {
     public class PrisutnostController : Controller
     {
         private readonly e_MektebDbContext _context;
+        private readonly UserManager<AplicationUser> userManager;
 
-        public PrisutnostController(e_MektebDbContext context)
+        public PrisutnostController(e_MektebDbContext context, UserManager<AplicationUser> userManager)
         {
+            this.userManager = userManager;
             _context = context;
         }
 
         // GET: Prisutnost
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Prisutnosti.Include(p => p.Aktivnost).Include(p=>p.AplicationUser);
-            return View(await e_MektebDbContext.ToListAsync());
-        }
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            var tempPrisutnosti = new List<Prisutnost>();
 
-        // GET: Prisutnost/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            foreach (var id in users)
             {
-                return NotFound();
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
+                var prisutnosti = _context.Prisutnosti.Where(a => a.AplicationUserId == id);
+                foreach (var prisutnost in prisutnosti)
+                {
+                    tempPrisutnosti.Add(prisutnost);
+                }
             }
 
-            var prisutnost = await _context.Prisutnosti
-                .Include(p => p.Aktivnost).Include(p=>p.AplicationUser)
-                .FirstOrDefaultAsync(m => m.PrisutnostId == id);
-            if (prisutnost == null)
+            var temp = new List<AplicationUser>();
+            foreach (var user in ucenici.Ucenici)
             {
-                return NotFound();
+                foreach (var p in tempPrisutnosti)
+                {
+                    if (p.AplicationUserId == user.Id)
+                    {
+                        if (temp.Contains(user))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            temp.Add(user);
+                        }
+                    }
+                }
             }
 
-            return View(prisutnost);
+            var model = new PrisutnostiUcenik
+            {
+                Prisutnosti = tempPrisutnosti,
+                Ucenici = temp
+
+            };
+
+            return View(model);
+
+
         }
 
         // GET: Prisutnost/Create
-        public IActionResult Create()
+        public  async Task<IActionResult> Create()
         {
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            foreach (var id in users)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
+
+            }
+           
+
+
+
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "ImeIPrezime");
+            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "Email");
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
             ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
 
@@ -69,8 +118,21 @@ namespace e_Mekteb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            var username = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(username);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var users = (from u in _context.VjerouciteljUcenik
+                         where u.VjerouciteljId == vjerouciteljId
+                         select u.UcenikId);
+            var ucenici = new AplicationUser();
+            foreach (var id in users)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                ucenici.Ucenici.Add(user);
+
+            }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
-            ViewData["AplicationUserId"] = new SelectList(_context.Users, "AplicationUserId", "ImeIPrezime", prisutnost.AplicationUserId);
+            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "ImeIPrezime", prisutnost.AplicationUserId);
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
             ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
             return View(prisutnost);
@@ -129,6 +191,24 @@ namespace e_Mekteb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnost.AktivnostId);
+            return View(prisutnost);
+        }
+        // GET: Prisutnost/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var prisutnost = await _context.Prisutnosti
+                .Include(b => b.Aktivnost)
+                .FirstOrDefaultAsync(m => m.PrisutnostId == id);
+            if (prisutnost == null)
+            {
+                return NotFound();
+            }
+
             return View(prisutnost);
         }
 

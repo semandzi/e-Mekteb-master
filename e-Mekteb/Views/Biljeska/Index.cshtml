@@ -1,4 +1,4 @@
-﻿@model IEnumerable<e_Mekteb.Models.Biljeska>
+﻿@model e_Mekteb.ViewModel.BiljeskeUcenik
 
 @{
     ViewData["Title"] = "Index";
@@ -7,40 +7,62 @@
 <h1>Bilješke</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Dodaj</a>
+    <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Datum)
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.AplicationUserId)
-            </th>
+<div class="table-responsive-sm ">
+    <table class="table table-hover table-borderless">
+        <thead class="table-success">
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Datum)
-            </td>
+        </thead>
+        @foreach (var ucenik in Model.Ucenici)
 
-            <td>
-                @Html.DisplayFor(modelItem => item.AplicationUser.Email)
-            </td>
+        {
+            <tr>
+                <th>
+                    @ucenik.UserName
+                </th>
+
+                
+
+            </tr>
+            @foreach (var item in Model.Biljeske)
+            {
 
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BiljeskaId" class="btn btn-primary">Uredi</a>
-                <a asp-action="Details" asp-route-id="@item.BiljeskaId" class="btn btn-primary">Detalji</a>
-                <a asp-action="Delete" asp-route-id="@item.BiljeskaId" class="btn btn-danger">Obriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                @if (ucenik.AplicationUserId == item.AplicationUserId)
+                {
+
+                    <tbody>
+
+
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Datum)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Biljeske)
+                            </td>
+
+                            <td>
+                                @await Html.PartialAsync("TableButtonPartial", item.BiljeskaId)
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                }
+
+
+            }
+
+
+
+        }
+
+
+    </table>
+</div>

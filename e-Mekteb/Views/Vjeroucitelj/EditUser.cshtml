@@ -2,18 +2,18 @@
 @{ 
     ViewBag.Title = "Edit User";
 }
-<h1>Edit User</h1>
+<h1>Uredi Učenika</h1>
 
 <form method="post" class="mt-1 mb-5">
     <div class="form-group row">
-        <label asp-for="Id" class="col-sm-2">User Id</label>
+        <label asp-for="Id" class="col-sm-2">Korisnik Id:</label>
 
         <input asp-for="Id" disabled class="form-group col-sm-5">
 
 
     </div>
     <div class="form-group row">
-        <label asp-for="UserName" class="col-sm-2">User Name</label>
+        <label asp-for="UserName" class="col-sm-2">Korisničko ime:</label>
 
         <input asp-for="UserName" class="form-group col-sm-5">
 
@@ -21,7 +21,7 @@
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="form-group row">
-        <label asp-for="Email" class="col-sm-2">Email</label>
+        <label asp-for="Email" class="col-sm-2">Email:</label>
 
         <input asp-for="Email" class="form-group col-sm-5">
 
@@ -34,8 +34,8 @@
     <div class="form-group row">
         <div class="col-sm-10">
 
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a asp-controller="Vjeroucitelj" asp-action="ListUsers" class="btn btn-primary">Cancel</a>
+            <a asp-controller="Vjeroucitelj" asp-action="ListUsers" class="btn btn-primary"><<</a>
+            <button type="submit" class="btn btn-primary">Ažuriraj</button>
 
         </div>
 
@@ -63,14 +63,14 @@
             else
             {
                 <h5 class="card-title">
-                    No at the moment
+                    Učeniku trenutno nije dodijeljena rola.
                 </h5>
             }
 
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Manage Roles</a>
+            <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Postavke Role</a>
 
 
         </div>

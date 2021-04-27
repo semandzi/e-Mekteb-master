@@ -1,0 +1,84 @@
+﻿@model e_Mekteb.ViewModel.UcenikoveBiljeskeUcenikView
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Bilješke</h1>
+
+
+
+<div class="table-responsive-sm ">
+    <table class="table table-hover table-borderless">
+        @if (Model.UcenikoveBiljeske.Any())
+        {
+            @foreach (var predmet in Model.UcenikoveAktivnosti)
+
+            {
+                <thead>
+                    <tr>
+                        <th>
+                            @predmet.Naziv
+                        </th>
+
+
+
+                    </tr>
+                </thead>
+                @foreach (var item in Model.UcenikoveBiljeske)
+                {
+
+
+
+
+
+
+                             <tbody>
+                                      @if (item.AktivnostId==predmet.AktivnostId)
+                                 { 
+                                             <tr>
+                                                 <td class="col-3">
+
+
+                                                     @Html.DisplayFor(modelItem => item.Datum)
+
+
+                                                 </td>
+                                                 <td class="col-12 align-content-start">
+
+
+                                                     @Html.DisplayFor(modelItem => item.Biljeske)
+
+
+                                                 </td>
+
+
+
+
+
+                                             </tr>
+                                 }
+            
+
+
+
+                                
+
+
+                             </tbody>
+
+
+
+                }
+
+
+
+            }
+        }
+
+        else
+        {
+            <tr>Trenutno nemate bilješki.</tr>
+        }
+
+    </table>
+</div>

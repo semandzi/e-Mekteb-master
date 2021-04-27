@@ -1,43 +1,68 @@
-﻿@model IEnumerable<e_Mekteb.Models.Prisutnost>
+﻿@model e_Mekteb.ViewModel.PrisutnostiUcenik
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Lista Prisutnosti</h1>
+<h1>Prisutnosti</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Dodaj</a>
+    <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Datum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AplicationUserId)
-            </th>
-            <th></th>
 
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Datum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AplicationUser.Email)
-            </td>
-           
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PrisutnostId" class="btn btn-primary">Uredi</a>
-                <a asp-action="Details" asp-route-id="@item.PrisutnostId" class="btn btn-primary">Detalji</a>
-                <a asp-action="Delete" asp-route-id="@item.PrisutnostId" class="btn btn-danger">Obriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive-sm ">
+    <table class="table table-hover table-borderless">
+        <thead class="table-success">
+
+        </thead>
+        @foreach (var ucenik in Model.Ucenici)
+
+        {
+            <tr>
+                <th>
+                    @ucenik.UserName
+                </th>
+
+
+
+            </tr>
+            @foreach (var item in Model.Prisutnosti)
+            {
+
+
+                @if (ucenik.AplicationUserId == item.AplicationUserId)
+                {
+
+                    <tbody>
+
+
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Datum)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsPrisutan)
+                            </td>
+
+                            <td>
+                                @await Html.PartialAsync("TableButtonPartial", item.PrisutnostId)
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                }
+
+
+            }
+
+
+
+        }
+
+
+    </table>
+</div>
