@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210427130703_obavijesti")]
+    partial class obavijesti
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,12 +425,7 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<string>("VjerouciteljId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ObavijestId");
-
-                    b.HasIndex("VjerouciteljId");
 
                     b.ToTable("Obavijesti");
                 });
@@ -704,14 +701,6 @@ namespace e_Mekteb.Migrations
                         .HasForeignKey("AdresaId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("e_Mekteb.Models.Obavijest", b =>
-                {
-                    b.HasOne("e_Mekteb.Models.AplicationUser", "Vjeroucitelj")
-                        .WithMany()
-                        .HasForeignKey("VjerouciteljId")
-                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.Prisutnost", b =>

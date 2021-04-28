@@ -1,0 +1,38 @@
+﻿@model e_Mekteb.Models.Obavijest
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Kreiraj Novu</h1>
+
+<h4>Obavijest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Naslov" class="control-label"></label>
+                <input asp-for="Naslov" class="form-control" />
+                <span asp-validation-for="Naslov" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Sadrzaj" class="control-label"></label>
+                <textarea asp-for="Sadrzaj" class="form-control"></textarea>
+                <span asp-validation-for="Sadrzaj" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-primary"><<</a>
+
+                <input type="submit" value="Spremi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

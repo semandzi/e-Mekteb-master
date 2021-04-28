@@ -31,6 +31,7 @@ namespace e_Mekteb.ApDbContext
         public DbSet<UcenikAktivnost> Pohada { get; set; }
         public DbSet<VjerouciteljAktivnost> Predaje { get; set; }
         public DbSet<VjerouciteljUcenik> VjerouciteljUcenik { get; set; }
+        public DbSet<Obavijest> Obavijesti { get; set; }
 
 
 
