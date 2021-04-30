@@ -42,7 +42,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            User Role
+            Korisnička rola
         </div>
         <div class="card-body">
             @if (Model.Roles.Any())
@@ -51,13 +51,13 @@
                 {
 
 
-            <h5 class="card-title">
-                @if (role == "Ucenik")
-                {
-                    @role
+                    <h5 class="card-title">
+                        @if (role == "Ucenik")
+                        {
+                            @role
 
-                }
-            </h5>
+                        }
+                    </h5>
                 }
             }
             else
@@ -76,6 +76,21 @@
         </div>
     </div>
 
-   
+    <div class="card">
+        <div class="card-header">
+            Predmeti Učenika
+        </div>
+        <div class="card-body">
+            
+
+        </div>
+        <div class="card-footer">
+            <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
+
+
+        </div>
+    </div>
+
+
 
 </form>

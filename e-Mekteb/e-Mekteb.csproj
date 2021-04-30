@@ -6,15 +6,6 @@
     <RootNamespace>e_Mekteb</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20210419184747_vjerouciteljucenik.cs" />
-    <Compile Remove="Migrations\20210419184747_vjerouciteljucenik.Designer.cs" />
-    <Compile Remove="Migrations\20210422102804_addingnewcolumntoaplicationuser.cs" />
-    <Compile Remove="Migrations\20210422102804_addingnewcolumntoaplicationuser.Designer.cs" />
-    <Compile Remove="Migrations\20210423070542_addnewdatainvjerouciteljUcenik.cs" />
-    <Compile Remove="Migrations\20210423070542_addnewdatainvjerouciteljUcenik.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />

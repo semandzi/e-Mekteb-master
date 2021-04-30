@@ -44,58 +44,61 @@ namespace e_Mekteb.Controllers
         public async Task<IActionResult> Index()
         {
 
-
-            var username = HttpContext.User.Identity.Name;
-            var ucenik = await userManager.FindByNameAsync(username);
-            var ucenikId = ucenik.Id;
-            var tempObavijesti = new List<Obavijest>();
-            var tempVjeroucitelji = new List<AplicationUser>();
-
-            var vjerouciteljucenik = context.VjerouciteljUcenik.Where(p => p.UcenikId == ucenikId);
-            foreach (var vjeroucitelj in vjerouciteljucenik)
+            if (User.IsInRole("Ucenik"))
             {
-                var vjerouciteljObavijesti = context.Obavijesti.Where(o => o.VjerouciteljId == vjeroucitelj.VjerouciteljId).ToList();
-                foreach (var obavijest in vjerouciteljObavijesti)
+                var username = HttpContext.User.Identity.Name;
+                var ucenik = await userManager.FindByNameAsync(username);
+                var ucenikId = ucenik.Id;
+                var tempObavijesti = new List<Obavijest>();
+                var tempVjeroucitelji = new List<AplicationUser>();
+
+                var vjerouciteljucenik = context.VjerouciteljUcenik.Where(p => p.UcenikId == ucenikId);
+                foreach (var vjeroucitelj in vjerouciteljucenik)
                 {
-                    if (obavijest.VjerouciteljId == vjeroucitelj.VjerouciteljId)
+                    var vjerouciteljObavijesti = context.Obavijesti.Where(o => o.VjerouciteljId == vjeroucitelj.VjerouciteljId).ToList();
+                    foreach (var obavijest in vjerouciteljObavijesti)
                     {
-                        if (tempObavijesti.Contains(obavijest))
+                        if (obavijest.VjerouciteljId == vjeroucitelj.VjerouciteljId)
+                        {
+                            if (tempObavijesti.Contains(obavijest))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                tempObavijesti.Add(obavijest);
+
+                            }
+                        }
+                        var vjerouciteljUser = await userManager.FindByIdAsync(vjeroucitelj.VjerouciteljId);
+
+                        if (tempVjeroucitelji.Contains(vjerouciteljUser))
                         {
                             continue;
                         }
                         else
                         {
-                            tempObavijesti.Add(obavijest);
+                            tempVjeroucitelji.Add(vjerouciteljUser);
 
                         }
-                    }
-                    var vjerouciteljUser = await userManager.FindByIdAsync(vjeroucitelj.VjerouciteljId);
-                    
-                    if (tempVjeroucitelji.Contains(vjerouciteljUser))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        tempVjeroucitelji.Add(vjerouciteljUser);
-
-                    }
 
 
+                    }
                 }
+
+
+
+                var model = new Obavijesti
+                {
+                    obavijesti = tempObavijesti,
+                    VjerouciteljiNaObavijestima = tempVjeroucitelji
+
+                };
+
+                return View(model);
             }
 
-
-
-            var model = new Obavijesti
-            {
-                obavijesti = tempObavijesti,
-                VjerouciteljiNaObavijestima = tempVjeroucitelji
-
-            };
-
-            return View(model);
-
+            return View();
 
 
 

@@ -8,7 +8,8 @@
 @if (Model.Any())
 {
     <h5 class="card-title">
-        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>    </h5>
+        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>    
+    </h5>
     @foreach (var user in Model)
     {
         <div class="card mt-1 mb-5">
@@ -33,14 +34,14 @@ else
 {
     <div class="card">
         <div class="card-header">
-            No user created yet
+            Trenutno nemate kreiranih korisnika.
         </div>
         <div class="card-body">
             <h5 class="card-title">
-                Use button below to create new user
+                Koristi tipku ispod kako bi uspješno dodali novog korisnika.
             </h5>
             <h5 class="card-title">
-                <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Add new user</a>
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>
             </h5>
 
         </div>

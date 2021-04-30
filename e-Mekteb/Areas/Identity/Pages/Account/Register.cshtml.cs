@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace e_Mekteb.Areas.Identity.Pages.Account
 {
-    [Authorize(Roles ="Admin,Vjeroucitelj")]
+    //[Authorize(Roles ="Admin,Vjeroucitelj")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AplicationUser> _signInManager;
@@ -29,18 +29,20 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly e_MektebDbContext _context;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public RegisterModel(
             UserManager<AplicationUser> userManager,
             SignInManager<AplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,e_MektebDbContext context)
+            IEmailSender emailSender,e_MektebDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            this.roleManager = roleManager;
         }
 
         [BindProperty]
@@ -92,26 +94,60 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    var username = HttpContext.User.Identity.Name;
-                    var vjeroucitelj = await _userManager.FindByNameAsync(username);
-                    var ucenik = await _userManager.FindByEmailAsync(Input.Email);
-                    var vjerouciteljUcenik = new VjerouciteljUcenik
+                    if (user.Email == "senad.mandzic1984@gmail.com")
                     {
-                        VjerouciteljId = vjeroucitelj.Id,
-                        UcenikId=ucenik.Id,
-                        UserName=ucenik.Email,
+                        if(!await _userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            IdentityRole identityRole = new IdentityRole
+                            {
+                                Name = "Admin"
+                            };
+                            IdentityResult results=await roleManager.CreateAsync(identityRole);
+                            if (results.Succeeded)
+                            {
+                                {
+                                    await _userManager.AddToRoleAsync(user, "Admin");
+                                    return RedirectToAction("ListRole", "Administration");
+                                }
+                                
+                            }
+                            
+                        }
+                                    
+                    }
+                    else
+                    {
+                        var username = HttpContext.User.Identity.Name;
+                        var vjeroucitelj = await _userManager.FindByNameAsync(username);
+                        if (await _userManager.IsInRoleAsync(vjeroucitelj, "Vjeroucitelj"))
+                        {
+                            var ucenik = await _userManager.FindByEmailAsync(Input.Email);
+                            var vjerouciteljUcenik = new VjerouciteljUcenik
+                            {
+                                VjerouciteljId = vjeroucitelj.Id,
+                                UcenikId = ucenik.Id,
+                                UserName = ucenik.Email
 
-                    };
+                            };
 
-                    _context.Add(vjerouciteljUcenik);
-                    await _context.SaveChangesAsync();
-                   
+                            _context.Add(vjerouciteljUcenik);
+                            await _context.SaveChangesAsync();
+                        }
+
+                    }
+                            
+                            
+                            
+
+                           
 
 
 
 
 
-                        _logger.LogInformation("User created a new account with password.");
+
+
+                    _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -133,7 +169,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                         if(_signInManager.IsSignedIn(User) && User.IsInRole("Admin")) 
                         {
 
-                            return RedirectToAction("ListUsers", "Administration");
+                            return RedirectToAction("ListRole", "Administration");
                         }
                         else
                             if(_signInManager.IsSignedIn(User) && User.IsInRole("Vjeroucitelj"))

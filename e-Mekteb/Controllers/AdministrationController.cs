@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace e_Mekteb.Controllers
 
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -217,7 +217,7 @@ namespace e_Mekteb.Controllers
             }
             var userRoles = await userManager.GetRolesAsync(user);
             var userClaims = await userManager.GetClaimsAsync(user);
-            var predmetiVjeroucitelja = _context.Predaje.Where(v => v.AplicationUserId == id).Select(v => v.NazivPredmeta).ToList();
+            var predmetiVjeroucitelja = _context.Predaje.Where(v => v.VjerouciteljId == id).Select(v => v.NazivPredmeta).ToList();
 
 
             var model = new EditUser
@@ -505,7 +505,7 @@ namespace e_Mekteb.Controllers
                         NazivPredmeta = predmet.Naziv
 
                     };
-                    if (vjeroucitelj.VjerouciteljId == vjerouciteljAktivnost.AplicationUserId && vjeroucitelj.AktivnostId == vjerouciteljAktivnost.AktivnostId)
+                    if (vjeroucitelj.VjerouciteljId == vjerouciteljAktivnost.VjerouciteljId && vjeroucitelj.AktivnostId == vjerouciteljAktivnost.AktivnostId)
                     {
                         vjeroucitelj.IsSelected = true;
                         
@@ -536,7 +536,7 @@ namespace e_Mekteb.Controllers
             else
             {
                 string vjerouciteljId = userId;
-                IEnumerable<VjerouciteljAktivnost> listofPredaje = _context.Predaje.Where(m => m.AplicationUserId == vjerouciteljId);
+                IEnumerable<VjerouciteljAktivnost> listofPredaje = _context.Predaje.Where(m => m.VjerouciteljId == vjerouciteljId);
                 _context.RemoveRange(listofPredaje);
                 _context.SaveChanges();
                 foreach (var model in list)
@@ -559,7 +559,7 @@ namespace e_Mekteb.Controllers
                         var vjerouciteljAktivnost = new VjerouciteljAktivnost
                         {
                             AktivnostId = vjeroucitelj.AktivnostId,
-                            AplicationUserId = vjeroucitelj.VjerouciteljId,
+                            VjerouciteljId = vjeroucitelj.VjerouciteljId,
                             NazivPredmeta = vjeroucitelj.NazivPredmeta
 
                         };

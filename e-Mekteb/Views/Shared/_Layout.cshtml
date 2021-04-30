@@ -32,31 +32,45 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                                <li>
+                                    <!-- Split dropright button -->
+                                    <div class="btn-group dropdown mr-1">
+                                        <button type="button" class="btn btn-outline-danger">
+                                            Pravo Pristupa
+                                        </button>
+                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj Rolu</a>
+                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi Rolu</a>
+                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListUsers">Lista Korisnika</a>
+                                        </div>
+
+                                    </div>
+
+                                </li>
+                           
+                        }
+                        
+
                         @if (signInManager.IsSignedIn(User) || User.IsInRole("Admin") || User.IsInRole("Vjeroucitelj") || User.IsInRole("Ucenik"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Meni
-                                </a>
+                            <li class="btn-group dropdown">
+                                <button type="button" class="btn btn-outline-danger">
+                                    Izbornik
+                                </button>
+                                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Droprdown</span>
+                                </button>
+
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @if (User.IsInRole("Admin"))
                                     {
 
-                                        <!-- Split dropright button -->
-                                        <div class="btn-group dropright">
-                                            <button type="button" class="btn btn-secondary">
-                                                Pravo Pristupa
-                                            </button>
-                                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="sr-only">Toggle Dropright</span>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj Rolu</a>
-                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi Rolu</a>
-                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListUsers">Lista Korisnika</a>
-                                            </div>
 
-                                        </div>
                                         <div class="dropdown-divider"></div>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Aktivnost" asp-action="Index">Aktivnosti</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Adresa" asp-action="Index">Adresa</a>
@@ -88,8 +102,8 @@
 
 
 
-                                </div>   
-                                   
+                                </div>
+
 
                             </li>
 
@@ -113,7 +127,7 @@
 
 
 
-                       
+
 
 
 

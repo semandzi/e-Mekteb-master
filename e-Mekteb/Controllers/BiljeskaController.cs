@@ -121,7 +121,8 @@ namespace e_Mekteb.Controllers
                 ucenici.Ucenici.Add(user);
 
             }
-            ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv");
+            var vjerouciteljaktivnosti = _context.Predaje.Where(a => a.VjerouciteljId == vjerouciteljId);
+            ViewData["AktivnostId"] = new SelectList(vjerouciteljaktivnosti, "AktivnostId", "NazivPredmeta");
             ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId","Email" );
             
             return View();

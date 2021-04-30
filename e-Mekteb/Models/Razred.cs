@@ -30,10 +30,10 @@ namespace e_Mekteb.Models
 
 
         [Display(Name = "Vjeroučitelj")]
-        public virtual AplicationUser AplicationUser { get; set; }
+        public virtual AplicationUser Vjeroucitelj { get; set; }
         [Display(Name = "Vjeroučitelj")]
-        [ForeignKey("AplicationUser")]
-        public string AplicationUserId { get; set; }
+        [ForeignKey("Vjeroucitelj")]
+        public string  VjerouciteljId{ get; set; }
 
 
 

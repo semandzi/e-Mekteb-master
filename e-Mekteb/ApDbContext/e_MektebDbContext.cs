@@ -38,8 +38,8 @@ namespace e_Mekteb.ApDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UcenikAktivnost>().HasKey(t => new { t.AplicationUserId, t.AktivnostId });
-            //modelBuilder.Entity<VjerouciteljAktivnost>().HasKey(t => new { t.AplicationUserId, t.AktivnostId });
+            modelBuilder.Entity<UcenikAktivnost>().HasKey(t => new { t.UcenikId, t.AktivnostId });
+            modelBuilder.Entity<VjerouciteljAktivnost>().HasKey(t => new { t.VjerouciteljId, t.AktivnostId });
             foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.NoAction;

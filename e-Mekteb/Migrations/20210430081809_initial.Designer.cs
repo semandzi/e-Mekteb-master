@@ -10,8 +10,8 @@ using e_Mekteb.ApDbContext;
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    [Migration("20210420173142_vjerouciteljAktivnostUklanjanjeKolone")]
-    partial class vjerouciteljAktivnostUklanjanjeKolone
+    [Migration("20210430081809_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -410,6 +410,31 @@ namespace e_Mekteb.Migrations
                     b.ToTable("Medzlisi");
                 });
 
+            modelBuilder.Entity("e_Mekteb.Models.Obavijest", b =>
+                {
+                    b.Property<int>("ObavijestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Naslov")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sadrzaj")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("VjerouciteljId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ObavijestId");
+
+                    b.HasIndex("VjerouciteljId");
+
+                    b.ToTable("Obavijesti");
+                });
+
             modelBuilder.Entity("e_Mekteb.Models.Prisutnost", b =>
                 {
                     b.Property<int>("PrisutnostId")
@@ -445,10 +470,7 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AplicationUserId1")
+                    b.Property<string>("AplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("MedzlisId")
@@ -464,7 +486,7 @@ namespace e_Mekteb.Migrations
 
                     b.HasKey("RazredId");
 
-                    b.HasIndex("AplicationUserId1");
+                    b.HasIndex("AplicationUserId");
 
                     b.HasIndex("MedzlisId");
 
@@ -515,16 +537,19 @@ namespace e_Mekteb.Migrations
 
             modelBuilder.Entity("e_Mekteb.Models.UcenikAktivnost", b =>
                 {
-                    b.Property<string>("AplicationUserId")
+                    b.Property<string>("UcenikId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AktivnostId")
                         .HasColumnType("int");
 
+                    b.Property<string>("NazivPredmeta")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UcenikAktivnostId")
                         .HasColumnType("int");
 
-                    b.HasKey("AplicationUserId", "AktivnostId");
+                    b.HasKey("UcenikId", "AktivnostId");
 
                     b.HasIndex("AktivnostId");
 
@@ -533,22 +558,21 @@ namespace e_Mekteb.Migrations
 
             modelBuilder.Entity("e_Mekteb.Models.VjerouciteljAktivnost", b =>
                 {
-                    b.Property<int>("VjerouciteljAktivnostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("VjerouciteljId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AktivnostId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("NazivPredmeta")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("VjerouciteljAktivnostId");
+                    b.Property<int>("VjerouciteljAktivnostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VjerouciteljId", "AktivnostId");
 
                     b.HasIndex("AktivnostId");
-
-                    b.HasIndex("AplicationUserId");
 
                     b.ToTable("Predaje");
                 });
@@ -562,6 +586,9 @@ namespace e_Mekteb.Migrations
 
                     b.Property<string>("UcenikId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VjerouciteljId")
                         .HasColumnType("nvarchar(450)");
@@ -680,6 +707,14 @@ namespace e_Mekteb.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("e_Mekteb.Models.Obavijest", b =>
+                {
+                    b.HasOne("e_Mekteb.Models.AplicationUser", "Vjeroucitelj")
+                        .WithMany()
+                        .HasForeignKey("VjerouciteljId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
             modelBuilder.Entity("e_Mekteb.Models.Prisutnost", b =>
                 {
                     b.HasOne("e_Mekteb.Models.Aktivnost", "Aktivnost")
@@ -698,7 +733,7 @@ namespace e_Mekteb.Migrations
                 {
                     b.HasOne("e_Mekteb.Models.AplicationUser", "AplicationUser")
                         .WithMany()
-                        .HasForeignKey("AplicationUserId1")
+                        .HasForeignKey("AplicationUserId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("e_Mekteb.Models.Medzlis", "Medzlis")
@@ -732,7 +767,7 @@ namespace e_Mekteb.Migrations
 
                     b.HasOne("e_Mekteb.Models.AplicationUser", "Ucenik")
                         .WithMany("UcenickeAktivnosti")
-                        .HasForeignKey("AplicationUserId")
+                        .HasForeignKey("UcenikId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -747,8 +782,9 @@ namespace e_Mekteb.Migrations
 
                     b.HasOne("e_Mekteb.Models.AplicationUser", "Vjeroucitelj")
                         .WithMany("VjerouciteljskeAktivnosti")
-                        .HasForeignKey("AplicationUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("VjerouciteljId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.VjerouciteljUcenik", b =>

@@ -2,23 +2,23 @@
 
 namespace e_Mekteb.Migrations
 {
-    public partial class obavijestiForeignKey : Migration
+    public partial class addColumnToRazredi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "VjerouciteljId",
-                table: "Obavijesti",
+                table: "Razredi",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Obavijesti_VjerouciteljId",
-                table: "Obavijesti",
+                name: "IX_Razredi_VjerouciteljId",
+                table: "Razredi",
                 column: "VjerouciteljId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Obavijesti_AspNetUsers_VjerouciteljId",
-                table: "Obavijesti",
+                name: "FK_Razredi_AspNetUsers_VjerouciteljId",
+                table: "Razredi",
                 column: "VjerouciteljId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id");
@@ -27,16 +27,16 @@ namespace e_Mekteb.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Obavijesti_AspNetUsers_VjerouciteljId",
-                table: "Obavijesti");
+                name: "FK_Razredi_AspNetUsers_VjerouciteljId",
+                table: "Razredi");
 
             migrationBuilder.DropIndex(
-                name: "IX_Obavijesti_VjerouciteljId",
-                table: "Obavijesti");
+                name: "IX_Razredi_VjerouciteljId",
+                table: "Razredi");
 
             migrationBuilder.DropColumn(
                 name: "VjerouciteljId",
-                table: "Obavijesti");
+                table: "Razredi");
         }
     }
 }

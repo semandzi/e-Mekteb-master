@@ -291,8 +291,41 @@ namespace e_Mekteb.Controllers
             }
             
         }
+        [HttpGet]
+        public async Task<IActionResult> GetStudentsSubjects(string userId)
+        {
+            var ucenik = await userManager.FindByIdAsync(userId);
+            var temp = new List<UcenikAktivnost>();
+            if (ucenik == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var pohada = _context.Pohada.Where(p => p.UcenikId == ucenik.Id);
+                foreach(var predmet in pohada)
+                {
+                    
+                    
+                    var ucenikAktivnost = new UcenikAktivnost
+                    {
+                        NazivPredmeta = pohada.Select(p => p.NazivPredmeta).ToString(),
 
-        
+                    };
+
+
+                    temp.Add(ucenikAktivnost);
+
+                }
+
+            }
+
+
+            
+            return View();
+        }
+
+
 
 
     }
