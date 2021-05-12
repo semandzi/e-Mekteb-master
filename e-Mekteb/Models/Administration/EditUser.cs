@@ -14,6 +14,7 @@ namespace e_Mekteb.Models.Administration
             Roles = new List<string>();
             Claims=new List<string>();
             Predmeti=new List<string>();
+            PredmetiUcenika=new List<string>();
         }
 
         public string Id { get; set; }
@@ -27,5 +28,6 @@ namespace e_Mekteb.Models.Administration
         public List<string> Roles { get; set; }
         public List<string> Claims { get; set; }
         public List<string> Predmeti { get; set; }
+        public List<string> PredmetiUcenika { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace e_Mekteb.ViewModel
 
         public List<Biljeska >Biljeske { get; set; }
         public List<AplicationUser> Ucenici { get; set; }
+
        
     }
 }

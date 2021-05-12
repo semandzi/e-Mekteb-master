@@ -1,0 +1,25 @@
+﻿
+
+@model AplicationUser
+@{ ViewData["Title"] = "Dodaj Postojeceg Učenika"; }
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Dodaj Postojećeg Učenika</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary"><<</a>
+            <button type="submit" class="btn btn-primary">Spremi</button>
+        </form>
+    </div>
+
+</div>
+
+

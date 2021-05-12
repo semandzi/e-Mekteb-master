@@ -18,6 +18,8 @@ namespace e_Mekteb.Models
         [ForeignKey("Ucenik")]
         public string UcenikId { get; set; }
        
+        public string VjerouciteljId { get; set; }
+
         public string NazivPredmeta { get; set; }
 
 

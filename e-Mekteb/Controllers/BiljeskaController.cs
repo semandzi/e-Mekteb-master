@@ -32,16 +32,23 @@ namespace e_Mekteb.Controllers
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
                          select u.UcenikId);
+            ViewBag.vjerouciteljId = vjerouciteljId;
             var ucenici = new AplicationUser();
             var tempBiljeske = new List<Biljeska>();
             foreach (var id in users)
             {
                 var user = await userManager.FindByIdAsync(id);
                 ucenici.Ucenici.Add(user);
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId);
                 var biljeske = _context.Biljeske.Where(a=>a.AplicationUserId==id);
                 foreach(var biljeska in biljeske)
                 {
-                    tempBiljeske.Add(biljeska);
+                    foreach(var predmetVjeroucitelja in predaje)
+                    {
+                        if(biljeska.AktivnostId==predmetVjeroucitelja.AktivnostId)
+                        tempBiljeske.Add(biljeska);
+                    }
+                    
                 }
 
             }
@@ -69,8 +76,7 @@ namespace e_Mekteb.Controllers
             var model = new BiljeskeUcenik
             {
                 Biljeske = tempBiljeske,
-                Ucenici = temp
-
+                Ucenici = temp,
             };
                         
             return View( model);

@@ -13,6 +13,7 @@
         
             <h5 class="card-title">
                 <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Učenika</a>
+                <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj Postojećeg Učenika</a>
             </h5>
             @foreach (var user in Model)
             {
@@ -50,10 +51,12 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">
-                    Koristi donju tipku kako bi kreirao novog učenika.
+                    Koristi donju lijevu tipku kako bi kreirao novog učenika.
                 </h5>
                 <h5 class="card-title">
-                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Učenika</a>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Kreiraj Novog Učenika</a>
+                    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj Postojećeg Učenika</a>
+
                 </h5>
 
             </div>

@@ -490,32 +490,40 @@ namespace e_Mekteb.Controllers
             }
             else
             {
-                var aktivnost = _context.Aktivnosti.ToList();
+
+                var aktivnost = _context.Aktivnosti.ToList(); 
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId==user.Id);
                 var model = new List<AktivnostiVjeroucitelja>();
                 ViewBag.userId = user.Id;
                 foreach (var predmet in aktivnost)
                 {
 
-                    var vjerouciteljAktivnost = new VjerouciteljAktivnost();
 
-                    var vjeroucitelj = new AktivnostiVjeroucitelja
+                    var aktivnostVjeroucitelja = new AktivnostiVjeroucitelja
                     {
                         VjerouciteljId = user.Id,
                         AktivnostId = predmet.AktivnostId,
                         NazivPredmeta = predmet.Naziv
 
                     };
-                    if (vjeroucitelj.VjerouciteljId == vjerouciteljAktivnost.VjerouciteljId && vjeroucitelj.AktivnostId == vjerouciteljAktivnost.AktivnostId)
+                    foreach(var predmetVjeroucitelja in predaje)
                     {
-                        vjeroucitelj.IsSelected = true;
-                        
+                        if (predmetVjeroucitelja.NazivPredmeta == predmet.Naziv)
+                        {
+                            aktivnostVjeroucitelja.IsSelected = true;
+
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+
                     }
 
-                    else
-                    {
-                        vjeroucitelj.IsSelected = false;
-                    }
-                    model.Add(vjeroucitelj);
+                   
+                    
+                    model.Add(aktivnostVjeroucitelja);
 
                 }
                 return View(model);
@@ -536,7 +544,19 @@ namespace e_Mekteb.Controllers
             else
             {
                 string vjerouciteljId = userId;
-                IEnumerable<VjerouciteljAktivnost> listofPredaje = _context.Predaje.Where(m => m.VjerouciteljId == vjerouciteljId);
+                var listofPredaje = _context.Predaje.Where(m => m.VjerouciteljId == vjerouciteljId);
+                var listofPohada = _context.Pohada;
+                foreach(var predmetVjeroucitelj in listofPredaje)
+                {
+                    foreach(var predmetUcenik in listofPohada)
+                    {
+                        if(predmetVjeroucitelj.NazivPredmeta==predmetUcenik.NazivPredmeta && vjerouciteljId == predmetVjeroucitelj.VjerouciteljId)
+                        {
+                            _context.Remove(predmetUcenik);
+                        }
+                    }
+
+                }
                 _context.RemoveRange(listofPredaje);
                 _context.SaveChanges();
                 foreach (var model in list)

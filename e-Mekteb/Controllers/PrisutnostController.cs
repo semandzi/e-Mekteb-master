@@ -32,6 +32,7 @@ namespace e_Mekteb.Controllers
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
                          select u.UcenikId);
+            
             var ucenici = new AplicationUser();
             var tempPrisutnosti = new List<Prisutnost>();
 
@@ -39,11 +40,19 @@ namespace e_Mekteb.Controllers
             {
                 var user = await userManager.FindByIdAsync(id);
                 ucenici.Ucenici.Add(user);
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId);
+
                 var prisutnosti = _context.Prisutnosti.Where(a => a.AplicationUserId == id);
                 foreach (var prisutnost in prisutnosti)
                 {
-                    tempPrisutnosti.Add(prisutnost);
+                    foreach (var predmetVjeroucitelja in predaje)
+                    {
+                        if (prisutnost.AktivnostId == predmetVjeroucitelja.AktivnostId)
+                            tempPrisutnosti.Add(prisutnost);
+                    }
+
                 }
+                
             }
 
             var temp = new List<AplicationUser>();

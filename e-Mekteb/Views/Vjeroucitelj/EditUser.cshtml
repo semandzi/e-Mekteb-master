@@ -75,22 +75,42 @@
 
         </div>
     </div>
-
+    <br />
     <div class="card">
         <div class="card-header">
             Predmeti Učenika
         </div>
         <div class="card-body">
-            
+
+            @if (Model.PredmetiUcenika.Any())
+            {
+                foreach (var predmet in Model.PredmetiUcenika)
+                {
+
+
+                    <h5 class="card-title">
+
+                        @predmet
+
+
+                    </h5>
+                }
+            }
+            else
+            {
+                <h5 class="card-title">
+                    Učeniku trenutno nije dodijeljen nijedan predmet.
+                </h5>
+            }
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
-
-
+            <a asp-controller="Vjeroucitelj" asp-action="DodajPredmetUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
         </div>
+
+
+
+
+
     </div>
-
-
-
 </form>
