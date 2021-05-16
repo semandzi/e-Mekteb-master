@@ -7,26 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace e_Mekteb.Controllers
 {
     public class RazredController : Controller
     {
         private readonly e_MektebDbContext _context;
-        private readonly UserManager<AplicationUser> userManager;
 
-        public RazredController(e_MektebDbContext context, UserManager<AplicationUser> userManager)
+        public RazredController(e_MektebDbContext context)
         {
             _context = context;
-            this.userManager = userManager;
         }
 
         // GET: Razred
         public async Task<IActionResult> Index()
         {
-            var e_MektebDbContext = _context.Razredi.Include(r => r.Medzlis).Include(r => r.SkolskaGodina);
-            return View(await e_MektebDbContext.ToListAsync());
+            return View(await _context.Razredi.ToListAsync());
         }
 
         // GET: Razred/Details/5
@@ -38,8 +34,6 @@ namespace e_Mekteb.Controllers
             }
 
             var razred = await _context.Razredi
-                .Include(r => r.Medzlis)
-                .Include(r => r.SkolskaGodina)
                 .FirstOrDefaultAsync(m => m.RazredId == id);
             if (razred == null)
             {
@@ -50,23 +44,8 @@ namespace e_Mekteb.Controllers
         }
 
         // GET: Razred/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var temp = new List<AplicationUser>();
-            foreach (var user in userManager.Users)
-            {
-
-                if (await userManager.IsInRoleAsync(user, "Vjeroucitelj"))
-                {
-
-                    temp.Add(user);
-
-                }
-
-            }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv");
-            ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina");
-            ViewData["VjerouciteljId"] = new SelectList(temp,"AplicationUserId","Email");
             return View();
         }
 
@@ -75,7 +54,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RazredId,SkolskaGodinaId,MedzlisId,AplicationUserId,Naziv")] Razred razred)
+        public async Task<IActionResult> Create([Bind("RazredId,Naziv")] Razred razred)
         {
             if (ModelState.IsValid)
             {
@@ -83,8 +62,6 @@ namespace e_Mekteb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", razred.MedzlisId);
-            ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
             return View(razred);
         }
 
@@ -101,8 +78,6 @@ namespace e_Mekteb.Controllers
             {
                 return NotFound();
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "Naziv", razred.MedzlisId);
-            ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
             return View(razred);
         }
 
@@ -111,7 +86,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RazredId,SkolskaGodinaId,MedzlisId,AplicationUserId,Naziv")] Razred razred)
+        public async Task<IActionResult> Edit(int id, [Bind("RazredId,Naziv")] Razred razred)
         {
             if (id != razred.RazredId)
             {
@@ -138,8 +113,6 @@ namespace e_Mekteb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MedzlisId"] = new SelectList(_context.Medzlisi, "MedzlisId", "EmailGlavnogImama", razred.MedzlisId);
-            ViewData["SkolskaGodinaId"] = new SelectList(_context.SkolskeGodine, "SkolskaGodinaId", "Godina", razred.SkolskaGodinaId);
             return View(razred);
         }
 
@@ -152,8 +125,6 @@ namespace e_Mekteb.Controllers
             }
 
             var razred = await _context.Razredi
-                .Include(r => r.Medzlis)
-                .Include(r => r.SkolskaGodina)
                 .FirstOrDefaultAsync(m => m.RazredId == id);
             if (razred == null)
             {

@@ -15,54 +15,68 @@
         <thead class="table-success">
 
         </thead>
-        @foreach (var ucenik in Model.Ucenici)
-
+        @if (Model.Ucenici.Any())
         {
-            <tr>
-                <th>
-                    @ucenik.UserName
-                </th>
+            @foreach (var ucenik in Model.Ucenici)
 
-
-
-            </tr>
-            @foreach (var item in Model.Prisutnosti)
             {
+                <tr>
+                    <th>
+                        @ucenik.UserName
+                    </th>
 
 
-                @if (ucenik.AplicationUserId == item.AplicationUserId)
+
+                </tr>
+                @foreach (var item in Model.Prisutnosti)
                 {
 
-                    <tbody>
+
+                    @if (ucenik.AplicationUserId == item.AplicationUserId)
+                    {
+
+                        <tbody>
 
 
 
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Datum)
-                            </td>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Datum)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsPrisutan)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsPrisutan)
+                                </td>
 
-                            <td>
-                                @await Html.PartialAsync("TableButtonPartial", item.PrisutnostId)
-                            </td>
+                                <td >
+                                    @await Html.PartialAsync("TableButtonPartial", item.PrisutnostId)
+                                </td>
 
-                        </tr>
+                            </tr>
 
 
-                    </tbody>
+                        </tbody>
+                    }
+
+
                 }
+
 
 
             }
 
-
-
         }
 
+            else
+            {
+            <tfoot>
+                <tr>
+                    <td class="font-italic font-weight-bold">
+                        Trenutno nemate unesene prisutnosti za nijednog učenika!
+                    </td>    
+                </tr>      
+            </tfoot>
+            }
 
     </table>
 </div>

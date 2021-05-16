@@ -13,22 +13,13 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SkolskaGodinaId" class="control-label"></label>
-                <select asp-for="SkolskaGodinaId" class ="form-control" asp-items="ViewBag.SkolskaGodinaId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MedzlisId" class="control-label"></label>
-                <select asp-for="MedzlisId" class ="form-control" asp-items="ViewBag.MedzlisId"></select>
-            </div>
-            
-            <div class="form-group">
                 <label asp-for="Naziv" class="control-label"></label>
                 <input asp-for="Naziv" class="form-control" />
                 <span asp-validation-for="Naziv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a asp-action="Index" class="btn btn-primary"><<</a>
-                <input type="submit" value="Spremi" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-primary">Back </a>
+                <button type="submit" class="btn btn-primary">Spremi</button>
             </div>
         </form>
     </div>

@@ -1,9 +1,8 @@
-﻿@model e_Mekteb.Models.Prisutnost
+﻿@model e_Mekteb.ViewModel.VjerouciteljListaPrisutnosti
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Prisutnost";
 }
-
 <h1>Kreiraj Novu</h1>
 
 <h4>Prisutnost</h4>
@@ -12,35 +11,151 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+
+
+
+
+
+
+
             <div class="form-group">
-                <label asp-for="Datum" class="control-label"></label>
-                <input asp-for="Datum" class="form-control" />
-                <span asp-validation-for="Datum" class="text-danger"></span>
+                <label asp-for="TempPrisutnost.Datum" class="control-label"></label>
+                <input asp-for="TempPrisutnost.Datum" class="form-control" />
+                <span asp-validation-for="TempPrisutnost.Datum" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AplicationUserId" class="control-label"></label>
-                <select asp-for="AplicationUserId" class="form-control" asp-items="ViewBag.AplicationUserId"></select>
-                <span asp-validation-for="AplicationUserId" class="text-danger"></span>
+                <label asp-for="TempPrisutnost.AktivnostId" class="control-label"></label>
+                <select asp-for="TempPrisutnost.AktivnostId" class="form-control" asp-items="ViewBag.AktivnostId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AktivnostId" class="control-label"></label>
-                <select asp-for="AktivnostId" class ="form-control" asp-items="ViewBag.AktivnostId"></select>
+                <label asp-for="TempPrisutnost.IsPrisutan" class="control-label"></label>
+                <select asp-for="TempPrisutnost.IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
+                <span asp-validation-for="TempPrisutnost.IsPrisutan" class="text-danger"></span>
             </div>
+
+
+
+
+
+
+            
+            <div class="form-check form-check-inline " id="checkBoxes">
+
+
+                @if (Model.UceniciIsSelected.Any())
+                {
+                    <label class="control-label">Učenici</label>
+                    <br />
+
+                    <input asp-for="@Model.OdaberiSve" type="checkbox" id="checkAll">
+                    <label class="form-check-label">Odaberi sve</label>
+
+
+                    
+                        @for (int i = 0; i < Model.UceniciIsSelected.Count(); i++)
+
+                        {
+
+
+
+
+
+
+
+                            <div class="form-check mt-1" id="myTable">
+                                <input asp-for="@Model.UceniciIsSelected[i].Ucenik" type="hidden">
+
+
+
+
+
+                                <input asp-for="@Model.UceniciIsSelected[i].IsSelected" type="checkbox">
+
+
+                                <label class="form-check-label">@Model.UceniciIsSelected[i].Ucenik</label>
+
+
+
+
+                            </div>
+
+
+
+
+                        }
+                    
+
+                    
+
+                }
+                else
+                {
+                    <h5>Nemate kreirane učenike, prvo kreirajte učenike!</h5>
+                }
+            </div>
+            
+
+
+
             <div class="form-group">
-                <label asp-for="IsPrisutan" class="control-label"></label>
-                <select asp-for="IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
-                <span asp-validation-for="IsPrisutan" class="text-danger"></span>
+                <a asp-action="Index" class="btn btn-primary">Back </a>
+                <button type="submit" class="btn btn-primary">Spremi</button>
             </div>
-            <div class="form-group">
-                <a asp-action="Index" class="btn btn-primary"><<</a>
-                <input type="submit" value="Spremi" class="btn btn-primary" />
-            </div>
+
+
         </form>
     </div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var $tblChkBox = $("#checkBoxes input:checkbox");
+            $("#checkAll").on("click", function () {
+                $($tblChkBox).prop('checked', $(this).prop('checked'));
+            });
+        });
+        
+        
+
+    </script>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

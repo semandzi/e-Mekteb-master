@@ -1,4 +1,5 @@
 ﻿using e_Mekteb.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,9 @@ namespace e_Mekteb.Models
         public int PrisutnostId { get; set; }
 
         [Required(ErrorMessage = "Datum je obavezno polje")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
+
         public DateTime Datum { get; set; }
 
 
