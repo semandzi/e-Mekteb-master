@@ -12,12 +12,14 @@ namespace e_Mekteb.Models
     {
 
         public int SkolaId { get; set; }
-
-        public virtual AplicationUser AplicationUser { get; set; }
-        [Display(Name ="Odaberi vjeroucitelja")]
-        public int AplicationUserId { get; set; }
-
+        public string VjerouciteljId { get; set; }
         public string NazivSkole { get; set; }
+        public string Grad { get; set; }
+        public string Adresa { get; set; }
+        public int PostanskiBroj { get; set; }
+
+
+
 
 
     }

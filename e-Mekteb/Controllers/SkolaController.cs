@@ -7,22 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace e_Mekteb.Controllers
 {
     public class SkolaController : Controller
     {
         private readonly e_MektebDbContext _context;
+        private readonly UserManager<AplicationUser> userManager;
 
-        public SkolaController(e_MektebDbContext context)
+        public SkolaController(e_MektebDbContext context, UserManager<AplicationUser> userManager)
         {
             _context = context;
+          this.userManager = userManager;
         }
 
         // GET: Skola
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Skole.ToListAsync());
+            var vjerouciteljUserName = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
+            var vjerouciteljId = vjeroucitelj.Id;
+            return View(await _context.Skole.Where(v=>v.VjerouciteljId==vjerouciteljId).ToListAsync());
         }
 
         // GET: Skola/Details/5
@@ -54,10 +60,16 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SkolaId,AplicationUserId,NazivSkole")] Skola skola)
+        public async Task<IActionResult> Create([Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj")] Skola skola)
         {
+            var vjerouciteljUserName = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByNameAsync(vjerouciteljUserName);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var skole = _context.Skole.Where(s => s.VjerouciteljId == vjerouciteljId).ToList();
+
             if (ModelState.IsValid)
             {
+                skola.VjerouciteljId = vjerouciteljId;
                 _context.Add(skola);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +98,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,AplicationUserId,NazivSkole")] Skola skola)
+        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj")] Skola skola)
         {
             if (id != skola.SkolaId)
             {

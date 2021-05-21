@@ -49,6 +49,7 @@ namespace e_Mekteb
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddServerSideBlazor();
 
         }
 
@@ -86,6 +87,7 @@ namespace e_Mekteb
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
             });
         }
     }

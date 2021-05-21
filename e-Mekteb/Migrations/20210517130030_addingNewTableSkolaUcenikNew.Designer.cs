@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210517130030_addingNewTableSkolaUcenikNew")]
+    partial class addingNewTableSkolaUcenikNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,9 +527,6 @@ namespace e_Mekteb.Migrations
                     b.Property<string>("NazivSkole")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SkolaId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UcenikId")
                         .HasColumnType("nvarchar(max)");
 
@@ -535,8 +534,6 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SkolaUcenikId");
-
-                    b.HasIndex("SkolaId");
 
                     b.ToTable("SkoleUcenika");
                 });
@@ -766,15 +763,6 @@ namespace e_Mekteb.Migrations
                         .WithMany("Razredi")
                         .HasForeignKey("SkolskaGodinaId")
                         .OnDelete(DeleteBehavior.NoAction);
-                });
-
-            modelBuilder.Entity("e_Mekteb.Models.SkolaUcenik", b =>
-                {
-                    b.HasOne("e_Mekteb.Models.Skola", "Skola")
-                        .WithMany()
-                        .HasForeignKey("SkolaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.UcenikAktivnost", b =>

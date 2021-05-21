@@ -4,20 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Moje Škole</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AplicationUserId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.NazivSkole)
             </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -25,15 +23,12 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AplicationUserId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.NazivSkole)
             </td>
+           
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SkolaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SkolaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SkolaId">Delete</a>
+                @await Html.PartialAsync("TableButtonPartial", item.SkolaId)
+
             </td>
         </tr>
 }

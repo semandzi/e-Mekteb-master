@@ -27,6 +27,7 @@ namespace e_Mekteb.ApDbContext
         public DbSet<Prisutnost> Prisutnosti { get; set; }
 
         public DbSet<Skola> Skole { get; set; }
+        public DbSet<Models.SkolaUcenik> SkoleUcenika { get; set; }
 
         public DbSet<UcenikAktivnost> Pohada { get; set; }
         public DbSet<VjerouciteljAktivnost> Predaje { get; set; }

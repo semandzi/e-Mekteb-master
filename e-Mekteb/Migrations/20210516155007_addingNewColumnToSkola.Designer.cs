@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210516155007_addingNewColumnToSkola")]
+    partial class addingNewColumnToSkola
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -507,38 +509,12 @@ namespace e_Mekteb.Migrations
                     b.Property<int>("PostanskiBroj")
                         .HasColumnType("int");
 
-                    b.Property<string>("VjerouciteljId")
+                    b.Property<string>("UcenikId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SkolaId");
 
                     b.ToTable("Skole");
-                });
-
-            modelBuilder.Entity("e_Mekteb.Models.SkolaUcenik", b =>
-                {
-                    b.Property<int>("SkolaUcenikId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("NazivSkole")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SkolaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UcenikId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VjerouciteljId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SkolaUcenikId");
-
-                    b.HasIndex("SkolaId");
-
-                    b.ToTable("SkoleUcenika");
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.SkolskaGodina", b =>
@@ -766,15 +742,6 @@ namespace e_Mekteb.Migrations
                         .WithMany("Razredi")
                         .HasForeignKey("SkolskaGodinaId")
                         .OnDelete(DeleteBehavior.NoAction);
-                });
-
-            modelBuilder.Entity("e_Mekteb.Models.SkolaUcenik", b =>
-                {
-                    b.HasOne("e_Mekteb.Models.Skola", "Skola")
-                        .WithMany()
-                        .HasForeignKey("SkolaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("e_Mekteb.Models.UcenikAktivnost", b =>
