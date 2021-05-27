@@ -5,6 +5,7 @@ using e_Mekteb.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,7 +115,8 @@ namespace e_Mekteb.Controllers
             var temp = new List<UcenikAktivnost>();
 
             var pohada = _context.Pohada.Where(p => p.UcenikId == user.Id).Select(p => p.NazivPredmeta).ToList();
-            var skoleUcenika = _context.SkoleUcenika.Where(u => u.UcenikId == id).Select(n=>n.NazivSkole).ToList();
+            var skoleUcenika = _context.SkoleUcenika.Where(u => u.UcenikId == id).Select(n => n.NazivSkole).ToList();
+            var razrediUcenika = _context.RazrediUcenik.Where(u => u.UcenikId == id && u.DatumIspisa==DateTime.MinValue).Select(n => n.Razred).ToList();
 
             var model = new EditUser
             {
@@ -124,7 +126,8 @@ namespace e_Mekteb.Controllers
                 Claims = userClaims.Select(c => c.Value).ToList(),
                 Roles = (List<string>)userRoles,
                 PredmetiUcenika = pohada,
-                Skole=skoleUcenika
+                Skole = skoleUcenika,
+                RazrediUcenika = razrediUcenika
 
             };
             return View(model);
@@ -490,37 +493,37 @@ namespace e_Mekteb.Controllers
             var skoleUcenikaDrugihVjeroucitelja = _context.SkoleUcenika
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
                 .Select(s => s.NazivSkole).ToList();
-                
-             if (skole == null)
+
+            if (skole == null)
             {
                 ViewBag.Error = $"Niste unijeli svoje škole.";
                 return NotFound();
             }
             else
             {
-                
+
                 var tempLista = new List<SkolaUcenikView>();
                 var tempSkoleLista = new SkoleLista();
                 foreach (var skola in skole)
                 {
-                    
-                        var skolaUcenik = new SkolaUcenikView
-                        {
-                       
-                           SkolaId = skola.SkolaId,
-                           NazivSkole = skola.NazivSkole,
-                            VjerouciteljId = vjerouciteljId
-                        };
+
+                    var skolaUcenik = new SkolaUcenikView
+                    {
+
+                        SkolaId = skola.SkolaId,
+                        NazivSkole = skola.NazivSkole,
+                        VjerouciteljId = vjerouciteljId
+                    };
 
 
-                    if(skoleUcenikaOvogVjeroucitelja.Contains(skola.NazivSkole))
+                    if (skoleUcenikaOvogVjeroucitelja.Contains(skola.NazivSkole))
                     {
                         tempSkoleLista.IsSelected = null;
-                        
-                            if (tempLista.Contains(skolaUcenik)) { continue; }
-                            else { tempLista.Add(skolaUcenik); }
 
-                        
+                        if (tempLista.Contains(skolaUcenik)) { continue; }
+                        else { tempLista.Add(skolaUcenik); }
+
+
                     }
                     else
                     {
@@ -531,40 +534,40 @@ namespace e_Mekteb.Controllers
                     }
 
 
-                    
-                   
-                    
-                       
-                        
 
-                    
+
+
+
+
+
+
 
                 }
                 tempSkoleLista.Skole = tempLista;
-                 return View(tempSkoleLista);
+                return View(tempSkoleLista);
             }
 
 
         }
         [HttpPost]
-        public async Task<IActionResult> DodajSkoluUceniku(SkoleLista models,string id)
+        public async Task<IActionResult> DodajSkoluUceniku(SkoleLista models, string id)
         {
-            
+
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
             var vjerouciteljId = vjeroucitelj.Id;
             var skoleUcenika = _context.SkoleUcenika.Where(s => s.UcenikId == id);
             var skole = _context.Skole.Where(s => s.SkolaId.ToString() == models.IsSelected).ToList();
-            var skoleOvogVjeroucitelja = _context.Skole.Where(s => s.VjerouciteljId== vjerouciteljId).ToList();
+            var skoleOvogVjeroucitelja = _context.Skole.Where(s => s.VjerouciteljId == vjerouciteljId).ToList();
             if (!skoleOvogVjeroucitelja.Any())
             {
-                    return RedirectToAction("Create", "Skola");
+                return RedirectToAction("Create", "Skola");
             }
-                
-               
 
-                
-                
+
+
+
+
             else
             {
                 foreach (var skolaUcenik in skoleUcenika)
@@ -574,11 +577,11 @@ namespace e_Mekteb.Controllers
                 }
 
 
-                if (models.IsSelected!=null)
+                if (models.IsSelected != null)
                 {
-                    var tempSkola = new SkolaUcenik 
-                    { 
-                 
+                    var tempSkola = new SkolaUcenik
+                    {
+
                         NazivSkole = skole.Select(n => n.NazivSkole).SingleOrDefault(),
                         VjerouciteljId = vjerouciteljId,
                         UcenikId = id,
@@ -587,9 +590,9 @@ namespace e_Mekteb.Controllers
 
                     _context.Add(tempSkola);
                 }
-                        
-                            
-               _context.SaveChanges();
+
+
+                _context.SaveChanges();
 
 
 
@@ -606,6 +609,73 @@ namespace e_Mekteb.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DodajRazredUceniku(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var vjerouciteljUserName = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var razredi = _context.Razredi.ToList();
+            var razrediUcenikaOvogVjeroucitelja = _context.RazrediUcenik
+                .Where(s => s.UcenikId == userId && s.VjerouciteljId == vjerouciteljId)
+                .Select(s => s.Razred).ToList();
+
+            var razrediUcenikaDrugihVjeroucitelja = _context.RazrediUcenik
+                .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
+                .Select(s => s.Razred).ToList();
+            var skolskeGodine = _context.SkolskeGodine;
+
+            var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == userId && s.DatumIspisa==DateTime.MinValue).ToList();
+            var exist=razrediUcenika.Any();
+            if (exist)
+            {
+                ViewBag.exist = 1;
+            }
+            else { ViewBag.exist = 0; }
+
+            
+            ViewData["SkolskaGodinaId"] = new SelectList(skolskeGodine.AsEnumerable(), "SkolskaGodinaId", "Godina");
+            ViewBag.skolskeGodine = skolskeGodine;
+            if (razredi == null)
+            {
+                ViewBag.Error = $"Niste unijeli svoje škole.";
+                return NotFound();
+            }
+            else
+            {
+
+                var tempLista = new List<RazredUcenikView>();
+                var tempSkoleLista = new RazrediUcenikView();
+                foreach (var razred in razredi)
+                {
+
+                    var razredUcenikView = new RazredUcenikView
+                    {
+
+                        RazredId = razred.RazredId.ToString(),
+                        Razred = razred.Naziv,
+
+                    };
+
+
+                    if (razrediUcenikaOvogVjeroucitelja.Contains(razred.Naziv))
+                    {
+                        tempSkoleLista.IsSelected = null;
+
+                        if (tempLista.Contains(razredUcenikView)) { continue; }
+                        else { tempLista.Add(razredUcenikView); }
+
+
+                    }
+                    else
+                    {
+                        tempSkoleLista.IsSelected = null;
+                        if (razrediUcenikaDrugihVjeroucitelja.Any()) { continue; }
+                        else { tempLista.Add(razredUcenikView); }
+
+                    }
 
 
 
@@ -616,10 +686,136 @@ namespace e_Mekteb.Controllers
 
 
 
+                }
+                tempSkoleLista.Razredi = tempLista;
+                return View(tempSkoleLista);
+            }
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DodajRazredUceniku(RazrediUcenikView models, string id,string ispis)
+        {
+
+            var vjerouciteljUserName = HttpContext.User.Identity.Name;
+            var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
+            var vjerouciteljId = vjeroucitelj.Id;
+            var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == id);
+            var razredi = _context.Razredi.ToList();
+            var razrediOvogVjeroucitelja = _context.RazrediUcenik.Where(s => s.VjerouciteljId == vjerouciteljId && s.UcenikId==id).ToList();
+            if (id == null || models.IsSelected==null || models.SkolskaGodinaId==0)
+            {
+                
+                    return RedirectToAction("EditUser", new { id });
+                
+            
+            }
 
 
 
 
+
+            else
+            {
+               
+
+                var odabraniRazredNaziv = razredi.Where(r => r.RazredId.ToString() == models.IsSelected)
+                    .Select(r => r.Naziv).SingleOrDefault();
+                var skolaId = _context.SkoleUcenika.Where(m => m.UcenikId==id)
+                    .Select(s=>s.SkolaId).SingleOrDefault();
+                if (skolaId == 0) {return RedirectToAction("EditUser",new { id}); }
+
+                var medzlisId = _context.Skole.Where(m => m.SkolaId==skolaId)
+                    .Select(s => s.MedzlisId).SingleOrDefault();
+                var updateRazredUcenik = new RazredUcenik();
+                if (ispis == "true") 
+                {
+                    updateRazredUcenik.DatumIspisa = DateTime.Now;
+                    _context.Update(updateRazredUcenik);
+                }
+
+                if (models.IsSelected != null)
+                {
+                    //ispis iz razreda
+                    var razredUcenik = _context.RazrediUcenik.Where(u => u.UcenikId == id && u.DatumIspisa == DateTime.MinValue).SingleOrDefault();
+                    if (razredUcenik != null)
+                    {
+                        razredUcenik.DatumIspisa = DateTime.Now;
+                        _context.Update(razredUcenik);
+                        _context.SaveChanges();
+                    }
+                    
+                    
+                        //upis u novi razred
+                        var tempRazredUcenik = new RazredUcenik
+                        {
+
+                            Razred = odabraniRazredNaziv,
+                            VjerouciteljId = vjerouciteljId,
+                            UcenikId = id,
+                            SkolaId = skolaId,
+                            SkolskaGodinaId = models.SkolskaGodinaId,
+                            MedzlisId = medzlisId
+                        };
+
+                        tempRazredUcenik.DatumUpisa = DateTime.Now;
+                        tempRazredUcenik.DatumIspisa = DateTime.MinValue;
+                        _context.Add(tempRazredUcenik);
+
+                        _context.SaveChanges();
+                    
+
+                   
+
+                   
+
+                    
+                }
+               
+
+
+
+
+
+
+
+
+
+                return RedirectToAction("EditUser", new { id });
+            }
+
+
+
+        }
+       
+        public IActionResult IspisUcenika(string id)
+        {
+            if (id == null)
+            {
+                ViewBag.Error = $"Ucenik sa ovim {id} nema upisanih razreda";
+                return NotFound();
+            }
+            var razredUcenik = _context.RazrediUcenik.Where(u => u.UcenikId == id && u.DatumIspisa==DateTime.MinValue).SingleOrDefault();
+            return View(razredUcenik);
+        }
+
+        [HttpPost]
+        public IActionResult IspisUcenikaPotvrda(string id)
+        {
+            
+            
+            var razredUcenik = _context.RazrediUcenik.Where(u => u.UcenikId == id && u.DatumIspisa == DateTime.MinValue).SingleOrDefault();
+            if (razredUcenik != null)
+            {
+                razredUcenik.DatumIspisa = DateTime.Now;
+                _context.Update(razredUcenik);
+                _context.SaveChanges();
+                return RedirectToAction("EditUser", new { id });
+            }
+            return RedirectToAction("EditUser", new { id });
+
+        }
 
 
 
@@ -652,4 +848,18 @@ namespace e_Mekteb.Controllers
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

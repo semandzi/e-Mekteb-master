@@ -22,6 +22,7 @@ namespace e_Mekteb.ApDbContext
         public DbSet<Adresa> Adrese { get; set; }
         public DbSet<SkolskaGodina> SkolskeGodine { get; set; }
         public DbSet<Razred> Razredi { get; set; }
+        public DbSet<RazredUcenik> RazrediUcenik { get; set; }
         public DbSet<ClanMualimskogVijeca> ClanoviMualimskogVijeca { get; set; }
         public DbSet<Biljeska> Biljeske { get; set; }
         public DbSet<Prisutnost> Prisutnosti { get; set; }

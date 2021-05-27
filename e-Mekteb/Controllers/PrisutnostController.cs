@@ -141,7 +141,7 @@ namespace e_Mekteb.Controllers
             {
                 foreach(var prisutnost in prisutnosti.UceniciIsSelected)
                 {
-                    if (prisutnost.IsSelected == true)
+                    if (prisutnost.IsSelected == true)                      
                     {
                         var user = await userManager.FindByEmailAsync(prisutnost.Ucenik);
                         var tempPrisutnost = new Prisutnost

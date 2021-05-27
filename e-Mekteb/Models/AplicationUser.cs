@@ -36,7 +36,7 @@ namespace e_Mekteb.Models
 
         public Spol Spol { get; set; }
 
-        
+        [Required]
         [StringLength(50)]
         [Display(Name = "Grad")]
         public string NazivMjesta { get; set; }
@@ -65,7 +65,7 @@ namespace e_Mekteb.Models
         [StringLength(50)]
         public string ImeOca{ get; set; }
 
-
+        
 
 
     }

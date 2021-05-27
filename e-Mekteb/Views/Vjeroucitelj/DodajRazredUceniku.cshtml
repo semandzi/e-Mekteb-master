@@ -1,0 +1,97 @@
+﻿
+@model e_Mekteb.ViewModel.RazrediUcenikView
+@{
+    var userId = ViewBag.userId;
+    var exist = ViewBag.exist;
+}
+
+    @using (Html.BeginForm("DodajPredmetUcenik","Vjeroucitelj",FormMethod.Post,new { @class="mb-5"}))
+    {
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Dodaj ili Ukloni Razred</h2>
+            </div>
+            <div class="card-body">
+                @if (Model.Razredi.Any())
+                {
+                    <div id="razredi">
+                        @foreach (var razred in Model.Razredi)
+                        {
+                            @Html.RadioButtonFor(m => m.IsSelected, razred.RazredId, null)
+                            @Html.Label(razred.Razred)
+                            <br />
+
+
+                        }
+                    </div>
+
+
+                    <div class="dropdown" id="ispis">
+                        <label asp-for="@Model.SkolskaGodinaId"></label><br />
+
+                        @Html.DropDownList("SkolskaGodinaId", ViewData["SkolskaGodinaId"] as SelectList, "-Odaberi-")
+                    </div>
+
+
+                    <div>
+                        <label>Ako želite ispisati učenika i upisati ga u novi razred ili ga upisati po prvi put? Označite kvačicu!</label>
+                        <input class="question" type="checkbox" name="1_question" value="1" />
+                        <label>
+                            Ako ga samo zelite ispisati to će te
+                            postići ukoliko pritisnete tipku ispod "Ispiši Učenika"
+                        </label>
+                        <span class="item-text"></span>
+                    </div>
+
+
+                }
+                else
+                {
+                    <h5>
+                        Trenutacno ne možete dodati razred učeniku zbog mogućih razloga:<br />
+                    </h5>
+                    <p>
+                        -Niste kreirali svoje škole<br />
+                        -Učenik već pohađa vjeronauk  u školi.
+                    </p>
+                }
+            </div>
+
+            <div class="card-footer">
+                <a asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Nazad</a>
+                <button type="submit" class="btn btn-primary" asp-route-id="@userId">Ažuriraj</button>
+                <button class="btn btn-danger" asp-controller="Vjeroucitelj" asp-action="IspisUcenika" asp-route-id="@userId" id="button">Ispiši Učenika</button>
+
+            </div>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script type="text/javascript">
+        var exists=@exist;
+        if (exists==1) {
+            $("#razredi,#ispis,#button").hide()
+            $(".question").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#razredi,#ispis,#button").show();
+                }
+                else {
+                    $("#razredi,#ispis,#button").hide();
+                }
+            });
+        }
+        else{
+            $("#button").hide()
+
+        }
+
+
+
+            </script>
+        </div>
+
+
+
+    }
+
+
+

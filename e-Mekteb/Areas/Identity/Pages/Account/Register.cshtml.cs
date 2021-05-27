@@ -61,6 +61,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
             [Required]
             public string Mjesto { get; set; }
+
            
 
 
@@ -119,6 +120,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                     {
                         var username = HttpContext.User.Identity.Name;
                         var vjeroucitelj = await _userManager.FindByNameAsync(username);
+                        
                         if (await _userManager.IsInRoleAsync(vjeroucitelj, "Vjeroucitelj"))
                         {
                             var ucenik = await _userManager.FindByEmailAsync(Input.Email);
@@ -127,9 +129,8 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                                 VjerouciteljId = vjeroucitelj.Id,
                                 UcenikId = ucenik.Id,
                                 UserName = ucenik.Email
-
                             };
-
+                            
                             _context.Add(vjerouciteljUcenik);
                             await _context.SaveChangesAsync();
                         }

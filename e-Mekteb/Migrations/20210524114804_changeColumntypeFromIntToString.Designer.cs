@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210524114804_changeColumntypeFromIntToString")]
+    partial class changeColumntypeFromIntToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,6 +232,9 @@ namespace e_Mekteb.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("GodinaUpisa")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImeOca")
                         .HasColumnType("nvarchar(50)")
@@ -450,8 +455,8 @@ namespace e_Mekteb.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IsPrisutan")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IsPrisutan")
+                        .HasColumnType("int");
 
                     b.HasKey("PrisutnostId");
 
@@ -496,22 +501,16 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DatumIspisa")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("GodinaId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DatumUpisa")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MedzlisId")
-                        .HasColumnType("int");
+                    b.Property<string>("NazivMedzlisa")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Razred")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SkolaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkolskaGodinaId")
                         .HasColumnType("int");
 
                     b.Property<string>("UcenikId")
@@ -523,8 +522,6 @@ namespace e_Mekteb.Migrations
                     b.HasKey("RazredUcenikId");
 
                     b.HasIndex("SkolaId");
-
-                    b.HasIndex("SkolskaGodinaId");
 
                     b.ToTable("RazrediUcenik");
                 });
@@ -542,9 +539,6 @@ namespace e_Mekteb.Migrations
                     b.Property<string>("Grad")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MedzlisId")
-                        .HasColumnType("int");
-
                     b.Property<string>("NazivSkole")
                         .HasColumnType("nvarchar(max)");
 
@@ -555,8 +549,6 @@ namespace e_Mekteb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SkolaId");
-
-                    b.HasIndex("MedzlisId");
 
                     b.ToTable("Skole");
                 });
@@ -819,21 +811,6 @@ namespace e_Mekteb.Migrations
                     b.HasOne("e_Mekteb.Models.Skola", "Skola")
                         .WithMany()
                         .HasForeignKey("SkolaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("e_Mekteb.Models.SkolskaGodina", "SkolskaGodina")
-                        .WithMany()
-                        .HasForeignKey("SkolskaGodinaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("e_Mekteb.Models.Skola", b =>
-                {
-                    b.HasOne("e_Mekteb.Models.Medzlis", "Medzlis")
-                        .WithMany()
-                        .HasForeignKey("MedzlisId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

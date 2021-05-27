@@ -16,6 +16,7 @@ namespace e_Mekteb.Models.Administration
             Predmeti=new List<string>();
             PredmetiUcenika=new List<string>();
             Skole=new List<string>();
+            RazrediUcenika = new List<string>();
         }
 
         public string Id { get; set; }
@@ -31,5 +32,6 @@ namespace e_Mekteb.Models.Administration
         public List<string> Predmeti { get; set; }
         public List<string> PredmetiUcenika { get; set; }
         public List<string> Skole { get; set; }
+        public List<string> RazrediUcenika { get; set; }
     }
 }

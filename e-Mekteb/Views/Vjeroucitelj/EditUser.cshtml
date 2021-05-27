@@ -75,7 +75,9 @@
 
         </div>
     </div>
+
     <br />
+
     <div class="card">
         <div class="card-header">
             Predmeti Učenika
@@ -107,6 +109,10 @@
         <div class="card-footer">
             <a asp-controller="Vjeroucitelj" asp-action="DodajPredmetUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
         </div>
+    </div>
+
+    <br />
+
         <div class="card">
             <div class="card-header">
                 Škola Učenika
@@ -143,5 +149,45 @@
 
 
 
-      </div>  </div>
+        </div>
+
+    <br />
+
+        <div class="card">
+            <div class="card-header">
+                Razred Učenika
+            </div>
+            <div class="card-body">
+
+                @if (Model.RazrediUcenika.Any())
+                {
+                    foreach (var razred in Model.RazrediUcenika)
+                    {
+
+
+                        <h5 class="card-title">
+
+                            @razred
+
+
+                        </h5>
+                    }
+                }
+                else
+                {
+                    <h5 class="card-title">
+                        Učeniku trenutno nije dodijeljen razred ili ne pohađa vjeronauk u školi.
+                    </h5>
+                }
+
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Razred</a>
+            </div>
+
+
+        </div>
+
+
+
 </form>

@@ -52,7 +52,10 @@ namespace e_Mekteb.Controllers
         // GET: Skola/Create
         public IActionResult Create()
         {
+            var medzlisi = _context.Medzlisi; 
+            ViewData["MedzlisId"] = new SelectList(medzlisi.AsEnumerable(), "MedzlisId", "Naziv");
             return View();
+
         }
 
         // POST: Skola/Create
@@ -60,7 +63,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj")] Skola skola)
+        public async Task<IActionResult> Create([Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj,MedzlisId")] Skola skola)
         {
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByNameAsync(vjerouciteljUserName);

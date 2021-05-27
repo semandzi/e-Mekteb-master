@@ -6,6 +6,13 @@
     <RootNamespace>e_Mekteb</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20210524180415_razrdUcenikchangingTypeOgColumnRazred.cs" />
+    <Compile Remove="Migrations\20210524180415_razrdUcenikchangingTypeOgColumnRazred.Designer.cs" />
+    <Compile Remove="Migrations\20210524184544_addingNewColumnToSkolaMedzlisId.cs" />
+    <Compile Remove="Migrations\20210524184544_addingNewColumnToSkolaMedzlisId.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />

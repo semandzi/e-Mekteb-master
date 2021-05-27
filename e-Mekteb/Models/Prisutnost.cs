@@ -35,7 +35,7 @@ namespace e_Mekteb.Models
 
 
         [Display(Name = "Prisutnost")]
-        public IsPrisutan IsPrisutan { get; set; }
+        public string IsPrisutan { get; set; }
 
     }
     public enum IsPrisutan

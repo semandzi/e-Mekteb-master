@@ -1,0 +1,57 @@
+﻿@model e_Mekteb.Models.RazredUcenik
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Brisanje</h1>
+
+
+
+
+
+@if (Model != null)
+{
+    <h3>
+        Dali ste sigurni da  želite ispisati učenika?
+    </h3>
+    <form asp-controller="Vjeroucitelj" asp-action="IspisUcenikaPotvrda" asp-route-id="@Model.UcenikId" method="post">
+        <div class="card">
+            <div class="card-header">
+                Učenik Id:@Model.UcenikId
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+
+                    Razred: @Model.Razred
+                </h5>
+
+
+            </div>
+            <div class="card-footer">
+
+                <a asp-controller="Vjeroucitelj" asp-action="EditUser" class="btn btn-primary">Ne</a>
+                <button type="submit" class="btn btn-danger">Da</button>
+
+            </div>
+        </div>
+    </form>
+}
+
+else
+{
+    <h5>
+        Učenika ne mozete ispisati jer nema upisan razred!<br />
+    </h5>
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210524185519_addingNewColumnToSkolaMedzlisId")]
+    partial class addingNewColumnToSkolaMedzlisId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -450,8 +452,8 @@ namespace e_Mekteb.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IsPrisutan")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IsPrisutan")
+                        .HasColumnType("int");
 
                     b.HasKey("PrisutnostId");
 
