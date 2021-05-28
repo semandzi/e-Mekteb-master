@@ -31,7 +31,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             
             var ucenici = new AplicationUser();
             var tempPrisutnosti = new List<Prisutnost>();
@@ -40,9 +40,9 @@ namespace e_Mekteb.Controllers
             {
                 var user = await userManager.FindByIdAsync(id);
                 ucenici.Ucenici.Add(user);
-                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId);
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId).ToList();
 
-                var prisutnosti = _context.Prisutnosti.Where(a => a.AplicationUserId == id);
+                var prisutnosti = _context.Prisutnosti.Where(a => a.AplicationUserId == id).ToList();
                 foreach (var prisutnost in prisutnosti)
                 {
                     foreach (var predmetVjeroucitelja in predaje)
@@ -94,7 +94,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             var ucenici = new AplicationUser();
             var temp = new List<PrisutnostVjeroucitelj>();
 
@@ -120,7 +120,7 @@ namespace e_Mekteb.Controllers
            
 
 
-            var vjerouciteljaktivnosti = _context.Predaje.Where(p => p.VjerouciteljId == vjerouciteljId);
+            var vjerouciteljaktivnosti = _context.Predaje.Where(p => p.VjerouciteljId == vjerouciteljId).ToList();
 
             ViewData["AktivnostId"] = new SelectList(vjerouciteljaktivnosti, "AktivnostId", "NazivPredmeta");
             ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "Email");
@@ -168,7 +168,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             var ucenici = new AplicationUser();
             foreach (var id in users)
             {

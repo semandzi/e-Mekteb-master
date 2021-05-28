@@ -39,7 +39,7 @@ namespace e_Mekteb.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -52,7 +52,7 @@ namespace e_Mekteb.Controllers
                 var tempObavijesti = new List<Obavijest>();
                 var tempVjeroucitelji = new List<AplicationUser>();
 
-                var vjerouciteljucenik = context.VjerouciteljUcenik.Where(p => p.UcenikId == ucenikId);
+                var vjerouciteljucenik = context.VjerouciteljUcenik.Where(p => p.UcenikId == ucenikId).ToList();
                 foreach (var vjeroucitelj in vjerouciteljucenik)
                 {
                     var vjerouciteljObavijesti = context.Obavijesti.Where(o => o.VjerouciteljId == vjeroucitelj.VjerouciteljId).ToList();

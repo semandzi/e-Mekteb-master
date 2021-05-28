@@ -33,7 +33,7 @@ namespace e_Mekteb.Controllers
             var tempObavijesti = new List<Obavijest>();
             
                 var user = await userManager.FindByIdAsync(vjerouciteljId);
-                var obavijesti = _context.Obavijesti.Where(a => a.VjerouciteljId == vjerouciteljId);
+                var obavijesti = _context.Obavijesti.Where(a => a.VjerouciteljId == vjerouciteljId).ToList();
                 foreach (var obavijest in obavijesti)
                 {
                     tempObavijesti.Add(obavijest);

@@ -101,7 +101,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj")] Skola skola)
+        public async Task<IActionResult> Edit(int id, [Bind("SkolaId,NazivSkole,Grad,Adresa,PostanskiBroj,MedzlisId")] Skola skola)
         {
             if (id != skola.SkolaId)
             {
@@ -110,8 +110,13 @@ namespace e_Mekteb.Controllers
 
             if (ModelState.IsValid)
             {
+                var medzlisId = _context.Skole.Where(s => s.SkolaId == skola.SkolaId).Select(m=>m.MedzlisId).SingleOrDefault();
+                var vjerouciteljId = _context.Skole.Where(s => s.SkolaId == skola.SkolaId).Select(m=>m.VjerouciteljId).SingleOrDefault();
+               
                 try
                 {
+                    skola.VjerouciteljId = vjerouciteljId;
+                    skola.MedzlisId = medzlisId;
                     _context.Update(skola);
                     await _context.SaveChangesAsync();
                 }

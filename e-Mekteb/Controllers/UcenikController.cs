@@ -26,7 +26,7 @@ namespace e_Mekteb.Controllers
         public IActionResult Index()
         {
             var userEmail = HttpContext.User.Identity.Name;
-            var user = userManager.Users.Where(u => u.Email == userEmail);
+            var user = userManager.Users.Where(u => u.Email == userEmail).ToList();
             return View(user);
         }
         [HttpGet]
@@ -148,8 +148,8 @@ namespace e_Mekteb.Controllers
         {
             var email = HttpContext.User.Identity.Name;
             var user = await userManager.FindByEmailAsync(email);
-            var biljeske = context.Biljeske.Where(b => b.AplicationUserId == user.AplicationUserId);
-            var aktivnosti = context.Aktivnosti;
+            var biljeske = context.Biljeske.Where(b => b.AplicationUserId == user.AplicationUserId).ToList();
+            var aktivnosti = context.Aktivnosti.ToList();
             var tempBiljeske = new List<Biljeska>();
             var tempAktivnosti = new List<Aktivnost>();
             foreach (var aktivnost in aktivnosti)
@@ -188,8 +188,8 @@ namespace e_Mekteb.Controllers
         {
             var email = HttpContext.User.Identity.Name;
             var user = await userManager.FindByEmailAsync(email);
-            var prisutnosti = context.Prisutnosti.Where(b => b.AplicationUserId == user.AplicationUserId);
-            var aktivnosti = context.Aktivnosti;
+            var prisutnosti = context.Prisutnosti.Where(b => b.AplicationUserId == user.AplicationUserId).ToList();
+            var aktivnosti = context.Aktivnosti.ToList();
             var tempPrisutnosti = new List<Prisutnost>();
             var tempAktivnosti = new List<Aktivnost>();
             foreach (var aktivnost in aktivnosti)

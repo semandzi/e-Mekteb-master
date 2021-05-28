@@ -31,7 +31,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             ViewBag.vjerouciteljId = vjerouciteljId;
             var ucenici = new AplicationUser();
             var tempBiljeske = new List<Biljeska>();
@@ -39,8 +39,8 @@ namespace e_Mekteb.Controllers
             {
                 var user = await userManager.FindByIdAsync(id);
                 ucenici.Ucenici.Add(user);
-                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId);
-                var biljeske = _context.Biljeske.Where(a=>a.AplicationUserId==id);
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId == vjerouciteljId).ToList();
+                var biljeske = _context.Biljeske.Where(a=>a.AplicationUserId==id).ToList();
                 foreach(var biljeska in biljeske)
                 {
                     foreach(var predmetVjeroucitelja in predaje)
@@ -119,7 +119,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             var ucenici = new AplicationUser();
             foreach (var id in users)
             {
@@ -155,7 +155,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             var ucenici = new AplicationUser();
             foreach (var id in users)
             {

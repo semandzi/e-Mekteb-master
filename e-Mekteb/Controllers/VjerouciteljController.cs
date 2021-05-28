@@ -43,7 +43,7 @@ namespace e_Mekteb.Controllers
             }
             else
             {
-                var vjerouciteljiUcenici = _context.VjerouciteljUcenik.Where(u => u.UcenikId == user.Id);
+                var vjerouciteljiUcenici = _context.VjerouciteljUcenik.Where(u => u.UcenikId == user.Id).ToList();
                 foreach (var vjerouciteljUcenik in vjerouciteljiUcenici)
                 {
                     if (vjerouciteljUcenik.VjerouciteljId == vjerouciteljId)
@@ -87,7 +87,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljId = vjeroucitelj.Id;
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId);
+                         select u.UcenikId).ToList();
             var ucenici = new AplicationUser();
             foreach (var id in users)
             {
@@ -333,9 +333,9 @@ namespace e_Mekteb.Controllers
                 var vjerouciteljUserName = await userManager.FindByEmailAsync(vjeroucitelj);
                 var vjerouciteljId = vjerouciteljUserName.Id;
 
-                var predmeti = _context.Predaje.Where(p => p.VjerouciteljId == vjerouciteljId);
-                var predmetiUcenikaOvogVjeroucitelja = _context.Pohada.Where(p => p.UcenikId == userId && p.VjerouciteljId == vjerouciteljId).Select(n => n.NazivPredmeta);
-                var predmetiUcenikaDrugihVjeroucitelja = _context.Pohada.Where(p => p.UcenikId == userId && p.VjerouciteljId != vjerouciteljId).Select(n => n.NazivPredmeta).Distinct();
+                var predmeti = _context.Predaje.Where(p => p.VjerouciteljId == vjerouciteljId).ToList();
+                var predmetiUcenikaOvogVjeroucitelja = _context.Pohada.Where(p => p.UcenikId == userId && p.VjerouciteljId == vjerouciteljId).Select(n => n.NazivPredmeta).ToList();
+                var predmetiUcenikaDrugihVjeroucitelja = _context.Pohada.Where(p => p.UcenikId == userId && p.VjerouciteljId != vjerouciteljId).Select(n => n.NazivPredmeta).Distinct().ToList();
 
                 foreach (var predmet in predmeti)
                 {
@@ -485,7 +485,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
             var vjerouciteljId = vjeroucitelj.Id;
-            var skole = _context.Skole.Where(s => s.VjerouciteljId == vjerouciteljId);
+            var skole = _context.Skole.Where(s => s.VjerouciteljId == vjerouciteljId).ToList();
             var skoleUcenikaOvogVjeroucitelja = _context.SkoleUcenika
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId == vjerouciteljId)
                 .Select(s => s.NazivSkole).ToList();
@@ -556,7 +556,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
             var vjerouciteljId = vjeroucitelj.Id;
-            var skoleUcenika = _context.SkoleUcenika.Where(s => s.UcenikId == id);
+            var skoleUcenika = _context.SkoleUcenika.Where(s => s.UcenikId == id).ToList();
             var skole = _context.Skole.Where(s => s.SkolaId.ToString() == models.IsSelected).ToList();
             var skoleOvogVjeroucitelja = _context.Skole.Where(s => s.VjerouciteljId == vjerouciteljId).ToList();
             if (!skoleOvogVjeroucitelja.Any())
@@ -701,7 +701,7 @@ namespace e_Mekteb.Controllers
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
             var vjerouciteljId = vjeroucitelj.Id;
-            var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == id);
+            var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == id).ToList();
             var razredi = _context.Razredi.ToList();
             var razrediOvogVjeroucitelja = _context.RazrediUcenik.Where(s => s.VjerouciteljId == vjerouciteljId && s.UcenikId==id).ToList();
             if (id == null || models.IsSelected==null || models.SkolskaGodinaId==0)

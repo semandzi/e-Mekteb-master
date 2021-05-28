@@ -13,6 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace e_Mekteb
 {
@@ -43,24 +47,46 @@ namespace e_Mekteb
                     policy => policy.RequireClaim("Delete Role"));
             });
 
-   //         services.AddSingleton<Microsoft.Extensions.Logging.ILogger>(provider =>
-   //provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<AplicationUser>>());
+                        services.AddSingleton<Microsoft.Extensions.Logging.ILogger>(provider =>
+               provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<AplicationUser>>());
 
 
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+
+
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+
+
         }
 
-
+       
 
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
             if (env.IsProduction())
             {
@@ -73,13 +99,17 @@ namespace e_Mekteb
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+
+            
+
+
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            app.UseAuthentication();
             app.UseAuthorization();
+
+
+            app.UseHttpsRedirection();
+            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {

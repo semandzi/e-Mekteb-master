@@ -129,7 +129,7 @@ namespace e_Mekteb.Controllers
             else
             {
                 var model = new List<UserRoles>();
-                foreach (var role in roleManager.Roles)
+                foreach (var role in roleManager.Roles.ToList())
                 {
                     var userRoles = new UserRoles
                     {
@@ -190,7 +190,7 @@ namespace e_Mekteb.Controllers
         public async Task<IActionResult> ListUsers()
         {
             var temp= new List<AplicationUser>();
-            foreach (var user in userManager.Users)
+            foreach (var user in userManager.Users.ToList())
             {
                 
                 if (await userManager.IsInRoleAsync(user, "Vjeroucitelj"))
@@ -313,7 +313,7 @@ namespace e_Mekteb.Controllers
                 Id = role.Id,
                 RoleName = role.Name
             };
-            foreach (var user in userManager.Users)
+            foreach (var user in userManager.Users.ToList())
             {
                 if (await userManager.IsInRoleAsync(user, role.Name))
                 {
@@ -404,7 +404,7 @@ namespace e_Mekteb.Controllers
             else
             {
                 var model = new List<UserRole>();
-                foreach (var user in userManager.Users)
+                foreach (var user in userManager.Users.ToList())
                 {
                     var userRole = new UserRole
                     {
@@ -492,7 +492,7 @@ namespace e_Mekteb.Controllers
             {
 
                 var aktivnost = _context.Aktivnosti.ToList(); 
-                var predaje = _context.Predaje.Where(v => v.VjerouciteljId==user.Id);
+                var predaje = _context.Predaje.Where(v => v.VjerouciteljId==user.Id).ToList();
                 var model = new List<AktivnostiVjeroucitelja>();
                 ViewBag.userId = user.Id;
                 foreach (var predmet in aktivnost)
@@ -544,8 +544,8 @@ namespace e_Mekteb.Controllers
             else
             {
                 string vjerouciteljId = userId;
-                var listofPredaje = _context.Predaje.Where(m => m.VjerouciteljId == vjerouciteljId);
-                var listofPohada = _context.Pohada;
+                var listofPredaje = _context.Predaje.Where(m => m.VjerouciteljId == vjerouciteljId).ToList();
+                var listofPohada = _context.Pohada.ToList();
                 foreach(var predmetVjeroucitelj in listofPredaje)
                 {
                     foreach(var predmetUcenik in listofPohada)
