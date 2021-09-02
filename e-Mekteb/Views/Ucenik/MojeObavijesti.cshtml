@@ -1,0 +1,74 @@
+﻿@model e_Mekteb.ViewModel.Obavijesti
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+    <h1>Obavijesti</h1>
+    <div class="mb-5">
+        <table class=" table table-responsive-sm">
+
+
+            @if (Model.obavijesti.Any())
+            {
+                @foreach (var vjeroucitelj in Model.VjerouciteljiNaObavijestima)
+
+                {
+                    <thead class="table-success">
+                       <tr>
+                           <th>
+                               Vjeroučitelj: @vjeroucitelj.UserName
+                           </th>
+                           <th></th>
+                       </tr>
+                    </thead>
+                    
+                    @foreach (var item in Model.obavijesti)
+                    {
+
+
+                        @if (vjeroucitelj.Id == item.VjerouciteljId)
+                        {
+
+                            <tbody class="table table-bordered">
+
+
+
+                                <tr>
+                                    <td style="width:30%">
+                                        @Html.DisplayFor(modelItem => item.Naslov)
+                                    </td>
+
+                                    <td style="width:70%">
+                                        @Html.DisplayFor(modelItem => item.Sadrzaj)
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            </tbody>
+                        }
+
+
+                    }
+
+
+
+                }
+
+            }
+            else
+            {
+
+                <tr>Trenutno nemate obavijesti.</tr>
+
+
+
+
+            }
+        </table>
+    </div>

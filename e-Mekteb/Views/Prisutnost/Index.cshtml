@@ -10,24 +10,24 @@
     <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
 
-<div class="table-responsive-sm mb-5">
-    <table class="table table-hover table-borderless">
-        <thead class="table-success">
-
-        </thead>
+<div class="mb-5">
+    <table class="table table-responsive-sm">
         @if (Model.Ucenici.Any())
         {
             @foreach (var ucenik in Model.Ucenici)
 
             {
-                <tr>
-                    <th>
-                        @ucenik.UserName
-                    </th>
+                <thead class="table-primary">
+                    <tr >
+                        <th>
+                            @ucenik.UserName
+                        </th>
 
+                        <th></th>
+                        <th></th>
 
-
-                </tr>
+                    </tr>
+                </thead>
                 @foreach (var item in Model.Prisutnosti)
                 {
 
@@ -35,20 +35,20 @@
                     @if (ucenik.AplicationUserId == item.AplicationUserId)
                     {
 
-                        <tbody>
+                        <tbody class="table table-bordered">
 
 
 
-                            <tr>
-                                <td>
+                            <tr class="table">
+                                <td style="width:45%">
                                     @Html.DisplayFor(modelItem => item.Datum)
                                 </td>
 
-                                <td>
+                                <td style="width:45%">
                                     @Html.DisplayFor(modelItem => item.IsPrisutan)
                                 </td>
 
-                                <td >
+                                <td style="width:10%" align="right">
                                     @await Html.PartialAsync("TableButtonPartial", item.PrisutnostId)
                                 </td>
 
@@ -66,17 +66,19 @@
             }
 
         }
+    
 
-            else
-            {
-            <tfoot>
-                <tr>
-                    <td class="font-italic font-weight-bold">
-                        Trenutno nemate unesene prisutnosti za nijednog učenika!
-                    </td>    
-                </tr>      
-            </tfoot>
-            }
+
+        else
+        {
+        <tfoot>
+            <tr>
+                <td class="font-italic font-weight-bold">
+                    Trenutno nemate unesene prisutnosti za nijednog učenika!
+                </td>
+            </tr>
+        </tfoot>
+        }
 
     </table>
 </div>

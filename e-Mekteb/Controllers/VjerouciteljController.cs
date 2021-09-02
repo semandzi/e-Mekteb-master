@@ -480,8 +480,11 @@ namespace e_Mekteb.Controllers
         [HttpGet]
         public async Task<IActionResult> DodajSkoluUceniku(string userId)
         {
-            ViewBag.userId = userId;
+            var user = await userManager.FindByIdAsync(userId);
+            var ucenikUserName = user.UserName;
 
+            
+            
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
             var vjerouciteljId = vjeroucitelj.Id;
@@ -489,6 +492,17 @@ namespace e_Mekteb.Controllers
             var skoleUcenikaOvogVjeroucitelja = _context.SkoleUcenika
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId == vjerouciteljId)
                 .Select(s => s.NazivSkole).ToList();
+
+            //Dohvaćanje vjerouciteljId kod kojeg je ucenik trenutno upisan u školu
+            var trenutniUpisaniRazredVjerouciteljId = _context.RazrediUcenik.Where(r => r.DatumIspisa == DateTime.MinValue && r.UcenikId == userId)
+                .Select(r => r.VjerouciteljId).SingleOrDefault();
+            var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
+            var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
+            ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
+
+            ViewBag.userId = userId;
+            ViewBag.ucenikUserName = ucenikUserName;
+            ViewBag.vjerouciteljUserName = vjerouciteljUserName;
 
             var skoleUcenikaDrugihVjeroucitelja = _context.SkoleUcenika
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
@@ -622,6 +636,12 @@ namespace e_Mekteb.Controllers
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId == vjerouciteljId)
                 .Select(s => s.Razred).ToList();
 
+            //Dohvaćanje vjerouciteljId kod kojeg je ucenik trenutno upisan u školu
+            var trenutniUpisaniRazredVjerouciteljId = _context.RazrediUcenik.Where(r => r.DatumIspisa == DateTime.MinValue && r.UcenikId == userId)
+                .Select(r => r.VjerouciteljId).SingleOrDefault();
+            var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
+            var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
+            ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
             var razrediUcenikaDrugihVjeroucitelja = _context.RazrediUcenik
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
                 .Select(s => s.Razred).ToList();
@@ -697,6 +717,7 @@ namespace e_Mekteb.Controllers
         [HttpPost]
         public async Task<IActionResult> DodajRazredUceniku(RazrediUcenikView models, string id,string ispis)
         {
+           
 
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
@@ -704,6 +725,8 @@ namespace e_Mekteb.Controllers
             var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == id).ToList();
             var razredi = _context.Razredi.ToList();
             var razrediOvogVjeroucitelja = _context.RazrediUcenik.Where(s => s.VjerouciteljId == vjerouciteljId && s.UcenikId==id).ToList();
+
+            
             if (id == null || models.IsSelected==null || models.SkolskaGodinaId==0)
             {
                 

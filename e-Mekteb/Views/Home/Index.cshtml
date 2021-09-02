@@ -1,7 +1,6 @@
 ﻿
 @using Microsoft.AspNetCore.Identity;
 
-@model e_Mekteb.ViewModel.Obavijesti
 
 
 @{
@@ -15,76 +14,6 @@
     <h1 class="display-4">e-Mekteb</h1>
 </div>
 
-@if (User.IsInRole("Ucenik"))
-{
-    <h1>Obavijesti</h1>
-    <div class="table-responsive-sm ">
-        <table class="table table-hover table-borderless">
-            <thead class="table-success">
-
-            </thead>
-
-            @if (Model.obavijesti.Any())
-            {
-                @foreach (var vjeroucitelj in Model.VjerouciteljiNaObavijestima)
-
-                {
-                    <tr>
-                        <th>
-                            Vjeroučitelj: @vjeroucitelj.UserName
-                        </th>
-
-
-
-                    </tr>
-                    @foreach (var item in Model.obavijesti)
-                    {
-
-
-                        @if (vjeroucitelj.Id == item.VjerouciteljId)
-                        {
-
-                            <tbody>
-
-
-
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Naslov)
-                                    </td>
-
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Sadrzaj)
-                                    </td>
-
-
-
-                                </tr>
-
-
-                            </tbody>
-                        }
-
-
-                    }
-
-
-
-                }
-
-            }
-            else
-            {
-                
-                    <tr>Trenutno nemate obavijesti.</tr>
-                
-               
-                
-
-            }
-        </table>
-    </div>
-}
 
 
 

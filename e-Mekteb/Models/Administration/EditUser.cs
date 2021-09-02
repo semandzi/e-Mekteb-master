@@ -12,10 +12,10 @@ namespace e_Mekteb.Models.Administration
         public EditUser()
         {
             Roles = new List<string>();
-            Claims=new List<string>();
-            Predmeti=new List<string>();
-            PredmetiUcenika=new List<string>();
-            Skole=new List<string>();
+            Claims = new List<string>();
+            Predmeti = new List<string>();
+            PredmetiUcenika = new List<string>();
+            Skole = new List<string>();
             RazrediUcenika = new List<string>();
         }
 

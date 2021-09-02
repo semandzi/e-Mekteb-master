@@ -1,46 +1,61 @@
 ﻿
+
+
+
 @model e_Mekteb.ViewModel.SkoleLista
 @{
     var userId = ViewBag.userId;
-
+    var ucenikUserName = ViewBag.ucenikUserName;
+    var trenutniUpisaniRazredUserName = ViewBag.trenutniUpisaniRazredUserName;
 }
 
 @using (Html.BeginForm())
 {
-<div class="card">
-    <div class="card-header">
-        <h2>Dodaj ili Ukloni Školu</h2>
-    </div>
-    <div class="card-body">
-        @if (Model.Skole.Any())
-        {
-            @foreach (var skola in Model.Skole)
+    <div class="card">
+        <div class="card-header">
+            <h2>Dodaj ili Ukloni Školu</h2>
+        </div>
+        <div class="card-body">
+            @if (Model.Skole.Any())
             {
-                @Html.RadioButtonFor(m => m.IsSelected, skola.SkolaId,null)
-                @Html.Label(skola.NazivSkole)
-                <br />
+                @foreach (var skola in Model.Skole)
+                {
+                    @Html.RadioButtonFor(m => m.IsSelected, skola.SkolaId, null)
+                    @Html.Label(skola.NazivSkole)
+                    <br />
+
+                }
+
+            }
+            else
+            {
+                <h5>
+                    Trenutačno ne možete promijeniti školu:<br />
+                </h5>
+                <p>
+                    Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
+                </p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Nazad</a>
+            @if (!Model.Skole.Any())
+            {
+                <button type="submit" class="btn btn-primary" asp-route-id="@userId" disabled>Ažuriraj</button>
+
+
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary" asp-route-id="@userId">Ažuriraj</button>
 
             }
 
-        }
-        else
-        {
-            <h5>
-                Trenutacno ne možete dodati skolu učeniku zbog mogućih razloga:<br />
-            </h5>
-            <p>
-                -Niste kreirali svoje škole<br />
-                -Učenik već pohađa vjeronauk  u školi.
-            </p>
-        }
-    </div>
 
-    <div class="card-footer">
-        <a asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Nazad</a>
-        <button type="submit" class="btn btn-primary" asp-route-id="@userId">Ažuriraj</button>
 
+        </div>
     </div>
-</div>
 
 }
 

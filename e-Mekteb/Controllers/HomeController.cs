@@ -41,62 +41,10 @@ namespace e_Mekteb.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
 
-            if (User.IsInRole("Ucenik"))
-            {
-                var username = HttpContext.User.Identity.Name;
-                var ucenik = await userManager.FindByNameAsync(username);
-                var ucenikId = ucenik.Id;
-                var tempObavijesti = new List<Obavijest>();
-                var tempVjeroucitelji = new List<AplicationUser>();
-
-                var vjerouciteljucenik = context.VjerouciteljUcenik.Where(p => p.UcenikId == ucenikId).ToList();
-                foreach (var vjeroucitelj in vjerouciteljucenik)
-                {
-                    var vjerouciteljObavijesti = context.Obavijesti.Where(o => o.VjerouciteljId == vjeroucitelj.VjerouciteljId).ToList();
-                    foreach (var obavijest in vjerouciteljObavijesti)
-                    {
-                        if (obavijest.VjerouciteljId == vjeroucitelj.VjerouciteljId)
-                        {
-                            if (tempObavijesti.Contains(obavijest))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                tempObavijesti.Add(obavijest);
-
-                            }
-                        }
-                        var vjerouciteljUser = await userManager.FindByIdAsync(vjeroucitelj.VjerouciteljId);
-
-                        if (tempVjeroucitelji.Contains(vjerouciteljUser))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            tempVjeroucitelji.Add(vjerouciteljUser);
-
-                        }
-
-
-                    }
-                }
-
-
-
-                var model = new Obavijesti
-                {
-                    obavijesti = tempObavijesti,
-                    VjerouciteljiNaObavijestima = tempVjeroucitelji
-
-                };
-
-                return View(model);
-            }
+            
 
             return View();
 

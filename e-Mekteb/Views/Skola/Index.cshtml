@@ -9,28 +9,33 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
-<table class="table mb-5">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NazivSkole)
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NazivSkole)
-            </td>
-           
-            <td>
-                @await Html.PartialAsync("TableButtonPartial", item.SkolaId)
+<div class="table mb-5">
+    <table class="table table-responsive-sm">
+        <thead class="table table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NazivSkole)
+                </th>
 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table table-bordered">
+            @foreach (var item in Model)
+            {
+                <tr class="table">
+                    <td style="width:70%">
+                        @Html.DisplayFor(modelItem => item.NazivSkole)
+                    </td>
+
+                    <td style="width:30%" align="right">
+                        @await Html.PartialAsync("TableButtonPartial", item.SkolaId)
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+

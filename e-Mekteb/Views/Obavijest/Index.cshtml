@@ -9,35 +9,60 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
-<div class="table-responsive-sm mb-5">
-    <table class="table table-hover table-borderless">
-        <thead>
-            <tr>
-                <th>
-                    Naslov
-                </th>
-                <th>
-                    Sadržaj
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="mb-5">
+    <table class="table table-responsive-sm">
+        @if (Model.obavijesti.Any())
+        {
             @foreach (var item in Model.obavijesti)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Naslov)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sadrzaj)
-                    </td>
-                    <td>
-                        @await Html.PartialAsync("TableButtonPartial", item.ObavijestId)
+                <thead class="table-primary">
+                    <tr>
+                        <th>
+                            Naslov
+                        </th>
+                        <th>
+                            Obavijest
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-                    </td>
-                </tr>
+                <tbody class="table table-bordered">
+
+                    <tr class="table">
+                        <td style="width:45%">
+                            @Html.DisplayFor(modelItem => item.Naslov)
+                        </td>
+                        <td style="width:45%">
+                            @Html.DisplayFor(modelItem => item.Sadrzaj)
+                        </td>
+                        <td style="width:10%" align="right">
+                            @await Html.PartialAsync("TableButtonPartial", item.ObavijestId)
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
             }
-        </tbody>
+
+        }
+        else
+        {
+            
+            
+                <tfoot>
+                    <tr>
+                        <td class="font-italic font-weight-bold">
+                            Trenutno niste unijeli nijednu obavijest!
+                        </td>
+                    </tr>
+                </tfoot>
+            
+        }
+
+
+
+
     </table>
 </div class="table-responsive-sm ">

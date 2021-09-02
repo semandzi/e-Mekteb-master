@@ -11,59 +11,87 @@
     <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
 
-<div class="table-responsive-sm mb-5">
-    <table class="table table-hover table-borderless">
-        <thead class="table-success">
-
-        </thead>
-        @foreach (var ucenik in Model.Ucenici)
-
+<div class="mb-5">
+    <table class="table table-responsive-sm">
+        @if (Model.Biljeske.Any())
         {
-            <tr>
-                <th>
-                    @ucenik.UserName
-                </th>
+            @foreach (var ucenik in Model.Ucenici)
 
-                
-
-            </tr>
-            @foreach (var item in Model.Biljeske)
             {
 
 
-                @if (ucenik.AplicationUserId == item.AplicationUserId)
+                <thead class="table-primary">
+                    <tr >
+                        <th>
+                            @ucenik.UserName
+                        </th>
+                        <th></th>
+                        <th></th>
+
+
+
+                    </tr>
+                </thead>
+
+
+
+                
+
+
+
+
+
+                @foreach (var item in Model.Biljeske)
                 {
 
-                    <tbody>
+
+                    @if (ucenik.AplicationUserId == item.AplicationUserId)
+                    {
+
+                        <tbody class=" table table-bordered">
 
 
 
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Datum)
-                            </td>
+                            <tr class="table">
+                                <td style="width:45%">
+                                    @Html.DisplayFor(modelItem => item.Datum)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Biljeske)
-                            </td>
+                                <td style="width:45%">
+                                    @Html.DisplayFor(modelItem => item.Biljeske)
+                                </td>
 
-                            <td>
-                                @await Html.PartialAsync("TableButtonPartial", item.BiljeskaId)
-                            </td>
+                                <td style="width:10%" align="right">
+                                    @await Html.PartialAsync("TableButtonPartial", item.BiljeskaId)
+                                </td>
 
-                        </tr>
+                                
+                            </tr>
 
 
-                    </tbody>
+                        </tbody>
+                    }
+
+
                 }
-
-
             }
-
-
-
         }
 
-
+        else
+        {
+            <tfoot>
+                <tr>
+                    <td class="font-italic font-weight-bold">
+                        Trenutno nemate unesene bilješke za nijednog učenika!
+                    </td>
+                </tr>
+            </tfoot>
+        }
     </table>
+    
 </div>
+
+
+
+
+

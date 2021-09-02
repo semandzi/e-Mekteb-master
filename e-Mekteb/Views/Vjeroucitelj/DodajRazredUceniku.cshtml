@@ -3,19 +3,28 @@
 @{
     var userId = ViewBag.userId;
     var exist = ViewBag.exist;
+    var trenutniUpisaniRazredUserName=ViewBag.trenutniUpisaniRazredUserName;
 }
 
     @using (Html.BeginForm("DodajPredmetUcenik","Vjeroucitelj",FormMethod.Post,new { @class="mb-5"}))
     {
 
-        <div class="card">
+        <div class="card mb-5">
             <div class="card-header">
                 <h2>Dodaj ili Ukloni Razred</h2>
             </div>
             <div class="card-body">
                 @if (Model.Razredi.Any())
                 {
+                    <div class="dropdown" id="ispis">
+                        <label asp-for="@Model.SkolskaGodinaId"></label><br />
+
+                        @Html.DropDownList("SkolskaGodinaId", ViewData["SkolskaGodinaId"] as SelectList, "-Odaberi-")
+                    </div>
+                    <br/>
                     <div id="razredi">
+                        <label>Odaberi grupu ili razred</label><br />
+
                         @foreach (var razred in Model.Razredi)
                         {
                             @Html.RadioButtonFor(m => m.IsSelected, razred.RazredId, null)
@@ -26,34 +35,23 @@
                         }
                     </div>
 
-
-                    <div class="dropdown" id="ispis">
-                        <label asp-for="@Model.SkolskaGodinaId"></label><br />
-
-                        @Html.DropDownList("SkolskaGodinaId", ViewData["SkolskaGodinaId"] as SelectList, "-Odaberi-")
-                    </div>
-
-
                     <div>
-                        <label>Ako želite ispisati učenika i upisati ga u novi razred ili ga upisati po prvi put? Označite kvačicu!</label>
+                        <label>Ako želite ispisati učenika, upisati ga u novi razred ili ga upisati po prvi put? Označite kvačicu!</label>
                         <input class="question" type="checkbox" name="1_question" value="1" />
-                        <label>
-                            Ako ga samo zelite ispisati to će te
-                            postići ukoliko pritisnete tipku ispod "Ispiši Učenika"
-                        </label>
+                        
                         <span class="item-text"></span>
                     </div>
 
-
                 }
+
                 else
                 {
                     <h5>
-                        Trenutacno ne možete dodati razred učeniku zbog mogućih razloga:<br />
+                        Trenutačno ne možete dodati razred učeniku zbog:<br />
                     </h5>
                     <p>
-                        -Niste kreirali svoje škole<br />
-                        -Učenik već pohađa vjeronauk  u školi.
+                        <br />
+                        -Učenik ili učenica pohađa vjeronauk u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.
                     </p>
                 }
             </div>
@@ -92,6 +90,10 @@
 
 
     }
+
+
+
+
 
 
 

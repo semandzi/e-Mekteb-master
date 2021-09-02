@@ -142,7 +142,16 @@
 
             </div>
             <div class="card-footer">
+                @if(Model.Skole.Any())
+                {
+                    <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Promijeni Školu</a>
+
+                 }
+                else
+                {
                 <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Školu</a>
+                }
+                
             </div>
 
 
@@ -182,7 +191,15 @@
 
             </div>
             <div class="card-footer">
-                <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Razred</a>
+                @if (Model.RazrediUcenika.Any())
+                {
+                <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Upiši Novi Razred ili Ispiši</a>
+                }
+                else
+                {
+                    <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Razred</a>
+                }
+                
             </div>
 
 

@@ -131,6 +131,10 @@ namespace e_Mekteb.Controllers
             {
                 try
                 {
+                    var name = HttpContext.User.Identity.Name;
+                    var vjeroucitelj = await userManager.FindByNameAsync(name);
+                    var vjerouciteljId = vjeroucitelj.Id;
+                    obavijest.VjerouciteljId = vjerouciteljId;
                     _context.Update(obavijest);
                     await _context.SaveChangesAsync();
                 }
