@@ -13,13 +13,18 @@ namespace e_Mekteb.Models
 
         public int SkolaId { get; set; }
         public Medzlis Medzlis { get; set; }
+        [Display(Name = "Medžlis")]
         [ForeignKey("Medzlis")]
         public int MedzlisId { get; set; }
         public string VjerouciteljId { get; set; }
+        [Display(Name ="Naziv Škole")]
         public string NazivSkole { get; set; }
         public string Grad { get; set; }
         public string Adresa { get; set; }
+        [Display(Name = "Naziv Škole")]
         public int PostanskiBroj { get; set; }
+
+
 
 
 

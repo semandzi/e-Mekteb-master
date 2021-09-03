@@ -496,9 +496,13 @@ namespace e_Mekteb.Controllers
             //Dohvaćanje vjerouciteljId kod kojeg je ucenik trenutno upisan u školu
             var trenutniUpisaniRazredVjerouciteljId = _context.RazrediUcenik.Where(r => r.DatumIspisa == DateTime.MinValue && r.UcenikId == userId)
                 .Select(r => r.VjerouciteljId).SingleOrDefault();
-            var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
-            var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
-            ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
+            if (trenutniUpisaniRazredVjerouciteljId!=null)
+            {
+                var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
+                var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
+                ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
+            }
+            
 
             ViewBag.userId = userId;
             ViewBag.ucenikUserName = ucenikUserName;
@@ -639,9 +643,13 @@ namespace e_Mekteb.Controllers
             //Dohvaćanje vjerouciteljId kod kojeg je ucenik trenutno upisan u školu
             var trenutniUpisaniRazredVjerouciteljId = _context.RazrediUcenik.Where(r => r.DatumIspisa == DateTime.MinValue && r.UcenikId == userId)
                 .Select(r => r.VjerouciteljId).SingleOrDefault();
-            var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
-            var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
-            ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
+            if (trenutniUpisaniRazredVjerouciteljId != null)
+            {
+                var trenutniUpisaniRazredUser = await userManager.FindByIdAsync(trenutniUpisaniRazredVjerouciteljId);
+                var trenutniUpisaniRazredUserName = trenutniUpisaniRazredUser.UserName;
+                ViewBag.trenutniUpisaniRazredUserName = trenutniUpisaniRazredUserName;
+            }
+           
             var razrediUcenikaDrugihVjeroucitelja = _context.RazrediUcenik
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
                 .Select(s => s.Razred).ToList();

@@ -16,6 +16,7 @@ namespace e_Mekteb.Models
         [Required(ErrorMessage ="Godina je obavezno polje")]
         [MaxLength(9)]
         [MinLength(9)]
+
         public string Godina { get; set; }
     }
 }

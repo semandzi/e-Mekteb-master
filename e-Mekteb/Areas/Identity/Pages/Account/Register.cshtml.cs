@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace e_Mekteb.Areas.Identity.Pages.Account
 {
-    //[Authorize(Roles ="Admin,Vjeroucitelj")]
+    [Authorize(Roles ="Admin,Vjeroucitelj")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AplicationUser> _signInManager;
@@ -55,7 +55,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Pogrešan format email adrese")]
             [Display(Name = "Korisničko ime:")]
             public string Email { get; set; }
 
@@ -73,7 +73,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Potvrdi lozinku:")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Lozinke se ne podudaraju")]
             public string ConfirmPassword { get; set; }
         }
 

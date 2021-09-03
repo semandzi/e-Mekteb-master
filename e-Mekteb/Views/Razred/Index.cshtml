@@ -9,8 +9,8 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Dodaj Novi</a>
 </p>
-<table class="table mb-5">
-    <thead>
+<table class="table table-responsive-sm mb-5">
+    <thead class="table table-primary">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Naziv)
@@ -18,17 +18,17 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table table-bordered">
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table">
+            <td style="width:75%">
                 @Html.DisplayFor(modelItem => item.Naziv)
             </td>
-            <td>
-            <td>
+            
+            <td style="width:25%" align="right">
                 @await Html.PartialAsync("TableButtonPartial", item.RazredId)
             </td>
-            </td>
+            
         </tr>
 }
     </tbody>

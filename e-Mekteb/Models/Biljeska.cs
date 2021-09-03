@@ -41,7 +41,7 @@ namespace e_Mekteb.Models
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Bilješke su obavezno polje")]
         [StringLength(200)]
-        [Display(Name = "Bilješke")]
+        [Display(Name = "Bilješka")]
 
         public string Biljeske { get; set; }
 
