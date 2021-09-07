@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Primitives;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using SendGrid;
 
 namespace e_Mekteb
 {
@@ -29,13 +30,18 @@ namespace e_Mekteb
 
         public IConfiguration Configuration { get; }
 
+       
+
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+          
+            
+
             services.AddDbContext<e_MektebDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                     .AddSignInManager<SignInManager<AplicationUser>>()
                     .AddEntityFrameworkStores<e_MektebDbContext>()

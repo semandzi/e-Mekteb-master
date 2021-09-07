@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.ViewModel;
-
+using EmailSender;
 namespace e_Mekteb.Controllers
 {
     [Authorize]
@@ -44,7 +44,6 @@ namespace e_Mekteb.Controllers
         public IActionResult Index()
         {
 
-            
 
             return View();
 

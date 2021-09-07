@@ -18,6 +18,11 @@
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
+                    <label asp-for="Input.ImeiPrezime"></label>
+                    <input asp-for="Input.ImeiPrezime" placeholder="Ime i Prezime" class="form-control" />
+                    <span asp-validation-for="Input.ImeiPrezime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" placeholder="ime.prezime@gmail.com" class="form-control" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -27,13 +32,13 @@
                     <input asp-for="Input.Mjesto" class="form-control" placeholder="npr.Zagreb" />
                     <span asp-validation-for="Input.Mjesto" class="text-danger"></span>
                 </div>
-               
-                    <div class="form-group">
-                        <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                
+
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
 
                 <div class="form-group">
                     <label asp-for="Input.ConfirmPassword"></label>

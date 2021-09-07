@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace e_Mekteb.Controllers
 
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Vjeroucitelj")]
     public class VjerouciteljController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;

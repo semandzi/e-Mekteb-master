@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace e_Mekteb.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Vjeroucitelj")]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<AplicationUser> _userManager;

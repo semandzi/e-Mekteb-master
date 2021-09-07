@@ -14,6 +14,8 @@ using System.Web;
 
 namespace e_Mekteb.Controllers
 {
+    [Authorize(Roles = "Ucenik")]
+
     public class UcenikController : Controller
     {
         private readonly UserManager<AplicationUser> userManager;

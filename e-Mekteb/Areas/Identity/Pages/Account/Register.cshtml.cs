@@ -18,10 +18,13 @@ using Microsoft.Extensions.Logging;
 using e_Mekteb.ApDbContext;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using EmailSender;
 
-namespace e_Mekteb.Areas.Identity.Pages.Account
-{
+namespace e_Mekteb.Areas.Identity.Pages.Account 
+{ 
+    
     [Authorize(Roles ="Admin,Vjeroucitelj")]
+    
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AplicationUser> _signInManager;
@@ -55,8 +58,12 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Ime i Prezime")]
+            public string ImeiPrezime { get; set; }
+
+            [Required]
             [EmailAddress(ErrorMessage = "Pogrešan format email adrese")]
-            [Display(Name = "Korisničko ime:")]
+            [Display(Name = "Korisničko ime")]
             public string Email { get; set; }
 
             [Required]
@@ -83,18 +90,47 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ViewData["MedzlisId"] = new SelectList(_context.Users, "MedzlisId", "Naziv");
         }
-
+        
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //Trenutni ulogirani korisnik
+            var ulogiraniUser = HttpContext.User.Identity.Name;
+
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AplicationUser { UserName = Input.Email, Email = Input.Email,NazivMjesta=Input.Mjesto};
+                var user = new AplicationUser { ImeiPrezime=Input.ImeiPrezime,UserName = Input.Email, Email = Input.Email, NazivMjesta = Input.Mjesto };
                 user.AplicationUserId = user.Id;
+
+                //Provjera dali postoji korisnik sa ovim imenom i prezimenom u bazi
+                var korisnici =_userManager.Users.ToList();
+                foreach(var noviKorisnik in korisnici)
+                {
+                    var ulogiraniUserName= await _userManager.FindByNameAsync(ulogiraniUser);
+
+                    if (noviKorisnik.ImeiPrezime == user.ImeiPrezime)
+                    {
+                        if (await _userManager.IsInRoleAsync(ulogiraniUserName, "Admin"))
+                        {
+                            return RedirectToAction("ListUsers", "Administration");
+                        }
+                        return RedirectToAction("ListUsers", "Vjeroucitelj");
+                    }
+                        
+
+
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                    //    new {area="Identity" ,user = user.Id, code = code }, Request.Scheme);
+                    //_logger.Log(LogLevel.Warning, callbackUrl);
+
+
                     if (user.Email == "senad.mandzic1984@gmail.com")
                     {
                         if(!await _userManager.IsInRoleAsync(user, "Admin"))
@@ -118,8 +154,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        var username = HttpContext.User.Identity.Name;
-                        var vjeroucitelj = await _userManager.FindByNameAsync(username);
+                        var vjeroucitelj = await _userManager.FindByNameAsync(ulogiraniUser);
                         
                         if (await _userManager.IsInRoleAsync(vjeroucitelj, "Vjeroucitelj"))
                         {
@@ -152,17 +187,24 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = user.Id, code = code,returnUrl=returnUrl},
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+
+                    SendEmail sendEmail = new SendEmail(Input.Email,callbackUrl,Input.Password);
+                    _ = sendEmail.Execute();
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -178,8 +220,8 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                             return RedirectToAction("ListUsers", "Vjeroucitelj");
 
                         }
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
