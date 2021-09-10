@@ -16,7 +16,7 @@
             <h2>Dodaj ili Ukloni Školu</h2>
         </div>
         <div class="card-body">
-            @if (Model.Skole.Any())
+            @if (Model.Skole.Any()&& trenutniUpisaniRazredUserName==null)
             {
                 @foreach (var skola in Model.Skole)
                 {
@@ -27,15 +27,19 @@
                 }
 
             }
-            else
+            else if(trenutniUpisaniRazredUserName!=null)
             {
-                <h5>
-                    Trenutačno ne možete promijeniti školu:<br />
-                </h5>
+                
                 <p>
                     Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
                 </p>
             }
+
+
+                else
+                {
+                <p>Niste kreirali škole.</p>
+                }
         </div>
 
         <div class="card-footer">

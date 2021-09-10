@@ -9,33 +9,53 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
 </p>
-<div class="table mb-5">
+
+<div class="mb-5">
+   
     <table class="table table-responsive-sm">
-        <thead class="table table-primary">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.NazivSkole)
-                </th>
+        @if (Model.Any())
+        {
+            <thead class="table table-primary">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NazivSkole)
+                    </th>
 
-                <th></th>
-            </tr>
-        </thead>
-        <tbody class="table table-bordered">
-            @foreach (var item in Model)
-            {
-                <tr class="table">
-                    <td style="width:70%">
-                        @Html.DisplayFor(modelItem => item.NazivSkole)
-                    </td>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table table-bordered">
+                @foreach (var item in Model)
+                {
+                    <tr class="table">
+                        <td style="width:70%">
+                            @Html.DisplayFor(modelItem => item.NazivSkole)
+                        </td>
 
-                    <td style="width:30%" align="right">
-                        @await Html.PartialAsync("TableButtonPartial", item.SkolaId)
+                        <td style="width:30%" align="right">
+                            @await Html.PartialAsync("TableButtonPartial", item.SkolaId)
 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            <tfoot>
+                <tr>
+                    <td class="font-italic font-weight-bold">
+                        Trenutno niste kreirali nijednu školu.
                     </td>
                 </tr>
-            }
-        </tbody>
+            </tfoot>
+        }
+
     </table>
 
 </div>
+
+      
+
+
 

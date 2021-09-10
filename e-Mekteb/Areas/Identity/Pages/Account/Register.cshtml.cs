@@ -19,6 +19,7 @@ using e_Mekteb.ApDbContext;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EmailSender;
+using System.Data;
 
 namespace e_Mekteb.Areas.Identity.Pages.Account 
 { 
@@ -113,9 +114,14 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                     {
                         if (await _userManager.IsInRoleAsync(ulogiraniUserName, "Admin"))
                         {
-                            return RedirectToAction("ListUsers", "Administration");
+                            ViewData["Error"] = $"Korisnik s tim imenom i prezimenom već postoji u bazi podataka!";                        
+                                //return RedirectToAction("ListUsers", "Administration");
                         }
-                        return RedirectToAction("ListUsers", "Vjeroucitelj");
+                        if(await _userManager.IsInRoleAsync(ulogiraniUserName, "Vjeoucitelj"))
+                        {
+                            return RedirectToAction("ListUsers", "Vjeroucitelj");
+
+                        }
                     }
                         
 

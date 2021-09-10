@@ -441,35 +441,52 @@ namespace e_Mekteb.Controllers
         [HttpPost]
         public async Task<IActionResult> DodajPostojecegUcenika(AplicationUser model)
         {
-            if (model.Email == null)
+            if (model.ImeiPrezime == null)
             {
-                ModelState.AddModelError("Email", "Email je obavezno polje");
+                ModelState.AddModelError("ImeiPrezime", "Ime i Prezime je obavezno polje.");
             }
             else
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user == null)
+               
+                var users = userManager.Users.ToList();
+                foreach(var user in users)
                 {
-                    ModelState.AddModelError("Email", "Niste unijeli ispravan email postojećeg učenika.");
-
-
-                }
-                else
-                {
-                    var vjerouciteljUserName = HttpContext.User.Identity.Name;
-                    var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
-                    var vjerouciteljId = vjeroucitelj.Id;
-                    var vjerouciteljUcenik = new VjerouciteljUcenik
+                    if (user.ImeiPrezime == model.ImeiPrezime)
                     {
-                        VjerouciteljId = vjerouciteljId,
-                        UcenikId = user.Id,
-                        UserName = user.UserName
-                    };
-                    _context.Add(vjerouciteljUcenik);
-                    _context.SaveChanges();
-                    return RedirectToAction("ListUsers");
 
+                        
+                        var vjerouciteljUserName = HttpContext.User.Identity.Name;
+                        var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
+                        var vjerouciteljId = vjeroucitelj.Id;
+                        var vjerouciteljUcenik = new VjerouciteljUcenik
+                        {
+                            VjerouciteljId = vjerouciteljId,
+                            UcenikId = user.AplicationUserId,
+                            UserName = user.UserName
+                        };
+                        _context.Add(vjerouciteljUcenik);
+                        _context.SaveChanges();
+                        return RedirectToAction("ListUsers");
+
+                    }
                 }
+                ViewBag.Error = $"Učenik sa tim imenom i prezimenom ne postoji u bazi tako da ga trebate dodati kao novog učenika!";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
 
 

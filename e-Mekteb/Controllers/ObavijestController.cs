@@ -84,7 +84,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ObavijestId,Naslov,Sadrzaj")] Obavijest obavijest)
+        public async Task<IActionResult> Create([Bind("ObavijestId,Datum,Naslov,Sadrzaj")] Obavijest obavijest)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ObavijestId,Naslov,Sadrzaj")] Obavijest obavijest)
+        public async Task<IActionResult> Edit(int id, [Bind("ObavijestId,Datum, Naslov,Sadrzaj")] Obavijest obavijest)
         {
             if (id != obavijest.ObavijestId)
             {

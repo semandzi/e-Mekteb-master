@@ -53,9 +53,10 @@ namespace e_Mekteb.Models
         public string PostanskiBroj { get; set; }
 
 
+
         
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
-        [Display(Name = "Datum Rođenja")]
         public DateTime DatumRodenja { get; set; }
 
 

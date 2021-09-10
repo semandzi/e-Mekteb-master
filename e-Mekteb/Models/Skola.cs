@@ -17,11 +17,11 @@ namespace e_Mekteb.Models
         [ForeignKey("Medzlis")]
         public int MedzlisId { get; set; }
         public string VjerouciteljId { get; set; }
-        [Display(Name ="Naziv Škole")]
+        [Display(Name ="Naziv škole")]
         public string NazivSkole { get; set; }
         public string Grad { get; set; }
         public string Adresa { get; set; }
-        [Display(Name = "Naziv Škole")]
+        [Display(Name = "Poštanski broj")]
         public int PostanskiBroj { get; set; }
 
 

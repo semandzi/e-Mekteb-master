@@ -1,6 +1,7 @@
 ﻿using e_Mekteb.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace e_Mekteb.Models
 {
     public class UcenikAktivnost
     {
+        [Key]
         public int UcenikAktivnostId { get; set; }
 
         public virtual Aktivnost Aktivnost { get; set; }

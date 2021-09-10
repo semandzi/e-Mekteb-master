@@ -10,7 +10,15 @@ namespace e_Mekteb.Models
     public class Obavijest
     {
         public int ObavijestId { get; set; }
+
+        [Required(ErrorMessage = "Datum je obavezno polje")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime Datum { get; set; }
+
+        [Required(ErrorMessage = "Naslov je obavezno polje")]
         public string Naslov { get; set; }
+
 
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Sadržaj je obavezno polje")]
