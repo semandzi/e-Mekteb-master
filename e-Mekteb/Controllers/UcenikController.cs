@@ -32,13 +32,14 @@ namespace e_Mekteb.Controllers
             var user = userManager.Users.Where(u => u.Email == userEmail).ToList();
             return View(user);
         }
+        
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
-                ViewBag.Error = $"There is no user with this {id}";
+                ViewBag.Error = $"Ne postoji korisnik sa ovim id brojem: {id}";
                 return NotFound();
             }
             else
@@ -51,8 +52,8 @@ namespace e_Mekteb.Controllers
                     PostanskiBroj = user.PostanskiBroj,
                     DatumRodenja = user.DatumRodenja,
                     Spol = user.Spol,
-                    Starost = user.Starost,
-                    ImeOca = user.ImeOca,
+                    BrojMobitela = user.BrojMobitela,
+                    ImeiPrezimeRoditelja = user.ImeiPrezimeRoditelja,
                     Email = user.Email
 
                 };
@@ -65,6 +66,7 @@ namespace e_Mekteb.Controllers
 
 
         }
+        
         [HttpPost]
         public async Task<IActionResult> Edit(UcenikViewModel model, string id)
         {
@@ -72,7 +74,7 @@ namespace e_Mekteb.Controllers
             var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
-                ViewBag.Error = $"There is no user with this {id}";
+                ViewBag.Error = $"Ne postoji korisnik sa ovim id brojem: {id}";
                 return NotFound();
             }
             else
@@ -84,9 +86,9 @@ namespace e_Mekteb.Controllers
                 user.Ulica = model.Ulica;
                 user.PostanskiBroj = model.PostanskiBroj;
                 user.DatumRodenja = model.DatumRodenja;
-                user.Starost = model.Starost;
+                user.BrojMobitela = model.BrojMobitela;
                 user.Spol = model.Spol;
-                user.ImeOca = model.ImeOca;
+                user.ImeiPrezimeRoditelja = model.ImeiPrezimeRoditelja;
 
                 var result = await userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -112,6 +114,7 @@ namespace e_Mekteb.Controllers
 
 
         }
+        
         [HttpGet]
         public async Task<IActionResult> Details()
         {
@@ -137,8 +140,8 @@ namespace e_Mekteb.Controllers
                     Ulica = user.Ulica,
                     PostanskiBroj = user.PostanskiBroj,
                     Spol = user.Spol,
-                    Starost = user.Starost,
-                    ImeOca = user.ImeOca,
+                    BrojMobitela = user.BrojMobitela,
+                    ImeiPrezimeRoditelja = user.ImeiPrezimeRoditelja,
                     DatumRodenja = user.DatumRodenja
 
                 };
@@ -186,6 +189,7 @@ namespace e_Mekteb.Controllers
 
             return View(model);
         }
+
         [HttpGet]
         public async Task<IActionResult> MojePrisutnosti()
         {

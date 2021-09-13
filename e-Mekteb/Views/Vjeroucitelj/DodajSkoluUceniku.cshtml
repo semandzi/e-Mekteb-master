@@ -7,6 +7,7 @@
     var userId = ViewBag.userId;
     var ucenikUserName = ViewBag.ucenikUserName;
     var trenutniUpisaniRazredUserName = ViewBag.trenutniUpisaniRazredUserName;
+    var trenutniUlogiraniVjeroucitelj = ViewBag.trenutniUlogiraniVjeroucitelj;
 }
 
 @using (Html.BeginForm())
@@ -16,7 +17,7 @@
             <h2>Dodaj ili Ukloni Školu</h2>
         </div>
         <div class="card-body">
-            @if (Model.Skole.Any()&& trenutniUpisaniRazredUserName==null)
+            @if (Model.Skole.Any())
             {
                 @foreach (var skola in Model.Skole)
                 {
@@ -30,9 +31,12 @@
             else if(trenutniUpisaniRazredUserName!=null)
             {
                 
-                <p>
-                    Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
-                </p>
+                    <p>
+
+                       
+                        Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
+
+                     </p>
             }
 
 
@@ -44,7 +48,7 @@
 
         <div class="card-footer">
             <a asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Nazad</a>
-            @if (!Model.Skole.Any())
+            @if (Model.Skole.Any() && trenutniUpisaniRazredUserName!=null && trenutniUpisaniRazredUserName!=trenutniUlogiraniVjeroucitelj)
             {
                 <button type="submit" class="btn btn-primary" asp-route-id="@userId" disabled>Ažuriraj</button>
 

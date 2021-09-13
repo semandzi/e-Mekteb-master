@@ -1,40 +1,152 @@
-﻿@model List<e_Mekteb.Models.AplicationUser>
+﻿@model List<e_Mekteb.ViewModel.UcenikProfilFlag>
 @{
     ViewData["Title"] = "All Users";
 }
 
 <h1>Moji Učenici</h1>
 @{
-    if (Model != null && Model.Any())
-    {
+    
+    <style>
 
+        .blink_second {
+            color: red;
+        }
+    </style>
 
-       
-        
-            <h5 class="card-title">
-                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Učenika</a>
-                <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj Postojećeg Učenika</a>
-            </h5>
-            @foreach (var user in Model)
-            {
-                <div class="card mt-1 mb-5">
-                    <div class="card-header">
-                        @user.Id
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Dodavanje novog učenika upute</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        Kreiranje učenika postiže se klikom na tipku ispod, "Dodaj novog učenika". Ime i prezime učenika treba unijeti točno ne koristeći pritom zamjenske znakove.
+                        Unos email adrese treba biti u formatu "ime.prezime@gmail.com".<br />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Adnan Čaušević <p class="text-success"> TOČNO</p>
+                            </div>
+                            <div class="col-sm-4 ml-auto">
+                                Adnan Causevic<p class="text-danger"> NETOČNO</p>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            @user.Email
 
-                        </h5>
-                        <form asp-controller="Vjeroucitelj" asp-action="DeleteUser" asp-route-id="@user.Id" method="get">
-                            <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@user.Id">Uredi</a>
-                            <button type="submit" class="btn btn-danger">Obriši</button>
-                        </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj novog učenika</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Dodavanje novog učenika upute</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        Kreiranje postojećeg učenika postiže se klikom na tipku ispod, "Dodaj postojećeg učenika". Kako znati dali učenik postoji u bazi podataka? Uvijek je potrebno učenika kreirati kao novog
+                        učenika i ukoliko se prikaže poruka da učenik s tim imenom i prezimenom već postoji, dodati ćete ga kao postojećeg učenika.<br />
 
                     </div>
                 </div>
-            }
-        
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj postojećeg učenika</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+
+
+
+        <h5 class="card-title">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Dodaj novog učenika
+            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                Dodaj postojećeg učenika
+            </button>
+
+        </h5>
+        @foreach (var user in Model)
+        {
+            <div class="card mt-1 mb-5">
+                <div class="card-header">
+                    @user.AplicationUser.AplicationUserId
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @user.AplicationUser.Email
+
+                    </h5>
+                    <form asp-controller="Vjeroucitelj" asp-action="DeleteUser" asp-route-id="@user.AplicationUser.AplicationUserId" method="get">
+                        <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@user.AplicationUser.AplicationUserId">Uredi</a>
+                        <button type="submit" class="btn btn-danger">Obriši</button>
+
+
+                        @if (user.Flag == 0)
+                        {
+
+                            
+
+                                <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-danger" style="float:right">
+                                    <span>
+                                        <i class="fas fa-user-edit"></i>
+
+
+
+                                    </span>
+                                </a>
+
+                            
+
+
+
+
+
+                        }
+
+
+
+                        else
+                        {
+                    <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-success" style="float:right">
+                        <i class="fas fa-user-check"></i>
+
+
+                    </a>
+
+
+                        }
+
+
+
+
+                    </form>
+
+                </div>
+            </div>
+        }
+
 
 
     }
@@ -54,8 +166,12 @@
                     Koristi donju lijevu tipku kako bi kreirao novog učenika.
                 </h5>
                 <h5 class="card-title">
-                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Kreiraj Novog Učenika</a>
-                    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj Postojećeg Učenika</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                        Dodaj novog učenika
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                        Dodaj postojećeg učenika
+                    </button>
 
                 </h5>
 
@@ -63,6 +179,24 @@
         </div>
     }
 
+
 }
+ 
+    
+<script>
+    //function blink(target) {
+    //    return function () {
+    //        target.style.visibility = (target.style.visibility == 'hidden' ? '' : 'hidden');
+    //    }
+    //}
 
-
+    //let blinkers = document.getElementsByClassName('blinking');
+    //for (let blinker of blinkers) {
+    //    setInterval(blink(blinker), 500);
+    //}
+    //var blink_speed = 500;
+    //var t = setInterval(function () {
+    //    var ele = document.getElementById('blinker');
+    //    ele.style.visibility = (ele.style.visibility == 'hidden' ? '' : 'hidden');
+    //}, blink_speed);
+</script>

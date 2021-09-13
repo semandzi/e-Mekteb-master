@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_Mekteb.ApDbContext;
 
 namespace e_Mekteb.Migrations
 {
     [DbContext(typeof(e_MektebDbContext))]
-    partial class e_MektebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210911072403_AplicationUserChangingModel")]
+    partial class AplicationUserChangingModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,8 +219,8 @@ namespace e_Mekteb.Migrations
                     b.Property<string>("AplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BrojMobitela")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BrojMobitela")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

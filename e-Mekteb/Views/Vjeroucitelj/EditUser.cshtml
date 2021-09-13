@@ -1,14 +1,15 @@
 ﻿@model e_Mekteb.Models.Administration.EditUser;
-@{ 
+@{
     ViewBag.Title = "Edit User";
 }
+
 <h1>Uredi Učenika</h1>
 
 <form method="post" class="mt-1 mb-5">
     <div class="form-group row">
         <label asp-for="Id" class="col-sm-2">Korisnik Id:</label>
 
-        <input asp-for="Id" disabled class="form-group col-sm-5">
+        <input asp-for="Id" class="form-group col-sm-5">
 
 
     </div>
@@ -23,7 +24,7 @@
     <div class="form-group row">
         <label asp-for="Email" class="col-sm-2">Email:</label>
 
-        <input asp-for="Email" class="form-group col-sm-5">
+        <input asp-for="Email"  class="form-group col-sm-5">
 
 
         <span asp-validation-for="Email" class="text-danger"></span>
@@ -31,11 +32,157 @@
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
+    @* Bootstrap modal tipke ažuriraj *@
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Ažuriranje pojašnjenje</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center text-danger">VAŽNO!</h5>
+                    Ažuriranje se postiže klikom na tipku ispod, "Ažuriraj". Ukoliko postoji potreba za promjenom korisničkog imena i email adrese, obratite se administratoru.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+
+                    <button type="submit" class="btn btn-primary">Ažuriraj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Bootstrap modal tipke Postavke role *@
+    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Pravo pristupa pojašnjenje</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Pravo pristupa se podešava na način da kliknete na tipku ispod, "Pravo pristupa". Potrebno je označiti kućicu ispred prava pristupa, "Ucenik", kako bi učenik mogao koristiti svoje sučelje.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+
+                    <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Pravo pristupa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Bootstrap modal Dodaj predmet *@
+    <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Dodaj predmet pojašnjenje</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Dodavanje predmeta (aktivnosti) učeniku postiže se klikom na tipku ispod, "Dodaj predmet".
+                    Svakom učeniku treba dodijeliti aktivnost (predmet). Aktivnost "Mekteb" se dodaje učenicima kojima se ne upisuje ocjena u e-dnevnik
+                    i njima obavezno mora biti dodana lokacija islamskog centra. Aktivnost "Islamski vjeronauk" se dodaje učenicima kojima se unosi ocjena u e-dnevnik.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+
+                    <a asp-controller="Vjeroucitelj" asp-action="DodajPredmetUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Bootstrap modal Dodaj lokaciju (školu) *@
+    <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Dodaj lokaciju (školu) pojašnjenje</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center text-danger">OPREZ!</h5>
+
+                    Dodavanje škole postiže se klikom na tipku ispod, "Dodaj lokaciju (školu)". Dodavanje lokacije je obavezno kako bi se uspješno dodala grupa ili razred učeniku.
+                    Nakon što se doda lokacija ili škola tipka će svijetliti crveno što upućuje na daljnju opreznost tijekom mjenjanja škole.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+
+                    @if (Model.Skole.Any())
+                    {
+
+
+                        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Promijeni lokaciju (školu)</a>
+
+                    }
+                    else
+                    {
+
+                        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj lokaciju (školu)</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Bootstrap modal Dodaj grupu (razred)*@
+    <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Dodavanje grupe (razreda) pojašnjenje</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center text-danger">OPREZ!</h5>
+
+                    Dodavanje grupe (razreda) postiže klikom na tipku ispod, "Dodaj grupu (razred)". Dodavanje grupe ili razreda je obavezno.
+                    Ovu opciju nakon prvog postavljanja potrebno je ažurirati tijekom upisa u novi razred
+                    ili ispisa učenika. Nakon što se doda grupa ili razred tipka će svijetliti crveno što upućuje na daljnju opreznost tijekom upisa i ispisa učenika.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                    @if (Model.RazrediUcenika.Any())
+                    {
+
+                        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Upiši/Ispiši</a>
+                    }
+                    else
+                    {
+
+                        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj grupu (razred)</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group row">
         <div class="col-sm-10">
-
             <a asp-controller="Vjeroucitelj" asp-action="ListUsers" class="btn btn-primary"><<</a>
-            <button type="submit" class="btn btn-primary">Ažuriraj</button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Ažuriraj
+            </button>
+           
+          
+
+
 
         </div>
 
@@ -63,15 +210,16 @@
             else
             {
                 <h5 class="card-title">
-                    Učeniku trenutno nije dodijeljena rola.
+                    Učeniku trenutno nije dodijeljeno prava pristupa.
                 </h5>
             }
 
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Vjeroucitelj" asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">Postavke Role</a>
-
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                Pravo pristupa
+            </button>
 
         </div>
     </div>
@@ -107,103 +255,121 @@
 
         </div>
         <div class="card-footer">
-            <a asp-controller="Vjeroucitelj" asp-action="DodajPredmetUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Predmet</a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter3">
+                Dodaj predmet
+            </button>
         </div>
     </div>
 
     <br />
 
-        <div class="card">
-            <div class="card-header">
-                Škola Učenika
-            </div>
-            <div class="card-body">
+    <div class="card">
+        <div class="card-header">
+            Lokacija pohađanja vjeronauka
+        </div>
+        <div class="card-body">
 
-                @if (Model.Skole.Any())
+            @if (Model.Skole.Any())
+            {
+                foreach (var skola in Model.Skole)
                 {
-                    foreach (var skola in Model.Skole)
-                    {
 
 
-                        <h5 class="card-title">
-
-                            @skola
-
-
-                        </h5>
-                    }
-                }
-                else
-                {
                     <h5 class="card-title">
-                        Učeniku trenutno nije dodijeljena škola ili ne pohađa vjeronauk u školi.
+
+                        @skola
+
+
                     </h5>
                 }
-
-            </div>
-            <div class="card-footer">
-                @if(Model.Skole.Any())
-                {
-                    <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Promijeni Školu</a>
-
-                 }
-                else
-                {
-                <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Školu</a>
-                }
-                
-            </div>
-
-
-
-
+            }
+            else
+            {
+                <h5 class="card-title">
+                    Učeniku trenutno nije dodijeljena lokacija pohađanja vjeronaučne nastave.
+                </h5>
+            }
 
         </div>
+        <div class="card-footer">
+            @if (Model.Skole.Any())
+            {
+                <div class="card-footer">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter4">
+                        Promijeni lokaciju (školu)
+                    </button>
+                </div>
+
+            }
+            else
+            {
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter4">
+                        Dodaj lokaciju (školu)
+                    </button>
+                </div>
+            }
+
+        </div>
+
+
+
+
+
+    </div>
 
     <br />
 
-        <div class="card">
-            <div class="card-header">
-                Razred Učenika
-            </div>
-            <div class="card-body">
+    <div class="card">
+        <div class="card-header">
+            Razred učenika
+        </div>
+        <div class="card-body">
 
-                @if (Model.RazrediUcenika.Any())
+            @if (Model.RazrediUcenika.Any())
+            {
+                foreach (var razred in Model.RazrediUcenika)
                 {
-                    foreach (var razred in Model.RazrediUcenika)
-                    {
 
 
-                        <h5 class="card-title">
-
-                            @razred
-
-
-                        </h5>
-                    }
-                }
-                else
-                {
                     <h5 class="card-title">
-                        Učeniku trenutno nije dodijeljen razred ili ne pohađa vjeronauk u školi.
+
+                        @razred
+
+
                     </h5>
                 }
-
-            </div>
-            <div class="card-footer">
-                @if (Model.RazrediUcenika.Any())
-                {
-                <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Upiši Novi Razred ili Ispiši</a>
-                }
-                else
-                {
-                    <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj Razred</a>
-                }
-                
-            </div>
-
+            }
+            else
+            {
+                <h5 class="card-title">
+                    Učeniku trenutno nije dodijeljena grupa (razred).
+                </h5>
+            }
 
         </div>
+        <div class="card-footer">
+            @if (Model.RazrediUcenika.Any())
+            {
+                <div class="card-footer">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter5">
+                        Upiši/Ispiši
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter5">
+                        Dodaj grupu (razred)
+                    </button>
+                </div>
+            }
+
+        </div>
+
+
+    </div>
 
 
 

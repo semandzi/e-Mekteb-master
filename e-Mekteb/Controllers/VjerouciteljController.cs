@@ -88,17 +88,42 @@ namespace e_Mekteb.Controllers
             var users = (from u in _context.VjerouciteljUcenik
                          where u.VjerouciteljId == vjerouciteljId
                          select u.UcenikId).ToList();
-            var ucenici = new AplicationUser();
+            var tempUcenikProfilFlag = new List<UcenikProfilFlag>();
             foreach (var id in users)
             {
                 var user = await userManager.FindByIdAsync(id);
-                ucenici.Ucenici.Add(user);
+                //Provjera dali je popunjen profil dokraja, inicijalizira flag na 0 ili 1
+                if (user.Ulica == null || user.PostanskiBroj == null || user.DatumRodenja == null || user.ImeiPrezime == null || user.BrojMobitela == null ||
+                    user.ImeiPrezime == null || user.Email == null || user.UserName == null)
+                {
+                    int flag = 0;
+                    var tempmodel = new UcenikProfilFlag
+                    {
+                        AplicationUser = user,
+                        Flag = flag
 
+                    };
+                    tempUcenikProfilFlag.Add(tempmodel);
+
+                }
+                else
+                {
+                    var flag= 1;
+                    var tempmodel = new UcenikProfilFlag
+                    {
+                        AplicationUser = user,
+                        Flag = flag
+
+                    };
+                    tempUcenikProfilFlag.Add(tempmodel);
+                }
+                
+
+                
             }
 
-
-
-            return View(ucenici.Ucenici);
+           
+            return View(tempUcenikProfilFlag);
         }
 
         [HttpGet]
@@ -524,6 +549,7 @@ namespace e_Mekteb.Controllers
             ViewBag.userId = userId;
             ViewBag.ucenikUserName = ucenikUserName;
             ViewBag.vjerouciteljUserName = vjerouciteljUserName;
+            ViewBag.trenutniUlogiraniVjeroucitelj = vjeroucitelj.UserName;
 
             var skoleUcenikaDrugihVjeroucitelja = _context.SkoleUcenika
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
@@ -865,8 +891,118 @@ namespace e_Mekteb.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditiranjeUcenikovogProfila( string id)
+        {
+            
+                var user = await userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    ViewBag.Error = $"There is no user with this {id}";
+                    return NotFound();
+                }
+                else
+                {
+                //Provjera dali je popunjen profil dokraja, inicijalizira flag na 0 ili 1
+                if(user.Ulica==null || user.PostanskiBroj==null || user.DatumRodenja==null ||user.ImeiPrezime==null ||user.BrojMobitela==null)
+                {
+                    ViewBag.Flag=0;
+                }
+                else { ViewBag.Flag=1; }
+                    var model = new UcenikViewModel
+                    {   
+                        userId=user.AplicationUserId,
+                        ImeiPrezime = user.ImeiPrezime,
+                        NazivMjesta = user.NazivMjesta,
+                        Ulica = user.Ulica,
+                        PostanskiBroj = user.PostanskiBroj,
+                        DatumRodenja = user.DatumRodenja,
+                        Spol = user.Spol,
+                        BrojMobitela = user.BrojMobitela,
+                        ImeiPrezimeRoditelja = user.ImeiPrezimeRoditelja,
+                        Email = user.Email
+
+                    };
+
+                    var enumSpol = Enum.GetValues(typeof(Spol)).Cast<Spol>().Select(v => v.ToString()).ToList();
+                    ViewData["Spol"] = new SelectList(enumSpol);
+
+                    return View(model);
+                }
 
 
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditiranjeUcenikovogProfila( UcenikViewModel model,string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.Error = $"Ne postoji korisnik sa ovim id brojem: {id}";
+                return NotFound();
+            }
+            else
+            {
+
+
+                user.ImeiPrezime = model.ImeiPrezime;
+                user.NazivMjesta = model.NazivMjesta;
+                user.Ulica = model.Ulica;
+                user.PostanskiBroj = model.PostanskiBroj;
+                user.DatumRodenja = model.DatumRodenja;
+                user.BrojMobitela = model.BrojMobitela;
+                user.Spol = model.Spol;
+                user.ImeiPrezimeRoditelja = model.ImeiPrezimeRoditelja;
+                
+
+
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+
+                }
+
+                return View(model);
+
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> PregledUcenikovogProfila(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+           
+            if (user== null)
+            {
+                ViewBag.Error = $"Ne postoji korisnik sa id brojem: {id}";
+                return NotFound();
+
+            }
+            else
+            {
+
+                ViewBag.userId = id;
+                var model = new UcenikViewModel
+                {
+                    ImeiPrezime = user.ImeiPrezime,
+                    Email = user.Email,
+                    NazivMjesta = user.NazivMjesta,
+                    Ulica = user.Ulica,
+                    PostanskiBroj = user.PostanskiBroj,
+                    Spol = user.Spol,
+                    BrojMobitela = user.BrojMobitela,
+                    ImeiPrezimeRoditelja = user.ImeiPrezimeRoditelja,
+                    DatumRodenja = user.DatumRodenja
+
+                };
+                return View(model);
+            }
+        }
 
 
 

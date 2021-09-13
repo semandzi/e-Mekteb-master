@@ -4,10 +4,33 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Moje Škole</h1>
+<h1>Moje Lokacije</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>
+    @*<a asp-action="Create" class="btn btn-primary">Dodaj Novu</a>*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Dodaj novu
+    </button>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Upute za dodavanje lokacije</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Kreiranje nove lokacije postiže se klikom na tipku ispod "Dodaj novu". Naziv lokacije se unosi ovisno o mjestu održavanja vjeronaučne nastave. Ukoliko se nastava održava u školi, unosi se naziv
+                    škole npr. "OŠ Jure Kaštelana", a ukoliko na drugoj lokaciji npr. "Islamski centar u Zagrebu".
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                    <a asp-action="Create" class="btn btn-primary">Doda novu</a></div>
+            </div>
+        </div>
+    </div>
 </p>
 
 <div class="mb-5">

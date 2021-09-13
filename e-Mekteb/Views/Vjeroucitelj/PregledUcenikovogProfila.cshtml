@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Moj Račun</h1>
+<h1>Pregled učenikovog profila</h1>
 
 <div>
-    <h4>Učenik</h4>
+    <h4>Profil učenika</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -68,7 +68,7 @@
     </dl>
 </div>
 <div>
-    
-    <a class="btn btn-primary" asp-controller="Home" asp-action="Index"><<</a>
-    <a class="btn btn-primary" asp-controller="Ucenik" asp-action="Edit"asp-route-id="@ViewBag.UcenikId">Uredi</a>
+
+    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="ListUsers"><<</a>
+    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@ViewBag.userId">Uredi</a>
 </div>

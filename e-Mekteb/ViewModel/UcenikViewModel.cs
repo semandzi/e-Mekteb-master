@@ -28,6 +28,8 @@ namespace e_Mekteb.ViewModel
         [ForeignKey("Medzlis")]
         public int MedzlisId { get; set; }
 
+        public string userId { get; set; }
+
         [Required(ErrorMessage = "Ime i Prezime je obavezno polje")]
         [StringLength(50)]
         [Display(Name = "Ime i Prezime")]
@@ -52,17 +54,18 @@ namespace e_Mekteb.ViewModel
         [MaxLength(5)]
         [MinLength(5)]
         [Display(Name = "Poštanski broj")]
-
         public string PostanskiBroj { get; set; }
 
 
-        [Required(ErrorMessage = "Datum Rođenja je obavezno polje")]
+        
+
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
         [Display(Name = "Datum Rođenja")]
         public DateTime DatumRodenja { get; set; }
 
 
-        public int Starost { get; set; }
 
         [Required]
         [EmailAddress]
@@ -71,12 +74,19 @@ namespace e_Mekteb.ViewModel
 
         [Required(ErrorMessage = "Ime oca je obavezno polje")]
         [StringLength(50)]
-        [Display(Name = "Ime Oca")]
+        [Display(Name = "Ime i prezime roditelja")]
 
-        public string ImeOca { get; set; }
+        public string ImeiPrezimeRoditelja { get; set; }
+
+        [Display(Name = "Broj mobitela od roditelja")]
+        [MaxLength(12)]
+        public string BrojMobitela{ get; set; }
+
+
+
     }
 
 
 
-   
+
 }

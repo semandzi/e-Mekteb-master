@@ -7,12 +7,12 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <h4>Dodaj Postojećeg Učenika</h4>
+            <h4>Dodaj postojećeg učenika</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ImeiPrezime"></label>
-                <input asp-for="ImeiPrezime" class="form-control" placeholder="Ime i Prezime" />
+                <input asp-for="ImeiPrezime" class="form-control" />
                 <span asp-validation-for="ImeiPrezime" class="text-danger"></span>
             </div>
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary"><<</a>

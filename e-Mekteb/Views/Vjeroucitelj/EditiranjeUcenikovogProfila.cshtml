@@ -10,13 +10,12 @@
     var user = ViewBag.User;
 }
 
-<div class="text-center text-danger">@ViewBag.Error</div>
 <h1>Uredi</h1>
-<h4>Učenik</h4>
+<h4>Profil učenika</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" class="mt-1 mb-5">
+        <form asp-action="EditiranjeUcenikovogProfila" asp-route-id="@Model.userId" class="mb-5">
             <div class="form-group">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -68,7 +67,7 @@
             </div>
 
             <div class="form-group">
-                <a asp-action="Details" class="btn btn-primary"><<</a>
+                <a asp-action="PregledUcenikovogProfila" asp-route-id="@Model.userId" class="btn btn-primary">Pregled profila</a>
                 <button type="submit" class="btn btn-primary">Ažuriraj</button>
             </div>
         </form>

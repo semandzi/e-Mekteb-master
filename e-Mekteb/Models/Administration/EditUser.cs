@@ -27,6 +27,7 @@ namespace e_Mekteb.Models.Administration
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
         public List<string> Roles { get; set; }
         public List<string> Claims { get; set; }
         public List<string> Predmeti { get; set; }

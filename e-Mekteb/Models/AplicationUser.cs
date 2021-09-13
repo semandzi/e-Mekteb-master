@@ -30,7 +30,9 @@ namespace e_Mekteb.Models
 
 
         [StringLength(50)]
+        [Display(Name = "Ime i Prezime")]
         public string ImeiPrezime { get; set; }
+
 
        
 
@@ -60,14 +62,15 @@ namespace e_Mekteb.Models
         public DateTime DatumRodenja { get; set; }
 
 
-        public int Starost { get; set; }
+        
 
         //[Required(ErrorMessage = "Ime i oca je obavezno polje")]
         [StringLength(50)]
-        public string ImeOca{ get; set; }
+        [Display(Name = "Ime i prezime roditelja")]
+        public string ImeiPrezimeRoditelja{ get; set; }
 
-        
-
+        [Display(Name = "Broj mobitela od roditelja")]
+        public string BrojMobitela { get; set; }
 
     }
     public enum Spol
@@ -75,6 +78,11 @@ namespace e_Mekteb.Models
         Muško,
         Žensko
     }
+
+
+
+
+
 
 
 
