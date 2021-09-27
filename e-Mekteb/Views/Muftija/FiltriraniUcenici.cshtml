@@ -9,7 +9,7 @@
 
         </div>
         <div class="col-sm-6 text-center">
-            <p>@ViewBag.Medzlis</p>
+            <p">@ViewBag.Medzlis</p>
         </div>
 
     </div>
@@ -26,8 +26,7 @@
         </div>
         <div class="media-body">
             <h1 class="text-success">Moji Učenici</h1>
-            <h1 class="text-success"> @ViewBag.BrojUcenika</h1>
-
+            <h1 class="text-success">@ViewBag.BrojUcenika</h1>
         </div>
     </div>
 </div>
@@ -101,13 +100,13 @@
 
 
     <h5 class="card-title">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        <button type="button"  disabled class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
             Dodaj novog učenika
         </button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
             Dodaj postojećeg učenika
-        </button> 
-        <a type="button" class="btn btn-light btn-outline-success" asp-controller="Vjeroucitelj" asp-action="Filtriranje">
+        </button>
+        <a type="button" class="btn btn-light btn-outline-success" asp-controller="Muftija" asp-action="Filtriranje">
             Filter <i class="fas fa-search"></i>
 
         </a>
@@ -203,7 +202,7 @@
 
                     else
                     {
-                        <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-success" data-bs-toggle="tooltip" title="Profil je popunjen" style="float:right">
+                        <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId"  class="btn btn-success"  disabled data-bs-toggle="tooltip" title="Profil je popunjen" style="float:right">
                             <i class="fas fa-user-check"></i>
 
 
@@ -241,7 +240,7 @@ else
                 Koristi donju lijevu tipku kako bi kreirao novog učenika.
             </h5>
             <h5 class="card-title">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                <button type="button"  disabled class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                     Dodaj novog učenika
                 </button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
@@ -267,5 +266,5 @@ else
 
 
 <script>
-   
+
 </script>

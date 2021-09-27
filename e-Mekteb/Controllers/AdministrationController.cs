@@ -317,7 +317,7 @@ namespace e_Mekteb.Controllers
             {
                 if (await userManager.IsInRoleAsync(user, role.Name))
                 {
-                    model.Users.Add(user.UserName);
+                    model.Users.Add(user.ImeiPrezime);
                 }
             }
             return View(model);
@@ -409,7 +409,7 @@ namespace e_Mekteb.Controllers
                     var userRole = new UserRole
                     {
                         UserId = user.Id,
-                        UserName = user.UserName
+                        ImeiPrezime = user.ImeiPrezime
 
                     };
 

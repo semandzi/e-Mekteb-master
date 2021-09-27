@@ -9,7 +9,12 @@ namespace e_Mekteb.ViewModel
     public class UcenikProfilFlag
     {
 
+
         public AplicationUser AplicationUser { get; set; }
         public int Flag { get; set; }
+        
+        public DateTime Datum { get; set; }
+        public string Razred { get; set; }
+        public string LokacijaNastave { get; set; }
     }
 }

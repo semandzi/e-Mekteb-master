@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "Edit User";
 }
+@using Microsoft.AspNetCore.Identity;
 
+@inject SignInManager<AplicationUser> signInManager
 <h1>Uredi Učenika</h1>
 
 <form method="post" class="mt-1 mb-5">
@@ -24,7 +26,7 @@
     <div class="form-group row">
         <label asp-for="Email" class="col-sm-2">Email:</label>
 
-        <input asp-for="Email"  class="form-group col-sm-5">
+        <input asp-for="Email" class="form-group col-sm-5">
 
 
         <span asp-validation-for="Email" class="text-danger"></span>
@@ -179,8 +181,8 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                 Ažuriraj
             </button>
-           
-          
+
+
 
 
 
@@ -270,17 +272,32 @@
         <div class="card-body">
 
             @if (Model.Skole.Any())
+
             {
                 foreach (var skola in Model.Skole)
                 {
 
 
-                    <h5 class="card-title">
+                    @if (User.Identity.Name == ViewBag.trenutniDrugaVjerouciteljId)
+                    {
+                        <h5 class="card-title">
 
-                        @skola
+                            @skola - @ViewBag.trenutniDrugaVjerouciteljId
 
 
-                    </h5>
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5 class="card-title">
+
+                            @skola - @ViewBag.trenudtniVjerouciteljId
+
+
+                        </h5>
+                    }
+
+
                 }
             }
             else

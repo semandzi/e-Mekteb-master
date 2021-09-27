@@ -7,7 +7,7 @@
 
 <h4>Prisutnost</h4>
 <hr />
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,8 +32,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="TempPrisutnost.IsPrisutan" class="control-label"></label>
-                <select asp-for="TempPrisutnost.IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
+                <select  asp-for="TempPrisutnost.IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
                 <span asp-validation-for="TempPrisutnost.IsPrisutan" class="text-danger"></span>
+
             </div>
 
 
@@ -41,7 +42,7 @@
 
 
 
-            
+
             <div class="form-check form-check-inline " id="checkBoxes">
 
 
@@ -54,41 +55,41 @@
                     <label class="form-check-label">Odaberi sve</label>
 
 
-                    
-                        @for (int i = 0; i < Model.UceniciIsSelected.Count(); i++)
 
-                        {
+                    @for (int i = 0; i < Model.UceniciIsSelected.Count(); i++)
 
-
+                    {
 
 
 
 
 
-                            <div class="form-check mt-1" id="myTable">
-                                <input asp-for="@Model.UceniciIsSelected[i].Ucenik" type="hidden">
+
+
+                        <div class="form-check mt-1" id="myTable">
+                            <input asp-for="@Model.UceniciIsSelected[i].Ucenik" type="hidden">
 
 
 
 
 
-                                <input asp-for="@Model.UceniciIsSelected[i].IsSelected" type="checkbox">
+                            <input asp-for="@Model.UceniciIsSelected[i].IsSelected" type="checkbox">
 
 
-                                <label class="form-check-label">@Model.UceniciIsSelected[i].Ucenik</label>
-
-
-
-
-                            </div>
+                            <label class="form-check-label">@Model.UceniciIsSelected[i].Ucenik</label>
 
 
 
 
-                        }
-                    <br/>
+                        </div>
 
-                    
+
+
+
+                    }
+                    <br />
+
+
 
                 }
                 else
@@ -96,10 +97,10 @@
                     <h5>Nemate kreirane učenike, prvo kreirajte učenike!</h5>
                 }
             </div>
-            
 
 
-            
+
+
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"><< </a>
                 <button type="submit" class="btn btn-primary">Spremi</button>
@@ -114,18 +115,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $(function () {
-            var $tblChkBox = $("#checkBoxes input:checkbox");
-            $("#checkAll").on("click", function () {
-                $($tblChkBox).prop('checked', $(this).prop('checked'));
-            });
-        });
-        
-        
+       
+
+
 
     </script>
-</div>
 
+    
+</div>
+<script type="text/javascript" src="~/js/site.js"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

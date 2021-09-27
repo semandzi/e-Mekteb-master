@@ -33,153 +33,144 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Muftija"))
                         {
-                            <li>
-                                <div class="dropdown mr-1">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Admin
-                                    </button>
+                            <li class="nav-item">
+                                <a type="button" class="btn btn-light btn-outline-success" asp-controller="Muftija" asp-action="Filtriranje">
+                                    Filtriraj <i class="fas fa-search"></i>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li>
-                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj Rolu</a>
-
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi Rolu</a>
-
-                                        </li>
-                                        <li>
-
-                                            <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListUsers">Lista Korisnika</a>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
+                                </a>
                             </li>
-
                         }
-                        <br />
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <div class="dropdown mr-1">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Admin
+                                        </button>
 
-                        @if (signInManager.IsSignedIn(User) || User.IsInRole("Admin") || User.IsInRole("Vjeroucitelj") || User.IsInRole("Ucenik"))
-                        {
-                            <li>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Izbornik
-                                    </button>
-
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        @if (User.IsInRole("Admin"))
-                                        {
-
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Aktivnost" asp-action="Index">Aktivnosti</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj Rolu</a>
 
                                             </li>
                                             <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Adresa" asp-action="Index">Adresa</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListRole">Uredi Rolu</a>
 
                                             </li>
                                             <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Medzlis" asp-action="Index">Medžlisi</a>
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Razred" asp-action="Index">Razredi</a>
-
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="SkolskaGodina" asp-action="Index">Godine</a>
-
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="ClanMualimskogVijeca" asp-action="Index">Članovi Mualimskog Vijeća</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Administration" asp-action="ListUsers">Lista Korisnika</a>
 
                                             </li>
 
+                                        </ul>
 
-                                        }
-                                        @if (User.IsInRole("Vjeroucitelj"))
+                                    </div>
 
-                                        {
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Biljeska" asp-action="Index">Bilješke</a>
+                                </li>
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Prisutnost" asp-action="Index">Prisutnost</a>
+                            }
+                            <br />
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Vjeroucitelj" asp-action="ListUsers">Lista učenika</a>
-
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Obavijest" asp-action="Index">Obavijesti</a>
-
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Skola" asp-action="Index">Lokacije održavanja nastave</a>
-
-                                            </li>
+                            @if (signInManager.IsSignedIn(User) || User.IsInRole("Admin") || User.IsInRole("Vjeroucitelj") || User.IsInRole("Ucenik"))
+                            {
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Izbornik
+                                        </button>
 
 
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            @if (User.IsInRole("Admin"))
+                                            {
 
-                                        }
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Aktivnost" asp-action="Index">Aktivnosti</a>
 
-                                        @if (User.IsInRole("Ucenik"))
-                                        {
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="Details">Moj Račun</a>
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Adresa" asp-action="Index">Adresa</a>
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojeObavijesti">Obavijesti</a>
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Medzlis" asp-action="Index">Medžlisi</a>
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojeBiljeske">Bilješke</a>
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Razred" asp-action="Index">Razredi</a>
 
-                                            </li>
-                                            <li>
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojePrisutnosti">Prisutnosti</a>
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="SkolskaGodina" asp-action="Index">Godine</a>
 
-                                            </li>
-                                        }
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="ClanMualimskogVijeca" asp-action="Index">Članovi Mualimskog Vijeća</a>
 
-
-
-                                    </ul>
-                                </div>
-
-
-
-
-                            </li>
+                                                </li>
 
 
+                                            }
+                                            @if (User.IsInRole("Vjeroucitelj"))
 
+                                            {
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Biljeska" asp-action="Index">Bilješke</a>
 
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Prisutnost" asp-action="Index">Prisutnost</a>
 
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Vjeroucitelj" asp-action="ListUsers">Lista učenika</a>
 
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Obavijest" asp-action="Index">Obavijesti</a>
 
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Skola" asp-action="Index">Lokacije održavanja nastave</a>
 
-
-
-
-
-
-
-                        }
+                                                </li>
 
 
 
+                                            }
+
+                                            @if (User.IsInRole("Ucenik"))
+                                            {
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="Details">Moj Račun</a>
+
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojeObavijesti">Obavijesti</a>
+
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojeBiljeske">Bilješke</a>
+
+                                                </li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ucenik" asp-action="MojePrisutnosti">Prisutnosti</a>
+
+                                                </li>
+                                            }
+
+
+
+                                        </ul>
+                                    </div>
+
+
+
+
+                                </li>
 
 
 
@@ -187,7 +178,25 @@
 
 
 
-                    </ul>
+
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
+
+
+
+
+                        </ul>
                 </div>
             </div>
         </nav>

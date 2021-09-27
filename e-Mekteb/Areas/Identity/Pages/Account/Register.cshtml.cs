@@ -112,18 +112,13 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
                     if (noviKorisnik.ImeiPrezime == user.ImeiPrezime)
                     {
-                        if (await _userManager.IsInRoleAsync(ulogiraniUserName, "Admin"))
-                        {
-                            ViewData["Error"] = $"Korisnik s tim imenom i prezimenom već postoji u bazi podataka!";                        
-                                //return RedirectToAction("ListUsers", "Administration");
-                        }
-                        if(await _userManager.IsInRoleAsync(ulogiraniUserName, "Vjeoucitelj"))
-                        {
-                            return RedirectToAction("ListUsers", "Vjeroucitelj");
 
-                        }
+                        return RedirectToPage();
+
+
+                       
                     }
-                        
+
 
 
                 }

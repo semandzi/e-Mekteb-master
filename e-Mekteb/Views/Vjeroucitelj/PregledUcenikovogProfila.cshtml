@@ -45,7 +45,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DatumRodenja)
-        </dd>
+        </dd >
 
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Spol)
@@ -71,4 +71,6 @@
 
     <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="ListUsers"><<</a>
     <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@ViewBag.userId">Uredi</a>
+    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="BiljeskeUcenika" asp-route-id="@ViewBag.userId">Bilješke</a>
+    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="PrisutnostiUcenika" asp-route-id="@ViewBag.userId">Prisutnosti</a>
 </div>

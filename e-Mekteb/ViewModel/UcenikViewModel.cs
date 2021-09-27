@@ -38,19 +38,18 @@ namespace e_Mekteb.ViewModel
 
 
 
-
+        [Required(ErrorMessage = "Spol je obavezno polje")]
         public Spol Spol { get; set; }
+
 
         [Required(ErrorMessage = "Grad je obavezno polje")]
         [StringLength(50)]
         [Display(Name = "Grad")]
         public string NazivMjesta { get; set; }
 
-        [Required(ErrorMessage = "Ulica je obavezno polje")]
         [StringLength(100)]
         public string Ulica { get; set; }
 
-        [Required(ErrorMessage = "Poštanski broj je obavezno polje")]
         [MaxLength(5)]
         [MinLength(5)]
         [Display(Name = "Poštanski broj")]
@@ -60,9 +59,9 @@ namespace e_Mekteb.ViewModel
         
 
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
-        [Display(Name = "Datum Rođenja")]
+        [Display(Name = "Datum rođenja")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DatumRodenja { get; set; }
 
 
@@ -72,11 +71,10 @@ namespace e_Mekteb.ViewModel
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Ime oca je obavezno polje")]
         [StringLength(50)]
         [Display(Name = "Ime i prezime roditelja")]
-
         public string ImeiPrezimeRoditelja { get; set; }
+
 
         [Display(Name = "Broj mobitela od roditelja")]
         [MaxLength(12)]

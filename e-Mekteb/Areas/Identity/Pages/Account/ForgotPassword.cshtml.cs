@@ -66,7 +66,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                 //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 //SendGrid slanje emaila na korisnikov email račun
-                var apiKey = "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";
+                var apiKey = "";
                 //var apiKey = Environment.GetEnvironmentVariable("SENDEMAIL_API");
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress("info@sm-test.com.hr", "E-Mekteb Aktivacija");

@@ -28,37 +28,46 @@
                 }
 
             }
-            else if(trenutniUpisaniRazredUserName!=null)
+            @*else if (trenutniUpisaniRazredUserName != null)
             {
+               
+                    @foreach (var skola in Model.Skole)
+                    {
+                        @Html.RadioButtonFor(m => m.IsSelected, skola.SkolaId, null)
+                        @Html.Label(skola.NazivSkole)
+                        <br />
+
+                    }
+
                 
-                    <p>
-
-                       
-                        Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
-
-                     </p>
-            }
+                <p>
 
 
-                else
-                {
+                    Učenik ili učenica već pohađa vjeronauk  u školi kod vjeroučitelja ili vjeroučiteljice sa email adresom: <a href="mailto: @trenutniUpisaniRazredUserName">@trenutniUpisaniRazredUserName</a>.<br />
+
+                </p>
+            }*@
+
+
+            else
+            {
                 <p>Niste kreirali škole.</p>
-                }
+            }
         </div>
 
         <div class="card-footer">
             <a asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Nazad</a>
-            @if (Model.Skole.Any() && trenutniUpisaniRazredUserName!=null && trenutniUpisaniRazredUserName!=trenutniUlogiraniVjeroucitelj)
-            {
-                <button type="submit" class="btn btn-primary" asp-route-id="@userId" disabled>Ažuriraj</button>
+            @*@if (Model.Skole.Any() && trenutniUpisaniRazredUserName!=null && trenutniUpisaniRazredUserName!=trenutniUlogiraniVjeroucitelj)
+            {*@
+                <button type="submit" class="btn btn-primary" asp-route-id="@userId" >Ažuriraj</button>
 
 
-            }
+            @*}
             else
-            {
-                <button type="submit" class="btn btn-primary" asp-route-id="@userId">Ažuriraj</button>
+            {*@
+                @*<button type="submit" class="btn btn-primary" asp-route-id="@userId">Ažuriraj</button>*@
 
-            }
+            @*}*@
 
 
 

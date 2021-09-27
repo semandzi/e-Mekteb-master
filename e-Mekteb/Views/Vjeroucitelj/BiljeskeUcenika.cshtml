@@ -1,15 +1,16 @@
-﻿@model e_Mekteb.ViewModel.UcenikovePrisutnostiUcenikView
+﻿@model e_Mekteb.ViewModel.UcenikoveBiljeskeUcenikView
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Prisutnosti</h1>
+<h1>Bilješke</h1>
 
-
+<h5 class="text-sm-center text-danger">@ViewBag.Error</h5>
 
 <div class="mb-5">
     <table class="table table-responsive-sm">
-        @if (Model.UcenikovePrisutnosti.Any())
+        @if (Model.UcenikoveBiljeske.Any())
         {
             @foreach (var predmet in Model.UcenikoveAktivnosti)
 
@@ -19,14 +20,12 @@
                         <th>
                             @predmet.Naziv
                         </th>
+
                         <th></th>
-
-
 
                     </tr>
                 </thead>
-
-                @foreach (var item in Model.UcenikovePrisutnosti)
+                @foreach (var item in Model.UcenikoveBiljeske)
                 {
 
 
@@ -37,27 +36,28 @@
                     <tbody class="table table-bordered">
                         @if (item.AktivnostId == predmet.AktivnostId)
                         {
-                            <tr >
-                                <td style="width:15%">
+                            <tr>
+                                <td style="width:30%">
 
 
                                     @Html.DisplayFor(modelItem => item.Datum)
 
 
                                 </td>
-                                <td style="width:85%" align="right" >
+                                <td style="width:70%">
 
 
-                                    @Html.DisplayFor(modelItem => item.IsPrisutan)
+                                    @Html.DisplayFor(modelItem => item.Biljeske)
 
 
                                 </td>
 
 
 
+
+
+
                             </tr>
-
-
                         }
 
 
@@ -79,7 +79,7 @@
 
         else
         {
-            <tr>Trenutačno nemate unesenih prisutnosti.</tr>
+            <tr>Nema kreiranih bilješki.</tr>
         }
 
     </table>

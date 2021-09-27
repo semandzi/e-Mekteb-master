@@ -18,6 +18,8 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using SendGrid;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace e_Mekteb
 {
@@ -77,7 +79,7 @@ namespace e_Mekteb
                 options.Cookie.HttpOnly = true;
             });
 
-
+     
         }
 
        
@@ -87,6 +89,8 @@ namespace e_Mekteb
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto

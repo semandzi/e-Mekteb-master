@@ -1,0 +1,96 @@
+﻿@model e_Mekteb.ViewModel.UcenikovePrisutnostiUcenikView
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Prisutnosti</h1>
+
+
+
+<div class="mb-5">
+    <table class="table table-responsive-sm">
+        @if (Model != null)
+        {
+            @if (Model.UcenikovePrisutnosti.Any())
+            {
+                @foreach (var predmet in Model.UcenikoveAktivnosti)
+
+                {
+                    <thead class="table-success">
+                        <tr>
+                            <th>
+                                @predmet.Naziv
+                            </th>
+                            <th></th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model.UcenikovePrisutnosti)
+                    {
+
+
+
+
+
+
+                        <tbody class="table table-bordered">
+                            @if (item.AktivnostId == predmet.AktivnostId)
+                            {
+                                <tr>
+                                    <td style="width:15%">
+
+
+                                        @Html.DisplayFor(modelItem => item.Datum)
+
+
+                                    </td>
+                                    <td style="width:85%" align="right">
+
+
+                                        @Html.DisplayFor(modelItem => item.IsPrisutan)
+
+
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            }
+
+
+
+
+
+
+
+                        </tbody>
+
+
+
+                    }
+
+
+
+                }
+            }
+
+            else
+            {
+                <tr>Nema kreiranih prisutnosti.</tr>
+            }
+
+        }
+
+
+        else
+        {
+            <tr>Nema kreiranih prisutnosti.</tr>
+        }
+
+    </table>
+</div>
