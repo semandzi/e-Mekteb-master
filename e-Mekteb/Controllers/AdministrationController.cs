@@ -3,6 +3,7 @@ using e_Mekteb.Models;
 using e_Mekteb.Models.Administration;
 using e_Mekteb.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -409,7 +410,7 @@ namespace e_Mekteb.Controllers
                     var userRole = new UserRole
                     {
                         UserId = user.Id,
-                        ImeiPrezime = user.ImeiPrezime
+                        ImeIPrezime= user.ImeiPrezime
 
                     };
 
@@ -433,6 +434,7 @@ namespace e_Mekteb.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRole> model, string roleId)
         {
+          
             var role = await roleManager.FindByIdAsync(roleId);
             if (role == null)
             {

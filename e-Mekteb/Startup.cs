@@ -20,6 +20,7 @@ using System.Net;
 using SendGrid;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace e_Mekteb
 {
@@ -78,8 +79,11 @@ namespace e_Mekteb
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
             });
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueCountLimit = int.MaxValue;
+            });
 
-     
         }
 
        

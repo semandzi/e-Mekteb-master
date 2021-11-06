@@ -452,7 +452,7 @@ namespace e_Mekteb.Controllers
                     var userRole = new UserRole
                     {
                         UserId = user.Id,
-                        ImeiPrezime = user.UserName
+                        ImeIPrezime= user.ImeiPrezime
 
                     };
 
