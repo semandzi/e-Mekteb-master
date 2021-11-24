@@ -278,11 +278,11 @@
                 {
 
 
-                    @if (User.Identity.Name == ViewBag.trenutniDrugaVjerouciteljId)
+                    @if (User.Identity.Name == @ViewBag.trenutniDrugaVjerouciteljId)
                     {
                         <h5 class="card-title">
 
-                            @skola - @ViewBag.trenutniDrugaVjerouciteljId
+                            @skola  @ViewBag.trenutniDrugaVjerouciteljId
 
 
                         </h5>
@@ -291,7 +291,7 @@
                     {
                         <h5 class="card-title">
 
-                            @skola - @ViewBag.trenudtniVjerouciteljId
+                            @skola  @ViewBag.trenudtniVjerouciteljId
 
 
                         </h5>

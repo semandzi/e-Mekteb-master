@@ -257,11 +257,14 @@ namespace e_Mekteb.Controllers
                 var skoleUcenika = _context.SkoleUcenika.Where(s => s.UcenikId == user.Id).ToList();
 
                 //Razred ucenika
-                var razrediUcenika = _context.RazrediUcenik.Where(u => u.UcenikId == user.Id && u.DatumIspisa == DateTime.MinValue && vjerouciteljId==u.VjerouciteljId).ToList();
+                var razrediUcenikaKodOvogVjeroucitelja = _context.RazrediUcenik.Where(u => u.UcenikId == user.Id && u.DatumIspisa == DateTime.MinValue && vjerouciteljId==u.VjerouciteljId).ToList();
+                var razrediUcenikaKodDrugogVjeroucitelja = _context.RazrediUcenik.Where(u => u.UcenikId == user.Id && u.DatumIspisa == DateTime.MinValue && vjerouciteljId!=u.VjerouciteljId).ToList();
 
 
-                //Skole i razreedi
-                var skoleRazredi = razrediUcenika.Join(skoleUcenika,
+                //Skole i razredi
+
+                if (razrediUcenikaKodOvogVjeroucitelja.Any()) {
+                    var skoleRazredi = razrediUcenikaKodOvogVjeroucitelja.Join(skoleUcenika,
                                                        r => r.UcenikId,
                                                        s => s.UcenikId,
                                                        (razredi, skole) => new
@@ -270,12 +273,24 @@ namespace e_Mekteb.Controllers
                                                            Skole = skole.NazivSkole
                                                        });
 
-                foreach (var razredi in skoleRazredi)
-                {
-                    tempRazred = razredi.Razred;
-                    tempNazivLokacije = razredi.Skole;
-                        
+                    foreach (var razredi in skoleRazredi)
+                    {
+                        tempRazred = razredi.Razred;
+                        tempNazivLokacije = razredi.Skole;
+
+                    }
                 }
+                else
+                {
+                        //tempRazred = razredi.Razred;
+                        //tempNazivLokacije = razredi.Skole;
+                        tempRazred = "Razred nije upisan";
+                        tempNazivLokacije = "Škola/Lokacija nije unesena";
+
+                    
+                }
+
+               
                    
                    
                         
@@ -284,7 +299,7 @@ namespace e_Mekteb.Controllers
                    
 
                 //Godina trenutna i datum upisa
-                var result1 = razrediUcenika.Join(_context.SkolskeGodine,
+                var result1 = razrediUcenikaKodOvogVjeroucitelja.Join(_context.SkolskeGodine,
                                                 r => r.SkolskaGodinaId,
                                                 s => s.SkolskaGodinaId,
                                                 (datum_Upisa, godina) => new
@@ -299,21 +314,54 @@ namespace e_Mekteb.Controllers
                 }
 
                 //Naziv medzlisa
-                var result2 = razrediUcenika.Join(_context.Medzlisi,
-                                               r => r.MedzlisId,
-                                               m=> m.MedzlisId,
-                                              
-                                               (naziv,medzlis) => new
-                                               {
-                                                   MedzlisId =naziv.MedzlisId,
-                                                   Naziv= medzlis.Naziv
-                                                   
-                                               });
-                foreach (var medzlis in result2)
-                {
-                    ViewBag.Medzlis = medzlis.Naziv;
-                    ViewBag.Naziv = medzlis.Naziv;
-                }
+                var vjeroucitelj_Id = _context.VjerouciteljUcenik.Where(v => v.VjerouciteljId == vjerouciteljId)
+                    .Select(v=>v.VjerouciteljId).FirstOrDefault();
+                var user_Vjeroucitelj = await userManager.FindByIdAsync(vjeroucitelj_Id);
+                var nazivMjestaUlogiranogVjeroucitelja = user_Vjeroucitelj.NazivMjesta.ToString();
+
+                ViewBag.Medzlis = nazivMjestaUlogiranogVjeroucitelja;
+                ViewBag.Naziv = nazivMjestaUlogiranogVjeroucitelja ;
+
+
+
+                //if (razrediUcenikaKodOvogVjeroucitelja.Any())
+                //{
+                //    var result2 = razrediUcenikaKodOvogVjeroucitelja.Join(_context.Medzlisi,
+                //                            r => r.MedzlisId,
+                //                            m => m.MedzlisId,
+
+                //                            (naziv, medzlis) => new
+                //                            {
+                //                                MedzlisId = naziv.MedzlisId,
+                //                                Naziv = medzlis.Naziv
+
+                //                            });
+                //    foreach (var medzlis in result2)
+                //    {
+                //        ViewBag.Medzlis = medzlis.Naziv;
+                //        ViewBag.Naziv = medzlis.Naziv;
+                //    }
+                //}
+                //else {
+                //    var result2 = razrediUcenikaKodDrugogVjeroucitelja.Join(_context.Medzlisi,
+                //                    r => r.MedzlisId,
+                //                    m => m.MedzlisId,
+
+                //                    (naziv, medzlis) => new
+                //                    {
+                //                        MedzlisId = naziv.MedzlisId,
+                //                        Naziv = medzlis.Naziv
+
+                //                    });
+                //    foreach (var medzlis in result2)
+                //    {
+                //        ViewBag.Medzlis = medzlis.Naziv;
+                //        ViewBag.Naziv = medzlis.Naziv;
+                //    }
+
+                //}
+
+
 
                 //Provjera dali je popunjen profil dokraja, inicijalizira flag na 0 ili 1
                 if (user.Ulica == null || user.PostanskiBroj == null || user.DatumRodenja == DateTime.MinValue || user.ImeiPrezime == null || user.BrojMobitela == null ||
@@ -718,19 +766,22 @@ namespace e_Mekteb.Controllers
                 var users = userManager.Users.ToList();
                 foreach(var user in users)
                 {
-                    if (user.ImeiPrezime == model.ImeiPrezime)
+                    if (user.ImeiPrezime==model.ImeiPrezime)
                     {
 
                         
                         var vjerouciteljUserName = HttpContext.User.Identity.Name;
                         var vjeroucitelj = await userManager.FindByEmailAsync(vjerouciteljUserName);
                         var vjerouciteljId = vjeroucitelj.Id;
+
                         var vjerouciteljUcenik = new VjerouciteljUcenik
                         {
                             VjerouciteljId = vjerouciteljId,
                             UcenikId = user.AplicationUserId,
                             UserName = user.UserName
                         };
+                       
+
                         _context.Add(vjerouciteljUcenik);
                         _context.SaveChanges();
                         return RedirectToAction("ListUsers");
@@ -741,26 +792,27 @@ namespace e_Mekteb.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
-
-
 
             return View(model);
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
         [HttpGet]
         public async Task<IActionResult> DodajSkoluUceniku(string userId)
         {
