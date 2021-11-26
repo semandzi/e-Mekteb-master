@@ -1,7 +1,5 @@
 ﻿@model e_Mekteb.Models.Administration.EditUser;
-@{
-    ViewBag.Title = "Edit User";
-}
+@{ ViewBag.Title = "Edit User"; }
 @using Microsoft.AspNetCore.Identity;
 
 @inject SignInManager<AplicationUser> signInManager
@@ -11,7 +9,7 @@
     <div class="form-group row">
         <label asp-for="Id" class="col-sm-2">Korisnik Id:</label>
 
-        <input asp-for="Id" class="form-group col-sm-5"disabled="disabled">
+        <input asp-for="Id" class="form-group col-sm-5" disabled="disabled">
 
 
     </div>
@@ -127,14 +125,11 @@
                     {
 
 
-                        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Promijeni lokaciju (školu)</a>
-
-                    }
+        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Promijeni lokaciju (školu)</a> }
                     else
                     {
 
-                        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj lokaciju (školu)</a>
-                    }
+        <a asp-controller="Vjeroucitelj" asp-action="DodajSkoluUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj lokaciju (školu)</a>}
                 </div>
             </div>
         </div>
@@ -162,13 +157,11 @@
                     @if (Model.RazrediUcenika.Any())
                     {
 
-                        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Upiši/Ispiši</a>
-                    }
+        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-danger">Upiši/Ispiši</a> }
                     else
                     {
 
-                        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj grupu (razred)</a>
-                    }
+        <a asp-controller="Vjeroucitelj" asp-action="DodajRazredUceniku" asp-route-userId="@Model.Id" class="btn btn-primary">Dodaj grupu (razred)</a>}
                 </div>
             </div>
         </div>
@@ -200,21 +193,17 @@
                 {
 
 
-                    <h5 class="card-title">
-                        @if (role == "Ucenik")
-                        {
-                            @role
-
-                        }
-                    </h5>
-                }
+<h5 class="card-title">
+    @if (role == "Ucenik")
+    {
+@role}
+</h5> }
             }
             else
             {
-                <h5 class="card-title">
-                    Učeniku trenutno nije dodijeljeno prava pristupa.
-                </h5>
-            }
+<h5 class="card-title">
+    Učeniku trenutno nije dodijeljeno prava pristupa.
+</h5>            }
 
 
         </div>
@@ -240,20 +229,18 @@
                 {
 
 
-                    <h5 class="card-title">
+<h5 class="card-title">
 
-                        @predmet
+    @predmet
 
 
-                    </h5>
-                }
+</h5> }
             }
             else
             {
-                <h5 class="card-title">
-                    Učeniku trenutno nije dodijeljen nijedan predmet.
-                </h5>
-            }
+<h5 class="card-title">
+    Učeniku trenutno nije dodijeljen nijedan predmet.
+</h5>            }
 
         </div>
         <div class="card-footer">
@@ -278,54 +265,45 @@
                 {
 
 
-                    @if (User.Identity.Name == @ViewBag.trenutniDrugaVjerouciteljId)
-                    {
-                        <h5 class="card-title">
+@if (User.Identity.Name == @ViewBag.trenutniDrugaVjerouciteljId)
+{
+<h5 class="card-title">
 
-                            @skola  @ViewBag.trenutniDrugaVjerouciteljId
+    @skola  @ViewBag.trenutniDrugaVjerouciteljId
 
 
-                        </h5>
-                    }
+</h5> }
                     else
                     {
-                        <h5 class="card-title">
+<h5 class="card-title">
 
-                            @skola  @ViewBag.trenudtniVjerouciteljId
-
-
-                        </h5>
-                    }
+    @skola  @ViewBag.trenudtniVjerouciteljId
 
 
-                }
+</h5>                    } }
             }
             else
             {
-                <h5 class="card-title">
-                    Učeniku trenutno nije dodijeljena lokacija pohađanja vjeronaučne nastave.
-                </h5>
-            }
+<h5 class="card-title">
+    Učeniku trenutno nije dodijeljena lokacija pohađanja vjeronaučne nastave.
+</h5>            }
 
         </div>
         <div class="card-footer">
             @if (Model.Skole.Any())
             {
-                <div class="card-footer">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter4">
-                        Promijeni lokaciju (školu)
-                    </button>
-                </div>
-
-            }
+<div class="card-footer">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter4">
+        Promijeni lokaciju (školu)
+    </button>
+</div> }
             else
             {
-                <div class="card-footer">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter4">
-                        Dodaj lokaciju (školu)
-                    </button>
-                </div>
-            }
+<div class="card-footer">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter4">
+        Dodaj lokaciju (školu)
+    </button>
+</div>            }
 
         </div>
 
@@ -349,39 +327,35 @@
                 {
 
 
-                    <h5 class="card-title">
+<h5 class="card-title">
 
-                        @razred
+    @razred
 
 
-                    </h5>
-                }
+</h5> }
             }
             else
             {
-                <h5 class="card-title">
-                    Učeniku trenutno nije dodijeljena grupa (razred).
-                </h5>
-            }
+<h5 class="card-title">
+    Učeniku trenutno nije dodijeljena grupa (razred).
+</h5>            }
 
         </div>
         <div class="card-footer">
             @if (Model.RazrediUcenika.Any())
             {
-                <div class="card-footer">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter5">
-                        Upiši/Ispiši
-                    </button>
-                </div>
-            }
+<div class="card-footer">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter5">
+        Upiši/Ispiši
+    </button>
+</div> }
             else
             {
-                <div class="card-footer">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter5">
-                        Dodaj grupu (razred)
-                    </button>
-                </div>
-            }
+<div class="card-footer">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter5">
+        Dodaj grupu (razred)
+    </button>
+</div>            }
 
         </div>
 

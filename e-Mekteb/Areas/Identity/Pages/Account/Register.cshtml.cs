@@ -97,7 +97,6 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
             //Trenutni ulogirani korisnik
             var ulogiraniUser = HttpContext.User.Identity.Name;
 
-
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -107,28 +106,23 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
                 //Provjera dali postoji korisnik sa ovim imenom i prezimenom u bazi
                 var korisnici =_userManager.Users.ToList();
-               foreach(var noviKorisnik in korisnici)
+                foreach(var noviKorisnik in korisnici)
                 {
                     var ulogiraniUserName= await _userManager.FindByNameAsync(ulogiraniUser);
-                   
 
-
-
-
-
-                    if (checkNames(noviKorisnik.ImeiPrezime, user.ImeiPrezime) == true)
+                    if (noviKorisnik.ImeiPrezime == user.ImeiPrezime)
                     {
 
                         return RedirectToPage();
 
+
+                       
                     }
 
 
 
-
-
                 }
-                
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -239,55 +233,6 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-        //Function is returning true if new user exist in database
-        private Boolean checkNames(string user, string inputUser)
-        {
-            if(user==null) return false;
-            var userStringList= user.ToUpperInvariant().ToCharArray().Where(c => !Char.IsWhiteSpace(c) && Char.IsLetter(c)).ToList();
-            var userStringInputList =inputUser.ToUpperInvariant().ToCharArray().Where(c => !Char.IsWhiteSpace(c) && Char.IsLetter(c)).ToList();
-            var convertedList1 = convertToEnglishAlphabet(userStringList);
-            var convertedList2 = convertToEnglishAlphabet(userStringInputList);
-            var isTrue = Enumerable.SequenceEqual(convertedList1, convertedList2);
-            return isTrue;
-        }
-
-        private IEnumerable<char> convertToEnglishAlphabet(List<char> imeIPrezime)
-        {
-            List<char> result = new List<char>();
-
-            result.Clear();
-
-            foreach (var ch in imeIPrezime)
-            {
-                switch (ch)
-                {
-                    case 'Č':
-                        result.Add('C');
-                        break;
-                    case 'Ć':
-                        result.Add('C');
-                        break;
-                    case 'Đ':
-                        result.Add('D');
-                        break;
-                    case 'Ž':
-                        result.Add('Z');
-                        break;
-                    case 'Š':
-                        result.Add('S');
-                        break;
-
-                    default:
-                        result.Add(ch);
-                        break;
-                }
-
-            }
-
-
-            return result as IEnumerable<char>;
-
         }
     }
 }

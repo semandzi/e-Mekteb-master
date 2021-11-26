@@ -1,7 +1,5 @@
 ﻿@model List<e_Mekteb.ViewModel.UcenikProfilFlag>
-@{
-    ViewData["Title"] = "All Users";
-}
+@{ ViewData["Title"] = "All Users"; }
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6 text-center">
@@ -98,98 +96,88 @@
 
 
 
-    <h5 class="card-title">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Dodaj novog učenika
-        </button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
-            Dodaj postojećeg učenika
-        </button> 
-        <a type="button" class="btn btn-light btn-outline-success" asp-controller="Vjeroucitelj" asp-action="Filtriranje">
-            Filter <i class="fas fa-search"></i>
+<h5 class="card-title">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Dodaj novog učenika
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+        Dodaj postojećeg učenika
+    </button>
+    <a type="button" class="btn btn-light btn-outline-success" asp-controller="Vjeroucitelj" asp-action="Filtriranje">
+        Filter <i class="fas fa-search"></i>
 
-        </a>
+    </a>
 
-    </h5>
-    @foreach (var user in Model)
-    {
-
-
-        <div class="card mt-1 mb-5">
-
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-sm-4 text-center">
-                        @if (user.LokacijaNastave != null)
-                        {
-                            <p>@user.LokacijaNastave</p>
-                        }
-
-                        else
-                        {
-                            <p>Škola: Nije upisana.</p>
-
-                        }
+</h5>
+                @foreach (var user in Model)
+                {
 
 
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        @if (user.Razred != null)
-                        {
-                            <p>@user.Razred</p>
-                        }
+<div class="card mt-1 mb-5">
 
-                        else
-                        {
-                            <p>Razred nije upisan.</p>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                @if (user.LokacijaNastave != null)
+                {
+<p>@user.LokacijaNastave</p> }
 
-                        }
-
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        @if (user.Datum == DateTime.MinValue)
-                        {
-                            <p>Nije upisan.</p>
-                        }
-
-                        else
-                        {
-                            <p>Datum upisa: @user.Datum.ToString("dd/MM/yyyy")</p>
-                        }
-
-
-
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">
-                    @user.AplicationUser.ImeiPrezime
-
-                </h5>
-                <form asp-controller="Vjeroucitelj" asp-action="DeleteUser" asp-route-id="@user.AplicationUser.AplicationUserId" method="get">
-                    <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@user.AplicationUser.AplicationUserId">Uredi</a>
-                    <button type="submit" class="btn btn-danger">Obriši</button>
-
-
-                    @if (user.Flag == 0)
+                    else
                     {
+<p>Škola: Nije upisana.</p>}
+
+
+            </div>
+            <div class="col-sm-4 text-center">
+                @if (user.Razred != null)
+                {
+<p>@user.Razred</p> }
+
+                    else
+                    {
+<p>Razred nije upisan.</p>}
+
+            </div>
+            <div class="col-sm-4 text-center">
+                @if (user.Datum == DateTime.MinValue)
+                {
+<p>Nije upisan.</p> }
+
+                    else
+                    {
+<p>Datum upisa: @user.Datum.ToString("dd/MM/yyyy")</p>}
 
 
 
-                        <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-danger"
-                           data-bs-toggle="tooltip" title="Profil nije popunjen. Molimo da popunite profil u što kraćem roku pritiskom na tipku." style="float:right">
-                            <span>
-                                <i class="fas fa-user-edit"></i>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            @user.AplicationUser.ImeiPrezime
+
+        </h5>
+        <form asp-controller="Vjeroucitelj" asp-action="DeleteUser" asp-route-id="@user.AplicationUser.AplicationUserId" method="get">
+            <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="EditUser" asp-route-id="@user.AplicationUser.AplicationUserId">Uredi</a>
+            <button type="submit" class="btn btn-danger">Obriši</button>
+
+
+            @if (user.Flag == 0)
+            {
 
 
 
-                            </span>
-                        </a>
+<a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-danger"
+   data-bs-toggle="tooltip" title="Profil nije popunjen. Molimo da popunite profil u što kraćem roku pritiskom na tipku." style="float:right">
+    <span>
+        <i class="fas fa-user-edit"></i>
 
-                    }
+
+
+    </span>
+</a> }
 
 
 
@@ -201,56 +189,46 @@
 
                     else
                     {
-                        <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-success" data-bs-toggle="tooltip" title="Profil je popunjen" style="float:right">
-                            <i class="fas fa-user-check"></i>
+<a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-success" data-bs-toggle="tooltip" title="Profil je popunjen" style="float:right">
+    <i class="fas fa-user-check"></i>
 
 
-                        </a>
-
-
-                    }
+</a>                    }
 
 
 
 
-                </form>
+        </form>
 
-            </div>
-        </div>
-
-    }
-
-
-
-}
-
-
-
-
-
-else
-{
-    <div class="card">
-        <div class="card-header">
-            Nemate kreiranih učenika.
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">
-                Koristi donju lijevu tipku kako bi kreirao novog učenika.
-            </h5>
-            <h5 class="card-title">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Dodaj novog učenika
-                </button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
-                    Dodaj postojećeg učenika
-                </button>
-
-            </h5>
-
-        </div>
     </div>
-}
+</div>} }
+
+
+
+
+
+                            else
+                            {
+                <div class="card">
+                    <div class="card-header">
+                        Nemate kreiranih učenika.
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Koristi donju lijevu tipku kako bi kreirao novog učenika.
+                        </h5>
+                        <h5 class="card-title">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                Dodaj novog učenika
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                                Dodaj postojećeg učenika
+                            </button>
+
+                        </h5>
+
+                    </div>
+                </div>}
 
 
 
