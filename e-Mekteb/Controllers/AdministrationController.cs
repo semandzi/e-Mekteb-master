@@ -496,13 +496,13 @@ namespace e_Mekteb.Controllers
 
                 var aktivnost = _context.Aktivnosti.ToList(); 
                 var predaje = _context.Predaje.Where(v => v.VjerouciteljId==user.Id).ToList();
-                var model = new List<AktivnostiVjeroucitelja>();
+                var model = new List<TeacherActivity>();
                 ViewBag.userId = user.Id;
                 foreach (var predmet in aktivnost)
                 {
 
 
-                    var aktivnostVjeroucitelja = new AktivnostiVjeroucitelja
+                    var aktivnostVjeroucitelja = new TeacherActivity
                     {
                         VjerouciteljId = user.Id,
                         AktivnostId = predmet.AktivnostId,
@@ -536,7 +536,7 @@ namespace e_Mekteb.Controllers
         }
                         
         [HttpPost]
-        public async Task<IActionResult> PredmetiVjeroucitelja(List<AktivnostiVjeroucitelja> list,string userId)
+        public async Task<IActionResult> PredmetiVjeroucitelja(List<TeacherActivity> list,string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (userId == null)
@@ -572,7 +572,7 @@ namespace e_Mekteb.Controllers
                     {
                         var aktivnost = _context.Aktivnosti.ToList();
 
-                        var vjeroucitelj = new AktivnostiVjeroucitelja
+                        var vjeroucitelj = new TeacherActivity
                         {
                             AktivnostId = model.AktivnostId,
                             VjerouciteljId = model.VjerouciteljId,

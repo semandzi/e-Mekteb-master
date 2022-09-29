@@ -74,7 +74,7 @@ namespace e_Mekteb.Controllers
                     }
                 }            }
 
-            var model = new PrisutnostiUcenik
+            var model = new StudentPresence
             {
                 Prisutnosti = tempPrisutnosti,
                 Ucenici = temp
@@ -128,7 +128,7 @@ namespace e_Mekteb.Controllers
 
             var result=schoolList.OrderBy(school=>school.SchoolName).ToList();
             var prisutnost = new Prisutnost();
-            var vjerouciteljListaPrisutnosti = new VjerouciteljListaPrisutnosti();
+            var vjerouciteljListaPrisutnosti = new TeacherListOfPresence();
             vjerouciteljListaPrisutnosti.Schools=schoolList;
             vjerouciteljListaPrisutnosti.OdaberiSve=false;
             vjerouciteljListaPrisutnosti.TempPrisutnost=prisutnost;
@@ -149,7 +149,7 @@ namespace e_Mekteb.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VjerouciteljListaPrisutnosti prisutnosti)
+        public async Task<IActionResult> Create(TeacherListOfPresence prisutnosti)
         {
             foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors)) {
                 var err = error.ErrorMessage;

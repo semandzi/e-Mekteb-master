@@ -73,7 +73,7 @@ namespace e_Mekteb.Controllers
                }
             }
                        
-            var model = new BiljeskeUcenik
+            var model = new StudentNote
             {
                 Biljeske = tempBiljeske,
                 Ucenici = temp,

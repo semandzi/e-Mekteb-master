@@ -43,7 +43,7 @@ namespace e_Mekteb.Controllers
 
            
 
-            var model = new Obavijesti
+            var model = new Notification
             {
                 obavijesti = tempObavijesti,
               

@@ -117,7 +117,7 @@ namespace e_Mekteb.Controllers
                     .Select(u => u.UcenikId).ToList();
 
                 ViewBag.BrojUcenika = users.Count();
-                var tempUcenikProfilFlag = new List<UcenikProfilFlag>();
+                var tempUcenikProfilFlag = new List<StudentProfilFlag>();
                 string tempNazivLokacije = "";
                 string tempRazred = "";
                 DateTime datumUpisa = DateTime.MinValue;
@@ -188,7 +188,7 @@ namespace e_Mekteb.Controllers
                         user.ImeiPrezime == null || user.Email == null || user.UserName == null)
                     {
                         int flag = 0;
-                        var tempmodel = new UcenikProfilFlag
+                        var tempmodel = new StudentProfilFlag
                         {
                             AplicationUser = user,
                             Flag = flag,
@@ -208,7 +208,7 @@ namespace e_Mekteb.Controllers
                     else
                     {
                         var flag = 1;
-                        var tempmodel = new UcenikProfilFlag
+                        var tempmodel = new StudentProfilFlag
                         {
                             AplicationUser = user,
                             Flag = flag,
@@ -246,7 +246,7 @@ namespace e_Mekteb.Controllers
 
             ViewBag.BrojUcenika = users.Count();
 
-            var tempUcenikProfilFlag = new List<UcenikProfilFlag>();
+            var tempUcenikProfilFlag = new List<StudentProfilFlag>();
             string tempNazivLokacije = "";
             string tempRazred = "";
             DateTime datumUpisa = DateTime.MinValue;
@@ -371,7 +371,7 @@ namespace e_Mekteb.Controllers
                     user.ImeiPrezime == null || user.Email == null || user.UserName == null)
                 {
                     int flag = 0;
-                    var tempmodel = new UcenikProfilFlag
+                    var tempmodel = new StudentProfilFlag
                     {
                         AplicationUser = user,
                         Flag = flag,
@@ -391,7 +391,7 @@ namespace e_Mekteb.Controllers
                 else
                 {
                     var flag = 1;
-                    var tempmodel = new UcenikProfilFlag
+                    var tempmodel = new StudentProfilFlag
                     {
                         AplicationUser = user,
                         Flag = flag,
@@ -412,7 +412,7 @@ namespace e_Mekteb.Controllers
             }
 
             tempUcenikProfilFlag.OrderBy(x => x.AplicationUser.ImeiPrezime);
-            var vjerouciteljListaUcenika = new VjerouciteljListaUcenika
+            var vjerouciteljListaUcenika = new TeacherListOfStudents
             {
                 Profili = tempUcenikProfilFlag
 
@@ -644,7 +644,7 @@ namespace e_Mekteb.Controllers
         {
             ViewBag.userId = userId;
             var ucenik = await userManager.FindByIdAsync(userId);
-            var model = new List<AktivnostiUcenika>();
+            var model = new List<StudentActivity>();
 
             if (ucenik == null)
             {
@@ -662,7 +662,7 @@ namespace e_Mekteb.Controllers
 
                 foreach (var predmet in predmeti)
                 {
-                    var aktivnostiUcenika = new AktivnostiUcenika
+                    var aktivnostiUcenika = new StudentActivity
                     {
                         UcenikId = userId,
                         AktivnostId = predmet.AktivnostId,
@@ -696,7 +696,7 @@ namespace e_Mekteb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajPredmetUceniku(List<AktivnostiUcenika> models, string id)
+        public async Task<IActionResult> DodajPredmetUceniku(List<StudentActivity> models, string id)
         {
             var user = await userManager.FindByIdAsync(id);
             if (user == null)
@@ -865,12 +865,12 @@ namespace e_Mekteb.Controllers
             else
             {
 
-                var tempLista = new List<SkolaUcenikView>();
-                var tempSkoleLista = new SkoleLista();
+                var tempLista = new List<StudentSchool>();
+                var tempSkoleLista = new SchoolList();
                 foreach (var skola in skole)
                 {
 
-                    var skolaUcenik = new SkolaUcenikView
+                    var skolaUcenik = new StudentSchool
                     {
 
                         SkolaId = skola.SkolaId,
@@ -913,7 +913,7 @@ namespace e_Mekteb.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> DodajSkoluUceniku(SkoleLista models, string id)
+        public async Task<IActionResult> DodajSkoluUceniku(SchoolList models, string id)
         {
 
             var vjerouciteljUserName = HttpContext.User.Identity.Name;
@@ -1133,7 +1133,7 @@ namespace e_Mekteb.Controllers
             {
 
                 var tempLista = new List<RazredUcenikView>();
-                var tempSkoleLista = new RazrediUcenikView();
+                var tempSkoleLista = new StudentGradeView();
                 foreach (var razred in razredi)
                 {
 
@@ -1181,7 +1181,7 @@ namespace e_Mekteb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajRazredUceniku(RazrediUcenikView models, string id, string ispis)
+        public async Task<IActionResult> DodajRazredUceniku(StudentGradeView models, string id, string ispis)
         {
 
 
@@ -1324,7 +1324,7 @@ namespace e_Mekteb.Controllers
                     ViewBag.Flag = 0;
                 }
                 else { ViewBag.Flag = 1; }
-                var model = new UcenikViewModel
+                var model = new StudentViewModel
                 {
                     userId = user.AplicationUserId,
                     ImeiPrezime = user.ImeiPrezime,
@@ -1349,7 +1349,7 @@ namespace e_Mekteb.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditiranjeUcenikovogProfila(UcenikViewModel model, string id)
+        public async Task<IActionResult> EditiranjeUcenikovogProfila(StudentViewModel model, string id)
         {
             var user = await userManager.FindByIdAsync(id);
             if (user == null)
@@ -1401,7 +1401,7 @@ namespace e_Mekteb.Controllers
             {
 
                 ViewBag.userId = id;
-                var model = new UcenikViewModel
+                var model = new StudentViewModel
                 {
                     ImeiPrezime = user.ImeiPrezime,
                     Email = user.Email,
@@ -1457,7 +1457,7 @@ namespace e_Mekteb.Controllers
                     }
 
                 }
-                var model = new UcenikoveBiljeskeUcenikView
+                var model = new StudentNotesStudentView
                 {
                     UcenikoveAktivnosti = tempAktivnosti,
                     UcenikoveBiljeske = tempBiljeske
@@ -1507,7 +1507,7 @@ namespace e_Mekteb.Controllers
                     }
 
                 }
-                var model = new UcenikovePrisutnostiUcenikView
+                var model = new StudentPresenceStudentView
                 {
                     UcenikoveAktivnosti = tempAktivnosti,
                     UcenikovePrisutnosti = tempPrisutnosti

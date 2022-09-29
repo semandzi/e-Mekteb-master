@@ -44,7 +44,7 @@ namespace e_Mekteb.Controllers
             }
             else
             {
-                var model = new UcenikViewModel
+                var model = new StudentViewModel
                 {
                     ImeiPrezime = user.ImeiPrezime,
                     NazivMjesta = user.NazivMjesta,
@@ -68,7 +68,7 @@ namespace e_Mekteb.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Edit(UcenikViewModel model, string id)
+        public async Task<IActionResult> Edit(StudentViewModel model, string id)
         {
 
             var user = await userManager.FindByIdAsync(id);
@@ -132,7 +132,7 @@ namespace e_Mekteb.Controllers
             {
 
 
-                var model = new UcenikViewModel
+                var model = new StudentViewModel
                 {
                     ImeiPrezime = user.ImeiPrezime,
                     Email = user.Email,
@@ -181,7 +181,7 @@ namespace e_Mekteb.Controllers
                 }
 
             }
-            var model = new UcenikoveBiljeskeUcenikView
+            var model = new StudentNotesStudentView
             {
                 UcenikoveAktivnosti = tempAktivnosti,
                 UcenikoveBiljeske = tempBiljeske
@@ -222,7 +222,7 @@ namespace e_Mekteb.Controllers
                 }
 
             }
-            var model = new UcenikovePrisutnostiUcenikView
+            var model = new StudentPresenceStudentView
             {
                 UcenikoveAktivnosti = tempAktivnosti,
                 UcenikovePrisutnosti = tempPrisutnosti
@@ -282,7 +282,7 @@ namespace e_Mekteb.Controllers
 
 
 
-                var model = new Obavijesti
+                var model = new Notification
                 {
                     obavijesti = tempObavijesti,
                     VjerouciteljiNaObavijestima = tempVjeroucitelji

@@ -42,7 +42,7 @@ namespace e_Mekteb.Controllers
             //ViewBag.BrojUcenika = numberOfStudents.Count();
             ViewBag.BrojUcenika = users.Count();
 
-            var tempUcenikProfilFlag = new List<UcenikProfilFlag>();
+            var tempUcenikProfilFlag = new List<StudentProfilFlag>();
             string tempNazivLokacije = "";
             string tempRazred = "";
             DateTime datumUpisa = DateTime.MinValue;
@@ -167,7 +167,7 @@ namespace e_Mekteb.Controllers
                     user.ImeiPrezime == null || user.Email == null || user.UserName == null)
                 {
                     int flag = 0;
-                    var tempmodel = new UcenikProfilFlag
+                    var tempmodel = new StudentProfilFlag
                     {
                         AplicationUser = user,
                         Flag = flag,
@@ -187,7 +187,7 @@ namespace e_Mekteb.Controllers
                 else
                 {
                     var flag = 1;
-                    var tempmodel = new UcenikProfilFlag
+                    var tempmodel = new StudentProfilFlag
                     {
                         AplicationUser = user,
                         Flag = flag,
@@ -208,7 +208,7 @@ namespace e_Mekteb.Controllers
             }
 
             tempUcenikProfilFlag.OrderBy(x => x.AplicationUser.ImeiPrezime).ToList();
-            var vjerouciteljListaUcenika = new VjerouciteljListaUcenika
+            var vjerouciteljListaUcenika = new TeacherListOfStudents
             {
                 Profili = tempUcenikProfilFlag
             };

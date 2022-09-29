@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210524180415_razrdUcenikchangingTypeOgColumnRazred.cs" />
-    <Compile Remove="Migrations\20210524180415_razrdUcenikchangingTypeOgColumnRazred.Designer.cs" />
-    <Compile Remove="Migrations\20210524184544_addingNewColumnToSkolaMedzlisId.cs" />
-    <Compile Remove="Migrations\20210524184544_addingNewColumnToSkolaMedzlisId.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
