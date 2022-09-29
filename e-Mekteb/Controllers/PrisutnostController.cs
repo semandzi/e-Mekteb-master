@@ -9,6 +9,7 @@ using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
 using Microsoft.AspNetCore.Identity;
 using e_Mekteb.ViewModel;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace e_Mekteb.Controllers
 {
@@ -71,8 +72,7 @@ namespace e_Mekteb.Controllers
                             temp.Add(user);
                         }
                     }
-                }
-            }
+                }            }
 
             var model = new PrisutnostiUcenik
             {
@@ -89,70 +89,92 @@ namespace e_Mekteb.Controllers
         // GET: Prisutnost/Create
         public  async Task<IActionResult> Create()
         {
+            
             var username = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByNameAsync(username);
             var vjerouciteljId = vjeroucitelj.Id;
-            var users = (from u in _context.VjerouciteljUcenik
-                         where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId).ToList();
-            var ucenici = new AplicationUser();
-            var temp = new List<PrisutnostVjeroucitelj>();
-
-            foreach (var id in users)
-            {
-                var user = await userManager.FindByIdAsync(id);
-                ucenici.Ucenici.Add(user);
-                var prisutnostVjeroucitelja = new PrisutnostVjeroucitelj
-                {
-                    Ucenik = user.Email,
-                    IsSelected = false,
-                  
-                };
-                temp.Add(prisutnostVjeroucitelja);
-            }
             
-           
+            
+            var schoolList = new List<School>();
+            var schools = _context.Skole.Where(school => school.VjerouciteljId==vjerouciteljId).ToList();
+            var t = new List<RazredUcenik>();
+            foreach (var school in schools) {
+                var studentInfo = _context.RazrediUcenik
+                    .Where(info => info.SkolaId==school.SkolaId && info.VjerouciteljId == vjerouciteljId && info.DatumIspisa == DateTime.MinValue).ToList();
+                var temp = new List<StudentInfo>();
+                foreach (var s in studentInfo) {
+                    
+                    var user = await userManager.FindByIdAsync(s.UcenikId);
+                    if (user != null){
+                        var info = new StudentInfo
+                        {
+                            Student = user.ImeiPrezime,
+                            Id=user.Id,
+                            IsSelected = false,
+                            SchoolName=school.NazivSkole,
+                            Grade=s.Razred,
+                        };
+                        temp.Add(info);
+                    }
+                                                                                                                                                                                       
+                }
+                var sc = new School
+                {
+                    SchoolName=school.NazivSkole,
+                    StudentInfoList = temp
+                };
+                schoolList.Add(sc);
+            }           
+
+            var result=schoolList.OrderBy(school=>school.SchoolName).ToList();
             var prisutnost = new Prisutnost();
             var vjerouciteljListaPrisutnosti = new VjerouciteljListaPrisutnosti();
-            vjerouciteljListaPrisutnosti.UceniciIsSelected=temp;
+            vjerouciteljListaPrisutnosti.Schools=schoolList;
             vjerouciteljListaPrisutnosti.OdaberiSve=false;
             vjerouciteljListaPrisutnosti.TempPrisutnost=prisutnost;
-           
-
-
+                       
             var vjerouciteljaktivnosti = _context.Predaje.Where(p => p.VjerouciteljId == vjerouciteljId).ToList();
 
-            ViewData["AktivnostId"] = new SelectList(vjerouciteljaktivnosti, "AktivnostId", "NazivPredmeta");
-            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "Email");
+            ViewData["AktivnostId"] = new SelectList(vjerouciteljaktivnosti, "AktivnostId", "NazivPredmeta");            
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
-            ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
+            ViewData["Prisutnost"] = new SelectList(enumPrisutnost);            
 
             return View(vjerouciteljListaPrisutnosti);
         }
+        
+
 
         // POST: Prisutnost/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(/*[Bind("PrisutnostId,Datum,AplicationUserId,AktivnostId,IsPrisutan")]*/ VjerouciteljListaPrisutnosti prisutnosti)
+        public async Task<IActionResult> Create(VjerouciteljListaPrisutnosti prisutnosti)
         {
+            foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors)) {
+                var err = error.ErrorMessage;
+            }
             if (ModelState.IsValid)
             {
-                foreach(var prisutnost in prisutnosti.UceniciIsSelected)
+                foreach(var prisutnost in prisutnosti.Schools)
                 {
-                    if (prisutnost.IsSelected == true)                      
+                    if (prisutnost.StudentInfoList.Any())                      
                     {
-                        var user = await userManager.FindByEmailAsync(prisutnost.Ucenik);
-                        var tempPrisutnost = new Prisutnost
-                        {
-                            AktivnostId = prisutnosti.TempPrisutnost.AktivnostId,
-                            PrisutnostId = prisutnosti.TempPrisutnost.PrisutnostId,
-                            AplicationUserId = user.AplicationUserId,
-                            IsPrisutan = prisutnosti.TempPrisutnost.IsPrisutan,
-                            Datum = prisutnosti.TempPrisutnost.Datum
-                        };
-                        _context.Add(tempPrisutnost);
+                        foreach (var stud in prisutnost.StudentInfoList) {
+                            var user = await userManager.FindByEmailAsync(stud.Id);
+                            if (stud.IsSelected) {
+                                var tempPrisutnost = new Prisutnost
+                                {
+                                    AktivnostId = prisutnosti.TempPrisutnost.AktivnostId,
+                                    PrisutnostId = prisutnosti.TempPrisutnost.PrisutnostId,
+                                    AplicationUserId = stud.Id,
+                                    IsPrisutan = prisutnosti.TempPrisutnost.IsPrisutan,
+                                    Datum = prisutnosti.TempPrisutnost.Datum
+                                };
+                                _context.Add(tempPrisutnost);
+                            }
+                            
+                        }                        
                     }
                     else
                     {
@@ -163,21 +185,8 @@ namespace e_Mekteb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var username = HttpContext.User.Identity.Name;
-            var vjeroucitelj = await userManager.FindByNameAsync(username);
-            var vjerouciteljId = vjeroucitelj.Id;
-            var users = (from u in _context.VjerouciteljUcenik
-                         where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId).ToList();
-            var ucenici = new AplicationUser();
-            foreach (var id in users)
-            {
-                var user = await userManager.FindByIdAsync(id);
-                ucenici.Ucenici.Add(user);
-
-            }
-            ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnosti.TempPrisutnost.AktivnostId);
-            ViewData["AplicationUserId"] = new SelectList(ucenici.Ucenici, "AplicationUserId", "ImeIPrezime", prisutnosti.UceniciIsSelected);
+           
+            ViewData["AktivnostId"] = new SelectList(_context.Aktivnosti, "AktivnostId", "Naziv", prisutnosti.TempPrisutnost.AktivnostId);           
             var enumPrisutnost = Enum.GetValues(typeof(IsPrisutan)).Cast<IsPrisutan>().Select(v => v.ToString()).ToList();
             ViewData["Prisutnost"] = new SelectList(enumPrisutnost);
             return View(prisutnosti);

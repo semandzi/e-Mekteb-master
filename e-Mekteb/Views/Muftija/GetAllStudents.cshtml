@@ -1,4 +1,6 @@
-﻿@model e_Mekteb.ViewModel.VjerouciteljListaUcenika
+﻿@model e_Mekteb.ViewModel.VjerouciteljListaUcenika;
+    <link rel="stylesheet" href="~/css/site.css"/>
+
 @{
     ViewData["Title"] = "All Users";
 }
@@ -9,7 +11,7 @@
 
         </div>
         <div class="col-sm-6 text-center">
-            <p>MIZ @ViewBag.Medzlis</p>
+            <p>@*MIZ @ViewBag.Medzlis*@</p>
         </div>
 
     </div>
@@ -23,7 +25,7 @@
             <img src="/images/muslim-students-running-school.jpg" class="media-object rounded" style="width:150px">
         </div>
         <div class="media-body">
-            <h1 class="text-success">Moji Učenici</h1>
+            <h1 class="text-success">Svi Učenici</h1>
             <h1 class="text-success"> @ViewBag.BrojUcenika</h1>
 
         </div>
@@ -32,71 +34,15 @@
 <br />
 <br />
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Dodavanje novog učenika upute</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Kreiranje učenika postiže se klikom na tipku ispod, "Dodaj novog učenika". Ime i prezime učenika treba unijeti točno ne koristeći pritom zamjenske znakove.
-                    Unos email adrese treba biti u formatu "ime.prezime@gmail.com".<br />
-                    <div class="row">
-                        <div class="col-sm-4">
-                            Adnan Čaušević <p class="text-success"> TOČNO</p>
-                        </div>
-                        <div class="col-sm-4 ml-auto">
-                            Adnan Causevic<p class="text-danger"> NETOČNO</p>
-
-                        </div>
-                    </div>
-                </div>
 
 
+<a type="button" class="btn btn-light btn-outline-success" asp-controller="Muftija" asp-action="GetReligiousCommunities">
+        Filter <i class="fas fa-search"></i>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
-                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj novog učenika</a>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Dodavanje novog učenika upute</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Kreiranje postojećeg učenika postiže se klikom na tipku ispod, "Dodaj postojećeg učenika". Kako znati dali učenik postoji u bazi podataka? Uvijek je potrebno učenika kreirati kao novog
-                    učenika i ukoliko se prikaže poruka da učenik s tim imenom i prezimenom već postoji, dodati ćete ga kao postojećeg učenika.<br />
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
-                <a class="btn btn-primary" asp-controller="Vjeroucitelj" asp-action="DodajPostojecegUcenika">Dodaj postojećeg učenika</a>
-
-            </div>
-        </div>
-    </div>
-</div>
+    </a>
 
 @if (Model != null)
 {
-
-    @*spinner*@
     <div class="spinner" style="display:none">
         <div class="center-div">
             <div class="inner-div">
@@ -105,19 +51,9 @@
         </div>
     </div>
 
-    <h5 class="card-title">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Dodaj novog učenika
-        </button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
-            Dodaj postojećeg učenika
-        </button>
-        <a type="button" class="btn btn-light btn-outline-success" asp-controller="Vjeroucitelj" asp-action="Filtriranje">
-            Filter <i class="fas fa-search"></i>
 
-        </a>
 
-    </h5>
+
     @foreach (var user in Model.Profili)
     {
 
@@ -185,7 +121,7 @@
 
 
                         <a asp-controller="Vjeroucitelj" asp-action="EditiranjeUcenikovogProfila" asp-route-id="@user.AplicationUser.AplicationUserId" class="btn btn-danger"
-                            data-bs-toggle="tooltip" title="Profil nije popunjen. Molimo da popunite profil u što kraćem roku pritiskom na tipku." style="float:right">
+               data-bs-toggle="tooltip" title="Profil nije popunjen. Molimo da popunite profil u što kraćem roku pritiskom na tipku." style="float:right">
                             <span>
                                 <i class="fas fa-user-edit"></i>
 
@@ -219,8 +155,7 @@
 
             </div>
         </div>
-    }
-}
+    }       }
 
 
 

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using e_Mekteb.ApDbContext;
 using e_Mekteb.ViewModel;
-using EmailSender;
 namespace e_Mekteb.Controllers
 {
     [Authorize]

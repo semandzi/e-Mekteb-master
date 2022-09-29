@@ -1,0 +1,46 @@
+﻿@model List<e_Mekteb.ViewModel.Muftija.MuftijaVjerouciteljiViewModel>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<a class="btn btn-primary" asp-controller="Muftija" asp-action="GetReligiousCommunities" ><<</a><br/><br/>
+@if (Model.Any())
+{
+    @foreach (var vjeroucitelj in Model)
+    {
+        <div class="card mb-5">
+
+            <div class="card-header">
+                Testiranje
+            </div>
+
+            <div class="card-body ml-lg-3">
+
+                <div class="card-title d-md-inline-flex">
+                    <h5>@vjeroucitelj.ImeiPrezime</h5>
+                    <h5 style="color:lightgreen" class="text-center ml-3">@vjeroucitelj.BrojUcenika</h5>
+                </div>
+                
+                
+                <br/>
+            
+
+           
+
+                <a class="btn btn-primary" asp-controller="Muftija" asp-action="GetAllSchoolsFromTeacher" asp-route-vjerouciteljId="@vjeroucitelj.VjerouciteljId">Popis školi</a>
+                    <button type="submit" class="btn btn-primary">Info</button>
+          </div>
+
+
+        </div>
+
+
+
+
+
+        
+
+    }
+
+
+}

@@ -18,8 +18,8 @@ using Microsoft.Extensions.Logging;
 using e_Mekteb.ApDbContext;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using EmailSender;
 using System.Data;
+using EmailService;
 
 namespace e_Mekteb.Areas.Identity.Pages.Account 
 { 
@@ -31,7 +31,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
         private readonly SignInManager<AplicationUser> _signInManager;
         private readonly UserManager<AplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly e_MektebDbContext _context;
         private readonly RoleManager<IdentityRole> roleManager;
 
@@ -39,7 +39,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
             UserManager<AplicationUser> userManager,
             SignInManager<AplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,e_MektebDbContext context, RoleManager<IdentityRole> roleManager)
+            EmailSender emailSender,e_MektebDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -112,15 +112,8 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
 
                     if (noviKorisnik.ImeiPrezime == user.ImeiPrezime)
                     {
-
-                        return RedirectToPage();
-
-
-                       
+                        return RedirectToPage();                       
                     }
-
-
-
                 }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -146,12 +139,9 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                                 {
                                     await _userManager.AddToRoleAsync(user, "Admin");
                                     return RedirectToAction("ListRole", "Administration");
-                                }
-                                
-                            }
-                            
-                        }
-                                    
+                                }                                
+                            }                            
+                        }                                    
                     }
                     else
                     {
@@ -172,18 +162,7 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                         }
 
                     }
-                            
-                            
-                            
-
-                           
-
-
-
-
-
-
-
+                                                                                                               
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -199,9 +178,16 @@ namespace e_Mekteb.Areas.Identity.Pages.Account
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    var message = new Message
+                    {
 
-                    SendEmail sendEmail = new SendEmail(Input.Email,callbackUrl,Input.Password);
-                    _ = sendEmail.Execute();
+                        Email=Input.Email,
+                        Content = callbackUrl,
+                        Subject = "Confirmation email"
+                    };
+                    await _emailSender.SendEmailAsync(message);
+                    //await _emailSender.SendEmailAsync(Input.Email,callbackUrl,Input.Password);
+                    
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

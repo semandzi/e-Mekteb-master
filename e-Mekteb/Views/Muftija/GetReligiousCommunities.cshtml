@@ -1,0 +1,47 @@
+﻿@model List<e_Mekteb.ViewModel.Muftija.MuftijaMedzlisViewModel>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<a class="btn btn-primary" asp-controller="Muftija" asp-action="GetAllStudents" ><<</a><br/><br/>
+
+@if (Model.Any())
+{
+    @foreach (var medzlis in Model)
+    {
+        <div class="card mb-5">
+
+            <div class="card-header">
+                Testiranje
+            </div>
+
+            <div class="card-body ml-lg-3">
+
+                <div class="card-title d-md-inline-flex">
+                    <h5>@medzlis.NazivMedzlisa</h5>
+                    <h5 style="color:lightgreen" class="text-center ml-3">@medzlis.BrojUcenika</h5>
+                </div>
+                
+                
+                <br/>
+            
+
+           
+
+                <a class="btn btn-primary" asp-controller="Muftija" asp-action="GetTeachersFromCommunity" asp-route-medzlisId="@medzlis.MedzlisId">Popis vjeroučitelja</a>
+                    <button type="submit" class="btn btn-primary">Info</button>
+          </div>
+
+
+        </div>
+
+
+
+
+
+        
+
+    }
+
+
+}

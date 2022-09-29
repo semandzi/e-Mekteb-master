@@ -11,10 +11,16 @@ namespace e_Mekteb.ViewModel
         public VjerouciteljListaPrisutnosti()
         {
             
-            UceniciIsSelected= new List<PrisutnostVjeroucitelj>();
+            Schools= new List<School>();
         }
-        public Prisutnost TempPrisutnost { get; set; }
-        public List<PrisutnostVjeroucitelj>UceniciIsSelected { get; set; }
         public bool OdaberiSve { get; set; }
+        public Prisutnost TempPrisutnost { get; set; }
+        public List<School> Schools { get; set; }
+    }
+
+
+    public class School {
+        public string SchoolName { get; set; }
+        public List<StudentInfo> StudentInfoList { get; set; }
     }
 }

@@ -17,17 +17,18 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Primitives;
 using Microsoft.AspNetCore.Http;
 using System.Net;
-using SendGrid;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http.Features;
+using EmailService;
 
 namespace e_Mekteb
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {            
+
             Configuration = configuration;
         }
 
@@ -38,8 +39,12 @@ namespace e_Mekteb
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
-            
+
+            var emailConfig = Configuration.GetSection("EmailConfiguration")
+               .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<EmailSender>();
 
             services.AddDbContext<e_MektebDbContext>(options =>
                 options.UseSqlServer(
@@ -83,6 +88,12 @@ namespace e_Mekteb
             {
                 options.ValueCountLimit = int.MaxValue;
             });
+            services.AddMvc(options =>
+            {
+
+                options.MaxModelBindingCollectionSize = int.MaxValue;
+
+            });
 
         }
 
@@ -102,7 +113,7 @@ namespace e_Mekteb
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
-            if (env.IsProduction())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();

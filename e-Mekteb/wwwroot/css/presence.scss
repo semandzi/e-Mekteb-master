@@ -1,0 +1,99 @@
+﻿
+.presence {
+
+    .school_container {
+        width: 100%;
+        height: 190px;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        overflow-y: auto;
+    }
+
+    #myTable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .school {
+        display: none;
+        align-items: center;
+        justify-content: start;
+        margin-left: 20px;
+    }
+
+    .school_name {
+        margin-left: 0px;
+        font-size: 20px;
+        font-family: Bahnschrift;
+        color: lightcoral;
+    }
+
+    .select_school {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        padding: 2px;
+
+        span {
+            &:hover {
+                background-color: lightblue;
+                border-radius: 5px;
+            }
+        }
+    }
+
+    .img_container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .colapsed {
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        background-image: url(/images/plus.png);
+        background-repeat: no-repeat;
+        width: 20px;
+        height: 20px;
+        border: none;
+        margin-left: auto;
+        background-position-x:center;
+        background-position-y:center;
+        margin-top: 2px;
+    }
+
+    .expanded {
+        background-image: url(/images/minus.png);
+        background-repeat: no-repeat;
+        width: 20px;
+        height: 20px;
+        margin-left: auto;
+        
+    }
+
+
+
+    .refresh_container {
+        display: flex;
+        margin-top: 2px;
+        align-items: center;
+        justify-content: center;        
+
+        .refresh {
+            background-image: url(/images/refresh.png);
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
+        }
+
+        label {
+            &:hover {
+                background-color: lightgray;
+                border-radius: 5px;
+            }
+        }
+    }
+}

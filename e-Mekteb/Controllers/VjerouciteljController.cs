@@ -95,6 +95,7 @@ namespace e_Mekteb.Controllers
             ViewData["SkolskeGodine"] = new SelectList(skolskeGodine.AsEnumerable(), "SkolskaGodinaId", "Godina");
 
             return View();
+           
 
         }
 
@@ -238,9 +239,10 @@ namespace e_Mekteb.Controllers
             var username = HttpContext.User.Identity.Name;
             var vjeroucitelj = await userManager.FindByNameAsync(username);
             var vjerouciteljId = vjeroucitelj.Id;
-            var users = (from u in _context.VjerouciteljUcenik
-                         where u.VjerouciteljId == vjerouciteljId
-                         select u.UcenikId).ToList();
+
+            var users = _context.VjerouciteljUcenik.OrderBy(i=>i.UserName)
+                         .Where(u=> u.VjerouciteljId == vjerouciteljId)
+                         .Select(u=> u.UcenikId).ToList();
 
             ViewBag.BrojUcenika = users.Count();
 
@@ -409,8 +411,13 @@ namespace e_Mekteb.Controllers
 
             }
 
+            tempUcenikProfilFlag.OrderBy(x => x.AplicationUser.ImeiPrezime);
+            var vjerouciteljListaUcenika = new VjerouciteljListaUcenika
+            {
+                Profili = tempUcenikProfilFlag
 
-            return View(tempUcenikProfilFlag);
+            };
+            return View(vjerouciteljListaUcenika);
         }
 
         [HttpGet]
@@ -1104,7 +1111,7 @@ namespace e_Mekteb.Controllers
             var razrediUcenikaDrugihVjeroucitelja = _context.RazrediUcenik
                 .Where(s => s.UcenikId == userId && s.VjerouciteljId != vjerouciteljId)
                 .Select(s => s.Razred).ToList();
-            var skolskeGodine = _context.SkolskeGodine;
+            var skolskeGodine = _context.SkolskeGodine.ToList();
 
             var razrediUcenika = _context.RazrediUcenik.Where(s => s.UcenikId == userId && s.DatumIspisa == DateTime.MinValue).ToList();
             var exist = razrediUcenika.Any();

@@ -191,18 +191,19 @@ namespace e_Mekteb.Controllers
         public async Task<IActionResult> ListUsers()
         {
             var temp= new List<AplicationUser>();
-            foreach (var user in userManager.Users.ToList())
+            foreach (var user in userManager.Users.OrderBy(i => i.ImeiPrezime).ToList())
             {
+                
                 
                 if (await userManager.IsInRoleAsync(user, "Vjeroucitelj"))
                 {
                     
                     temp.Add(user);
                     
+                    
                 }
 
             }
-            
             return View(temp);
 
             //var users = userManager.Users.Select();

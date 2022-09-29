@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
+﻿
+<Project Sdk="Microsoft.NET.Sdk.Web">		
+	
+	<PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-e_Mekteb-0CC14864-DE22-4239-8B1D-90D80E678B1C</UserSecretsId>
     <RootNamespace>e_Mekteb</RootNamespace>
@@ -13,15 +14,24 @@
     <Compile Remove="Migrations\20210524184544_addingNewColumnToSkolaMedzlisId.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="knockoutjs" Version="3.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -32,12 +42,12 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <ProjectReference Include="..\EmailSender\EmailSender.csproj" />
+    <ProjectReference Include="..\..\..\EmailService\EmailService.csproj" />
   </ItemGroup>
 
 

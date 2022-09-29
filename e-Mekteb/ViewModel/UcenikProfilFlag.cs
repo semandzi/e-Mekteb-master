@@ -16,5 +16,6 @@ namespace e_Mekteb.ViewModel
         public DateTime Datum { get; set; }
         public string Razred { get; set; }
         public string LokacijaNastave { get; set; }
+        
     }
 }

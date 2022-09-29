@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace e_Mekteb.ViewModel
 {
-    public class PrisutnostVjeroucitelj
+    public class StudentInfo
     {
-       
-        public string Ucenik { get; set; }
-
+        
         public bool IsSelected { get; set; }
-      
-
+        public string SchoolName { get; set; }
+        public string  Grade { get; set; }        
+        public string  Student { get; set; }
+        public string  Id { get; set; }
 
     }
-
 }

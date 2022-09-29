@@ -13,14 +13,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="dropdown-menu-sm-left p-4">
                 <div class="form-group">
-                    Filter:
+                    Filter:<br />
                     <select asp-for="SkolaId" class="form-control" asp-items="ViewBag.MojeSkole"></select>
+                   @*@Html.DropDownListFor(a=>a.SkolaId, ViewData["MojeSkole"] as SelectList, "Sve škole")*@
+
                 </div>
                 <div class="form-group">
                     <select asp-for="RazredId" class="form-control" asp-items="ViewBag.Razredi"></select>
+                    @*@Html.DropDownListFor(a=>a.RazredId, ViewData["Razredi"] as SelectList, "Svi razredi")*@
                 </div>
                 <div class="form-group">
                     <select asp-for="GodinaId" class="form-control" asp-items="ViewBag.SkolskeGodine"></select>
+                    @*@Html.DropDownListFor(a=>a.GodinaId, ViewData["SkolskeGodine"] as SelectList, "Sve škole")*@
                 </div>
                 <div class="form-group">
                     <a asp-controller="Vjeroucitelj" asp-action="ListUsers" class="btn btn-primary"><<</a>

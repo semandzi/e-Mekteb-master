@@ -1,131 +1,112 @@
-﻿@model e_Mekteb.ViewModel.VjerouciteljListaPrisutnosti
+﻿@using System.Diagnostics
+
+@model e_Mekteb.ViewModel.VjerouciteljListaPrisutnosti;
 
 @{
     ViewData["Title"] = "Prisutnost";
 }
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/presence.css">
+</head>
 <h1>Kreiraj Novu</h1>
 
 <h4>Prisutnost</h4>
 <hr />
-<div class="row mb-5">
+<div class="row mb-5 presence">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-
-
-
-
-
-
-
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="None" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="TempPrisutnost.Datum" class="control-label"></label>
-                <input asp-for="TempPrisutnost.Datum" class="form-control" />
-                <span asp-validation-for="TempPrisutnost.Datum" class="text-danger"></span>
+                <label asp-for="@Model.TempPrisutnost.Datum" class="control-label"></label>
+                <input asp-for="@Model.TempPrisutnost.Datum" class="form-control" />
+                <span asp-validation-for="@Model.TempPrisutnost.Datum" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="TempPrisutnost.AktivnostId" class="control-label"></label>
-                <select asp-for="TempPrisutnost.AktivnostId" class="form-control" asp-items="ViewBag.AktivnostId"></select>
+                <label asp-for="@Model.TempPrisutnost.AktivnostId" class="control-label"></label>
+                <select asp-for="@Model.TempPrisutnost.AktivnostId" class="form-control" asp-items="ViewBag.AktivnostId"></select>
             </div>
+
             <div class="form-group">
-                <label asp-for="TempPrisutnost.IsPrisutan" class="control-label"></label>
-                <select  asp-for="TempPrisutnost.IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
-                <span asp-validation-for="TempPrisutnost.IsPrisutan" class="text-danger"></span>
-
+                <label asp-for="@Model.TempPrisutnost.IsPrisutan" class="control-label"></label>
+                <select asp-for="@Model.TempPrisutnost.IsPrisutan" class="form-control" asp-items="ViewBag.Prisutnost"></select>
+                <span asp-validation-for="@Model.TempPrisutnost.IsPrisutan" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <div class="form-check form-check-inline school_container" id="checkBoxes">
 
-
-
-
-
-
-            <div class="form-check form-check-inline " id="checkBoxes">
-
-
-                @if (Model.UceniciIsSelected.Any())
-                {
-                    <label class="control-label">Učenici</label>
-                    <br />
-
-                    <input asp-for="@Model.OdaberiSve" type="checkbox" id="checkAll">
-                    <label class="form-check-label">Odaberi sve</label>
-
-
-
-                    @for (int i = 0; i < Model.UceniciIsSelected.Count(); i++)
-
+                    @if (Model.Schools.Any())
                     {
-
-
-
-
-
-
-
-                        <div class="form-check mt-1" id="myTable">
-                            <input asp-for="@Model.UceniciIsSelected[i].Ucenik" type="hidden">
-
-
-
-
-
-                            <input asp-for="@Model.UceniciIsSelected[i].IsSelected" type="checkbox">
-
-
-                            <label class="form-check-label">@Model.UceniciIsSelected[i].Ucenik</label>
-
-
-
-
+                        <div class="refresh_container" id="unselectAll">
+                            <div class="refresh" onclick="unselectAll()"></div>
+                              <div><label onclick="unselectAll()">Resetiraj</label></div>
                         </div>
+                        
 
+                        @for (int i = 0; i < Model.Schools.Count(); i++)
+                        {
+                            <div id="checkBoxes">
+                                <div class="select_school">
+                                    <input asp-for="@Model.OdaberiSve" type="checkbox" id="checkAll" onclick="selectAll(this)" class="form-check-input">
+                                    <span>@Model.Schools[i].SchoolName</span>                                    
+                                    <div class="colapsed" onclick="expand(this)"></div>
+                                    <div class="expanded" onclick="colapse(this)" style="display: none"></div>
+                                
+                                </div>
+                                @for (int j = 0; j < Model.Schools[i].StudentInfoList.Count(); j++)
+                                {
+                                    <div class="school">
+                                        <div class="form-check mt-1" id="myTable">
+                                            <input type="hidden" asp-for="@Model.Schools[i].StudentInfoList[j].SchoolName" class="form-check-input">
+                                            <input type="hidden" asp-for="@Model.Schools[i].StudentInfoList[j].Grade" class="form-check-input">
+                                            <input type="hidden" asp-for="@Model.Schools[i].StudentInfoList[j].Student" class="form-check-input">
+                                            <input type="hidden" asp-for="@Model.Schools[i].StudentInfoList[j].Id" class="form-check-input">
+                                            <input type="checkbox" asp-for="@Model.Schools[i].StudentInfoList[j].IsSelected" class="form-check-input">
+                                            <label class="form-check-label" title="@Model.Schools[i].StudentInfoList[j].Grade">
+                                                @Model.Schools[i].StudentInfoList[j].Student
+                                            </label>
+                                        </div>
 
+                                    </div>
+                                }
+                            </div>
 
-
+                        }
+                        <br />
                     }
-                    <br />
 
+                    else
+                    {
+                        <h5>Nemate kreirane učenike, prvo kreirajte učenike!</h5>
+                    }
+                </div>
 
-
-                }
-                else
-                {
-                    <h5>Nemate kreirane učenike, prvo kreirajte učenike!</h5>
-                }
             </div>
-
-
 
 
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"><< </a>
                 <button type="submit" class="btn btn-primary">Spremi</button>
             </div>
-
-
         </form>
     </div>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-    <script type="text/javascript">
-       
-
-
-
-    </script>
-
-    
 </div>
+</html>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script type="text/javascript" src="~/js/site.js"></script>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
 
 
