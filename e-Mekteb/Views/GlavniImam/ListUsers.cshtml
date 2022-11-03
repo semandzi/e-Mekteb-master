@@ -1,0 +1,58 @@
+﻿
+
+
+
+
+
+
+
+@model IEnumerable<AplicationUser>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h1>Vjeroučitelji</h1>
+
+@if (Model.Any())
+{
+    <h5 class="card-title">
+        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>    
+    </h5>
+    @foreach (var user in Model)
+    {
+        <div class="card mt-1 mb-5">
+            <div class="card-header">
+                Korisnik Id:@user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @user.ImeiPrezime
+                </h5>
+                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="get">
+                    <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Uredi</a>
+                    <button type="submit"  class="btn btn-danger" >Obriši</button>
+                </form>
+
+            </div>
+        </div>
+    }
+
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            Trenutno nemate kreiranih korisnika.
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Koristi tipku ispod kako bi uspješno dodali novog korisnika.
+            </h5>
+            <h5 class="card-title">
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>
+            </h5>
+
+        </div>
+    </div>
+}
+

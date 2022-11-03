@@ -9,26 +9,20 @@ using System.Threading.Tasks;
 namespace e_Mekteb.ViewModel
 {
     public class TeacherViewModel
-    {
-       
-
+    {       
         public int VjerouciteljViewModelId { get; set; }
         public virtual List<Aktivnost> Aktivnosti { get; set; }
         public virtual List<Razred> Razredi { get; set; }
         public virtual List<Skola> Skole { get; set; }
-
-
 
         public Medzlis Medzlis { get; set; }
         [Display(Name = "Medžlis")]
         [ForeignKey("Medzlis")]
         public int MedzlisId { get; set; }
 
-
         [Required(ErrorMessage = "Ime i Prezime je obavezno polje")]
         [StringLength(50)]
         public string ImeiPrezime { get; set; }
-
 
         public Spol Spol { get; set; }
 

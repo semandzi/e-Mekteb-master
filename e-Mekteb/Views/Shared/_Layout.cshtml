@@ -67,7 +67,30 @@
 
                         }
                         <br />
+                        @if (User.IsInRole("Glavni Imam"))
+                        {
+                            <li>
+                                <div class="dropdown mr-1">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin
+                                    </button>
 
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                                
+                                        <li>
+
+                                            <a id="btnSubmitAdministrationAllUsers" class="dropdown-item" asp-area="" asp-controller="GlavniImam" asp-action="ListUsers">Lista Korisnika</a>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </li>
+
+                        }
+                        <br />
                         @if (signInManager.IsSignedIn(User) || User.IsInRole("Admin") || User.IsInRole("Vjeroucitelj") || User.IsInRole("Ucenik") || User.IsInRole("Muftija"))
                         {
                             <li>

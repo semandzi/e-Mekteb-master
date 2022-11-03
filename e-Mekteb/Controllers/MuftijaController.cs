@@ -33,8 +33,6 @@ namespace e_Mekteb.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
-
-
             var numberOfStudents = _context.RazrediUcenik.Where(d => d.DatumIspisa == DateTime.MinValue).ToList();
             var users = _context.VjerouciteljUcenik.OrderBy(i => i.UserName)
                          .Select(u => u.UcenikId).ToList();
@@ -88,14 +86,6 @@ namespace e_Mekteb.Controllers
 
 
                 }
-
-
-
-
-
-
-
-
 
                 //Godina trenutna i datum upisa
                 var result1 = razrediUcenikaKodOvogVjeroucitelja.Join(_context.SkolskeGodine,
