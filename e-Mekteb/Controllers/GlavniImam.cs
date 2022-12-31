@@ -27,22 +27,16 @@ namespace e_Mekteb.Controllers
             this.roleManager = roleManager;
             _context = context;
         }
-        [HttpGet]
-        
-        public  async void GetUsersFromSpecificLocation(string location, Action<List<AplicationUser>> callback) {
-            var users =  await userManager.GetUsersInRoleAsync("Vjeroucitelj");                        
-             callback(users.OrderBy(i => i.ImeiPrezime)
-                .Where(u=> u.NazivMjesta == location ).ToList());                            
-        }
 
-        [HttpGet]
-        public IActionResult ListUsers()
-        {
-            var temp = new List<AplicationUser>();             
-             GetUsersFromSpecificLocation("Zagreb",  callback => { temp =   callback; });
-            return View(temp);                       
-        }
-              
+        [HttpGet]        
+        public async Task<IActionResult> ListUsers() {
+
+            var emailOfLoggedUser = HttpContext.User.Identity.Name;
+            var user = userManager.FindByEmailAsync(emailOfLoggedUser).Result;                        
+            var users = (List<AplicationUser>)await userManager.GetUsersInRoleAsync("Vjeroucitelj");
+            users = users.Where(p => p.NazivMjesta == user.NazivMjesta).ToList();
+            return View(users);
+        }        
     }
 
 }
