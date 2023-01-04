@@ -6,11 +6,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+
 
 namespace e_Mekteb.Controllers
 
@@ -30,13 +37,33 @@ namespace e_Mekteb.Controllers
 
         [HttpGet]        
         public async Task<IActionResult> ListUsers() {
-
+            
+            var teachers = await GetMyTeachers();
+            
+            return View( await GetMyTeachers());
+        }
+        private async Task<List<AplicationUser>> GetMyTeachers() {
             var emailOfLoggedUser = HttpContext.User.Identity.Name;
-            var user = userManager.FindByEmailAsync(emailOfLoggedUser).Result;                        
+            var user = userManager.FindByEmailAsync(emailOfLoggedUser).Result;
             var users = (List<AplicationUser>)await userManager.GetUsersInRoleAsync("Vjeroucitelj");
-            users = users.Where(p => p.NazivMjesta == user.NazivMjesta).ToList();
+            users = users.Where(p => p.NazivMjesta == user.NazivMjesta).OrderBy(n => n.ImeiPrezime).ToList();
+            return users;
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> SortAscending()
+        {
+            var users = await GetMyTeachers();
+            users = users.OrderByDescending(n => n.ImeiPrezime).ToList();
+            var result = Json(users);
+            return result;            
+        }
+        public async Task<IActionResult> SortDescending()
+        {
+            var users = await GetMyTeachers();
+            users = users.OrderByDescending(n => n.ImeiPrezime).ToList();
             return View(users);
-        }        
+        }
     }
 
 }

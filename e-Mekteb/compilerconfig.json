@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/css/presence.css",
     "inputFile": "wwwroot/css/presence.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/glavni_imam/teacher_list.css",
+    "inputFile": "wwwroot/css/glavni_imam/teacher_list.scss"
   }
 ]

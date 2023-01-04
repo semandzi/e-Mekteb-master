@@ -45,7 +45,7 @@ namespace e_Mekteb
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<EmailSender>();
-
+           
             services.AddDbContext<e_MektebDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -93,6 +93,12 @@ namespace e_Mekteb
 
                 options.MaxModelBindingCollectionSize = int.MaxValue;
 
+            });
+            services.AddMvc().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.MaxDepth = 0;
+                
+               
             });
 
         }

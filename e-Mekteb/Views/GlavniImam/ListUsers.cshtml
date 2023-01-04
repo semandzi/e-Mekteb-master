@@ -1,58 +1,90 @@
-﻿
+﻿<!DOCTYPE html>
+<html>
 
+<head>
+    <link rel="stylesheet" href="/css/glavni_imam/teacher_list.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    @model IEnumerable<AplicationUser>
+    @{
+        ViewData["Title"] = "All Users";
+        var url = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}/GlavniImam/SortAscending";
 
-
-
-
-
-
-@model IEnumerable<AplicationUser>
-@{
-    ViewData["Title"] = "All Users";
-}
-
-<h1>Vjeroučitelji</h1>
-
-@if (Model.Any())
-{
-    <h5 class="card-title">
-        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>    
-    </h5>
-    @foreach (var user in Model)
+    }
+    <h1>@url</h1>
+    <div class="teacher_list">
+        <button id="PassingToJavaScript" onclick="sortAscending()" value="@url"></button>
+        <button></button>
+    </div>
+    @if (Model.Any())
     {
-        <div class="card mt-1 mb-5">
+        @foreach (var user in Model)
+        {
+            <div class="card mt-1 mb-5">
+                <div class="card-header">
+                    Korisnik Id:@user.Id
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @user.ImeiPrezime
+                    </h5>
+                    <form asp-action="DeleteUser" asp-route-id="@user.Id" method="get">
+                        <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Uredi</a>
+                        <button type="submit" class="btn btn-danger">Obriši</button>
+                    </form>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="card">
             <div class="card-header">
-                Korisnik Id:@user.Id
+                Trenutno nemate kreiranih korisnika.
             </div>
             <div class="card-body">
                 <h5 class="card-title">
-                    @user.ImeiPrezime
+                    Koristi tipku ispod kako bi uspješno dodali novog korisnika.
                 </h5>
-                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="get">
-                    <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Uredi</a>
-                    <button type="submit"  class="btn btn-danger" >Obriši</button>
-                </form>
+                <h5 class="card-title">
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>
+                </h5>
 
             </div>
         </div>
     }
 
-}
-else
-{
-    <div class="card">
-        <div class="card-header">
-            Trenutno nemate kreiranih korisnika.
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">
-                Koristi tipku ispod kako bi uspješno dodali novog korisnika.
-            </h5>
-            <h5 class="card-title">
-                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Dodaj Novog Korisnika</a>
-            </h5>
+    <script type="text/javascript">
 
-        </div>
-    </div>
-}
+        function sortAscending() {
+            var uri = document.getElementById('PassingToJavaScript').value;
+            console.log(uri);
+            getItems(uri);
+
+
+
+        }
+        function getItems(uri) {
+            fetch(uri, {
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw response;
+                        console.log('senad')
+                    }
+                    return response.json();
+                })
+                .then(json => {
+                    console.log("Done! It's all good");
+                })
+                .catch(response => console.log(response));
+        }
+
+    </script>
+</body>
+</html>
 

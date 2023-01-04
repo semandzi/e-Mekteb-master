@@ -1,0 +1,25 @@
+﻿.teacher_list {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  height: 40px;
+  gap: 4px;
+}
+.teacher_list :nth-child(1) {
+  margin-left: 5px;
+  background-image: url("../../images/sort-up.png");
+}
+.teacher_list :nth-child(2) {
+  background-image: url("../../images/sort-down.png");
+}
+.teacher_list button {
+  width: 30px;
+  height: 30px;
+  background-position-x: center;
+  background-position-y: center;
+  border: hidden;
+}
+.teacher_list button:hover {
+  border: 1px solid lightblue;
+}
