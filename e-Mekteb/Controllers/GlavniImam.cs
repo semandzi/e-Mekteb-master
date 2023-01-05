@@ -1,23 +1,15 @@
 ﻿using e_Mekteb.ApDbContext;
 using e_Mekteb.Models;
-using e_Mekteb.Models.Administration;
-using e_Mekteb.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-
+using System.Text.Json;
+using Newtonsoft.Json;
+using System;
 
 namespace e_Mekteb.Controllers
 
@@ -51,12 +43,24 @@ namespace e_Mekteb.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> SortAscending()
+        public async Task<ContentResult> SortAscending()
         {
             var users = await GetMyTeachers();
             users = users.OrderByDescending(n => n.ImeiPrezime).ToList();
-            var result = Json(users);
-            return result;            
+            
+            try
+            {
+                var jsonSerializerSettings = new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+
+                };
+                var json = JsonConvert.SerializeObject(users, jsonSerializerSettings);
+                return Content(json.ToString(), "application/json"); ;
+            }
+            catch(Exception ex) { throw ex; }
+            
         }
         public async Task<IActionResult> SortDescending()
         {

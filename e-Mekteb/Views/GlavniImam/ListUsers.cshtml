@@ -73,13 +73,13 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw response;
-                        console.log('senad')
+                        throw response;                        
                     }
                     return response.json();
                 })
                 .then(json => {
                     console.log("Done! It's all good");
+                    console.log(json["$values"]);
                 })
                 .catch(response => console.log(response));
         }

@@ -94,13 +94,7 @@ namespace e_Mekteb
                 options.MaxModelBindingCollectionSize = int.MaxValue;
 
             });
-            services.AddMvc().AddJsonOptions(o =>
-            {
-                o.JsonSerializerOptions.MaxDepth = 0;
-                
-               
-            });
-
+           
         }
 
        
